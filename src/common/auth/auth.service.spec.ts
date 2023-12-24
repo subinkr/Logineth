@@ -43,7 +43,7 @@ describe('AuthService', () => {
 
     it('Return | {accessToken: string}', async () => {
       const result = await service.signToken(user.username);
-      expect(typeof result).toEqual('string');
+      expect(typeof result.accessToken).toEqual('string');
 
       const accessToken = jwtService.sign(
         { username: user.username },
@@ -64,14 +64,14 @@ describe('AuthService', () => {
       expect(service.verifyToken).toHaveBeenCalledWith('string');
     });
 
-    it('Use | verify', async () => {
+    it('Use | verify', () => {
       jest.spyOn(jwtService, 'verify');
-      await service.verifyToken(accessToken);
+      service.verifyToken(accessToken);
       expect(jwtService.verify).toHaveBeenCalled();
     });
 
-    it('Return | result: {username: string}', async () => {
-      const { username } = await service.verifyToken(accessToken);
+    it('Return | result: {username: string}', () => {
+      const { username } = service.verifyToken(accessToken);
       expect(typeof username).toEqual('string');
     });
   });

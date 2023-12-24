@@ -9,7 +9,7 @@ export class AuthService {
     private readonly profileService: ProfileService,
   ) {}
 
-  async signToken(username: string) {
+  async signToken(username: string): Promise<{ accessToken: string }> {
     await this.profileService.getUserByUsername(username);
 
     const accessToken = this.jwtService.sign(
@@ -22,8 +22,9 @@ export class AuthService {
     return { accessToken };
   }
 
-  async verifyToken(accessToken: string) {
-    const result = this.jwtService.verify(accessToken, {
+  verifyToken(accessToken: string): { username: string } {
+    const token = accessToken.split(' ')[1];
+    const result = this.jwtService.verify(token, {
       secret: process.env.JWT_SECRET || 'test',
     });
 

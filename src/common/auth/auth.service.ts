@@ -12,14 +12,14 @@ export class AuthService {
   async signToken(username: string) {
     await this.profileService.getUserByUsername(username);
 
-    const result = this.jwtService.sign(
+    const accessToken = this.jwtService.sign(
       { username },
       {
         secret: process.env.JWT_SECRET || 'test',
         expiresIn: process.env.JWT_EXPIRE || 1234,
       },
     );
-    return result;
+    return { accessToken };
   }
 
   async verifyToken(accessToken: string) {

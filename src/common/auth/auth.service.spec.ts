@@ -41,7 +41,7 @@ describe('AuthService', () => {
       expect(jwtService.sign).toHaveBeenCalled();
     });
 
-    it('Return | accessToken: string', async () => {
+    it('Return | {accessToken: string}', async () => {
       const result = await service.signToken(user.username);
       expect(typeof result).toEqual('string');
 
@@ -52,11 +52,11 @@ describe('AuthService', () => {
           expiresIn: 1234,
         },
       );
-      expect(result).toEqual(accessToken);
+      expect(result.accessToken).toEqual(accessToken);
     });
   });
 
-  // VERIFYTOKENTEST: - make, use, returnx, errorx
+  // VERIFYTOKENTEST: - make, use, return
   describe('Verify Token', () => {
     it('Make | verifyToken', () => {
       service.verifyToken = jest.fn();

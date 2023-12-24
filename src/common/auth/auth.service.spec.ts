@@ -9,7 +9,7 @@ describe('AuthService', () => {
   let service: AuthService;
   let jwtService: JwtService;
   let profileService: ProfileService;
-  const user = MockUserModel.user;
+  const { user, accessToken, expiredAccessToken } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -25,8 +25,8 @@ describe('AuthService', () => {
   describe('Sign Token', () => {
     it('Make | signToken', () => {
       service.signToken = jest.fn();
-      service.signToken(user.username);
-      expect(service.signToken).toHaveBeenCalledWith(user.username);
+      service.signToken(typeof user.username);
+      expect(service.signToken).toHaveBeenCalledWith('string');
     });
 
     it('Use | getUserByUsername', async () => {
@@ -47,6 +47,15 @@ describe('AuthService', () => {
         },
       );
       expect(result).toEqual(accessToken);
+    });
+  });
+
+  // VERIFYTOKENTEST: - make, usex, returnx, errorx
+  describe('Verify Token', () => {
+    it('Make | verifyToken', () => {
+      service.verifyToken = jest.fn();
+      service.verifyToken(typeof accessToken);
+      expect(service.verifyToken).toHaveBeenCalledWith('string');
     });
   });
 });

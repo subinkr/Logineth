@@ -21,4 +21,11 @@ export class AuthService {
     );
     return result;
   }
+
+  async verifyToken(accessToken: string) {
+    const result = this.jwtService.verify(accessToken, {
+      secret: process.env.JWT_SECRET || 'test',
+    });
+    console.log(result);
+  }
 }

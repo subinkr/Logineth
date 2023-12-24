@@ -29,6 +29,12 @@ export class MockUserModel {
 
   static userList: UserModel[] = [MockUserModel.user];
 
+  static accessToken: string =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWF0IjoxNzAzNDA5OTA0LCJleHAiOjFlKzUwfQ.BBf7DDbpw-mopP6iPvu8pxc7PoTjCbt5p7h3RPWT_Cw';
+
+  static expiredAccessToken: string =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWF0IjoxNzAzNDEwMDE0LCJleHAiOjE3MDM0MTAwMTR9.8XhJITN3rCUQIgCuBEVYLW7j3T7rTMIhMRuoiYwjcSE';
+
   findOne({ where: { id, username } }) {
     const [user] = id
       ? MockUserModel.userList.filter((user) => user.id === id)

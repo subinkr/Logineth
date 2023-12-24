@@ -22,7 +22,7 @@ export class AuthService {
     return { accessToken };
   }
 
-  async verifyToken(accessToken: string) {
+  verifyToken(accessToken: string) {
     const token = accessToken.split(' ')[1];
     const result = this.jwtService.verify(token, {
       secret: process.env.JWT_SECRET || 'test',

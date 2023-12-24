@@ -35,6 +35,12 @@ describe('AuthService', () => {
       expect(profileService.getUserByUsername).toHaveBeenCalled();
     });
 
+    it('Use | sign', async () => {
+      jest.spyOn(jwtService, 'sign');
+      await service.signToken(user.username);
+      expect(jwtService.sign).toHaveBeenCalled();
+    });
+
     it('Return | accessToken: string', async () => {
       const result = await service.signToken(user.username);
       expect(typeof result).toEqual('string');

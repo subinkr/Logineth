@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { MockUserModel } from '../mock/entities/user.mock';
+import { MockUserModel } from '../../source-code/mock/entities/user.mock';
 import { JwtService } from '@nestjs/jwt';
 
 describe('AuthService', () => {
@@ -17,7 +17,7 @@ describe('AuthService', () => {
     jwtService = module.get<JwtService>(JwtService);
   });
 
-  // SIGNTOKENTEST: - make, return, errorx
+  // SIGNTOKENTEST: - make, usex, return, errorx
   describe('Sign Token', () => {
     it('Make | signToken', () => {
       service.signToken = jest.fn();
@@ -25,8 +25,10 @@ describe('AuthService', () => {
       expect(service.signToken).toHaveBeenCalledWith(user.username);
     });
 
-    it('Return | accessToken: string', () => {
-      const result = service.signToken(user.username);
+    it.todo('Use | getUserByUsername');
+
+    it('Return | accessToken: string', async () => {
+      const result = await service.signToken(user.username);
       expect(typeof result).toEqual('string');
 
       const accessToken = jwtService.sign(
@@ -38,5 +40,7 @@ describe('AuthService', () => {
       );
       expect(result).toEqual(accessToken);
     });
+
+    it.todo('Error | Username is not valid');
   });
 });

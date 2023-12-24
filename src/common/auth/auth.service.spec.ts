@@ -9,7 +9,7 @@ describe('AuthService', () => {
   let service: AuthService;
   let jwtService: JwtService;
   let profileService: ProfileService;
-  const { user, accessToken, expiredAccessToken } = MockUserModel;
+  const { user, accessToken } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -68,6 +68,11 @@ describe('AuthService', () => {
       jest.spyOn(jwtService, 'verify');
       await service.verifyToken(accessToken);
       expect(jwtService.verify).toHaveBeenCalled();
+    });
+
+    it('Return | result: {username: string}', async () => {
+      const { username } = await service.verifyToken(accessToken);
+      expect(typeof username).toEqual('string');
     });
   });
 });

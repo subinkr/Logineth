@@ -26,6 +26,7 @@ export class AuthService {
     const result = this.jwtService.verify(accessToken, {
       secret: process.env.JWT_SECRET || 'test',
     });
-    console.log(result);
+
+    return result;
   }
 }

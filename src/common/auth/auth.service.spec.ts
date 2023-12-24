@@ -56,12 +56,18 @@ describe('AuthService', () => {
     });
   });
 
-  // VERIFYTOKENTEST: - make, usex, returnx, errorx
+  // VERIFYTOKENTEST: - make, use, returnx, errorx
   describe('Verify Token', () => {
     it('Make | verifyToken', () => {
       service.verifyToken = jest.fn();
       service.verifyToken(typeof accessToken);
       expect(service.verifyToken).toHaveBeenCalledWith('string');
+    });
+
+    it('Use | verify', async () => {
+      jest.spyOn(jwtService, 'verify');
+      await service.verifyToken(accessToken);
+      expect(jwtService.verify).toHaveBeenCalled();
     });
   });
 });

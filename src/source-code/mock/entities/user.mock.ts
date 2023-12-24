@@ -14,4 +14,26 @@ export class MockUserModel {
     createdAt: new Date(1),
     updatedAt: new Date(1),
   };
+
+  static notExistUser: UserModel = {
+    id: 0,
+    username: 'notExistUser',
+    password: '',
+    nickname: '',
+    image: null,
+    role: Role.USER,
+    provider: Provider.LOCAL,
+    createdAt: null,
+    updatedAt: null,
+  };
+
+  static userList: UserModel[] = [MockUserModel.user];
+
+  findOne({ where: { id, username } }) {
+    const [user] = id
+      ? MockUserModel.userList.filter((user) => user.id === id)
+      : MockUserModel.userList.filter((user) => user.username === username);
+
+    return user;
+  }
 }

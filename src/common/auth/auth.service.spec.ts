@@ -2,22 +2,26 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { MockUserModel } from '../../source-code/mock/entities/user.mock';
 import { JwtService } from '@nestjs/jwt';
+import { ProfileService } from 'src/account/profile/profile.service';
+import { providers } from 'src/source-code/mock/providers/providers';
 
 describe('AuthService', () => {
   let service: AuthService;
   let jwtService: JwtService;
+  let profileService: ProfileService;
   const user = MockUserModel.user;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService, JwtService],
+      providers,
     }).compile();
 
     service = module.get<AuthService>(AuthService);
     jwtService = module.get<JwtService>(JwtService);
+    profileService = module.get<ProfileService>(ProfileService);
   });
 
-  // SIGNTOKENTEST: - make, usex, return, errorx
+  // SIGNTOKENTEST: - make, use, return
   describe('Sign Token', () => {
     it('Make | signToken', () => {
       service.signToken = jest.fn();
@@ -25,7 +29,11 @@ describe('AuthService', () => {
       expect(service.signToken).toHaveBeenCalledWith(user.username);
     });
 
-    it.todo('Use | getUserByUsername');
+    it('Use | getUserByUsername', async () => {
+      jest.spyOn(profileService, 'getUserByUsername');
+      await service.signToken(user.username);
+      expect(profileService.getUserByUsername).toHaveBeenCalled();
+    });
 
     it('Return | accessToken: string', async () => {
       const result = await service.signToken(user.username);
@@ -40,7 +48,5 @@ describe('AuthService', () => {
       );
       expect(result).toEqual(accessToken);
     });
-
-    it.todo('Error | Username is not valid');
   });
 });

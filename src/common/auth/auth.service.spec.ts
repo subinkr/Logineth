@@ -43,7 +43,7 @@ describe('AuthService', () => {
 
     it('Return | {accessToken: string}', async () => {
       const result = await service.signToken(user.username);
-      expect(typeof result).toEqual('string');
+      expect(typeof result.accessToken).toEqual('string');
 
       const accessToken = jwtService.sign(
         { username: user.username },

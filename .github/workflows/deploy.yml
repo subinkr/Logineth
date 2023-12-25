@@ -12,9 +12,8 @@ jobs:
         uses: actions/setup-node@main
         with:
           node-version: '18'
-      - name: Install npm packages
-        run: cd /home/ubuntu/logineth && git pull && npm ci
-      - name: Build
-        run: npm run build
       - name: Deploy
-        run: fuser -k 3001/tcp && nohup npm run start:prod &
+        run: |
+          cd /home/ubuntu/logineth && git pull && npm ci && |
+          npm run build && | 
+          fuser -k 3001/tcp && nohup npm run start:prod &

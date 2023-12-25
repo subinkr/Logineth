@@ -9,7 +9,7 @@ import { NotAcceptableException } from '@nestjs/common';
 describe('RegisterService', () => {
   let service: RegisterService;
   let authService: AuthService;
-  const { user, notExistUser } = MockUserModel;
+  const { user, notExistUser, notExistUser2 } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -22,21 +22,22 @@ describe('RegisterService', () => {
 
   // LRTEST: - use, error
   describe('Local Register', () => {
-    const reqLocalRegister: ReqLocalRegister = { ...notExistUser };
-
     it('Use | hashPassword', async () => {
+      const reqLocalRegister: ReqLocalRegister = { ...notExistUser };
       jest.spyOn(authService, 'hashPassword');
       await service.localRegister(reqLocalRegister);
       expect(authService.hashPassword).toHaveBeenCalled();
     });
 
     it('Use | signToken', async () => {
+      const reqLocalRegister: ReqLocalRegister = { ...notExistUser2 };
       jest.spyOn(authService, 'signToken');
       await service.localRegister(reqLocalRegister);
       expect(authService.signToken).toHaveBeenCalled();
     });
 
     it('Error | Username already used', async () => {
+      const reqLocalRegister: ReqLocalRegister = { ...user };
       const result = service.localRegister({
         ...reqLocalRegister,
         username: user.username,

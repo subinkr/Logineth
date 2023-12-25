@@ -3,7 +3,7 @@ import { ProfileController } from './profile.controller';
 import { providers } from 'src/source-code/mock/providers/providers';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { ProfileService } from './profile.service';
-import { ResGetUserByUsername } from './dto/res-getUserByUsername.dto';
+import { ResGetUserByUsername } from './dto/res-get-user-by-username.dto';
 
 describe('ProfileController', () => {
   let controller: ProfileController;

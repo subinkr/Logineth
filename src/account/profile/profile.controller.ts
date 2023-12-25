@@ -1,6 +1,6 @@
 import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
 import { ProfileService } from './profile.service';
-import { ResGetUserByUsername } from './dto/res-getUserByUsername.dto';
+import { ResGetUserByUsername } from './dto/res-get-user-by-username.dto';
 import { plainToInstance } from 'class-transformer';
 import {
   ApiNotFoundResponse,

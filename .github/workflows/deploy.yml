@@ -2,6 +2,16 @@ name: deploy
 on:
   push:
     branches: [main]
+env:
+  SERVER_PORT: ${{ secrets.SERVER_PORT }}
+  DB_AWS_HOSTNAME: ${{ secrets.DB_AWS_HOSTNAME }}
+  DB_PORT: ${{ secrets.DB_PORT }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  DB_DATABASE: ${{ secrets.DB_DATABASE }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  JWT_EXPIRE: ${{ secrets.JWT_EXPIRE }}
+  HASH_SALT: ${{ secrets.HASH_SALT }}
 jobs:
   deploy:
     runs-on: self-hosted

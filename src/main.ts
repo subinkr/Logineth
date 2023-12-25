@@ -9,10 +9,10 @@ async function bootstrap() {
     .setTitle('Logineth')
     .setDescription('Logineth')
     .setVersion('1.0.0')
-    .addTag('account/login')
-    .addTag('account/profile')
-    .addTag('account/register')
-    .addTag('common/data')
+    .addTag('account | login')
+    .addTag('account | profile')
+    .addTag('account | register')
+    .addTag('common | data')
     .addBearerAuth()
     .build();
 

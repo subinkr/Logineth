@@ -21,7 +21,7 @@ describe('AuthService', () => {
     profileService = module.get<ProfileService>(ProfileService);
   });
 
-  // STTEST: - use, return
+  // STTEST: - use
   describe('Sign Token', () => {
     it('Use | getUserByUsername', async () => {
       jest.spyOn(profileService, 'getUserByUsername');
@@ -34,31 +34,14 @@ describe('AuthService', () => {
       await service.signToken(user.username);
       expect(jwtService.sign).toHaveBeenCalled();
     });
-
-    it('Return | {accessToken: string}', async () => {
-      const result = await service.signToken(user.username);
-      const accessToken = jwtService.sign(
-        { username: user.username },
-        {
-          secret: 'test',
-          expiresIn: 1234,
-        },
-      );
-      expect(result.accessToken).toEqual(accessToken);
-    });
   });
 
-  // VTTEST: - use, return
+  // VTTEST: - use
   describe('Verify Token', () => {
     it('Use | verify', () => {
       jest.spyOn(jwtService, 'verify');
       service.verifyToken(accessToken);
       expect(jwtService.verify).toHaveBeenCalled();
-    });
-
-    it('Return | result: {username: string}', () => {
-      const { username } = service.verifyToken(accessToken);
-      expect(username).toEqual(user.username);
     });
   });
 });

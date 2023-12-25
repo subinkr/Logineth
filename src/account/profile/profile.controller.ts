@@ -11,7 +11,7 @@ import {
 import { notFound } from 'src/source-code/error/swagger/not-found';
 
 @Controller('profile')
-@ApiTags('account/profile')
+@ApiTags('account | profile')
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 

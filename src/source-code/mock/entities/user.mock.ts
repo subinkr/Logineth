@@ -37,6 +37,24 @@ export class MockUserModel {
       ? MockUserModel.userList.filter((user) => user.id === id)
       : MockUserModel.userList.filter((user) => user.username === username);
 
+    if (user.username === 'notExistUser') {
+      MockUserModel.userList.pop();
+    }
+
     return user;
+  }
+
+  exist({ where: { id, username } }) {
+    const [user] = id
+      ? MockUserModel.userList.filter((user) => user.id === id)
+      : MockUserModel.userList.filter((user) => user.username === username);
+
+    return !!user;
+  }
+
+  save(notExistUser: UserModel) {
+    MockUserModel.userList.push(notExistUser);
+
+    return notExistUser;
   }
 }

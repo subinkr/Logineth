@@ -3,7 +3,7 @@ import { RegisterController } from './register.controller';
 import { providers } from 'src/source-code/mock/providers/providers';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { ReqLocalRegister } from './dto/req-local-register.dto';
-import { ResLocalRegister } from './dto/res-local-register.dto';
+import { ResRegister } from './dto/res-register.dto';
 import { RegisterService } from './register.service';
 
 describe('RegisterController', () => {
@@ -30,15 +30,43 @@ describe('RegisterController', () => {
       expect(registerService.localRegister).toHaveBeenCalled();
     });
 
-    it('Return | ResLocalRegister', async () => {
+    it('Return | ResRegister', async () => {
       const reqLocalRegister: ReqLocalRegister = { ...notExistUser2 };
       const result = await controller.localRegister(reqLocalRegister);
-      expect(result).toBeInstanceOf(ResLocalRegister);
+      expect(result).toBeInstanceOf(ResRegister);
 
-      const resLocalRegister: ResLocalRegister = { accessToken, user };
+      const resLocalRegister: ResRegister = { accessToken, user };
       const keys = Object.keys(result);
       const required = Object.keys(resLocalRegister);
       expect(keys).toEqual(expect.arrayContaining(required));
     });
+  });
+
+  // GRTEST: - usex, returnx
+  describe('Github Register', () => {
+    it.todo('Use | githubRegister');
+
+    it.todo('Return | ResRegister');
+  });
+
+  // GRTEST: - usex, returnx
+  describe('Google Register', () => {
+    it.todo('Use | googleRegister');
+
+    it.todo('Return | ResRegister');
+  });
+
+  // KRTEST: - usex, returnx
+  describe('Kakao Register', () => {
+    it.todo('Use | kakaoRegister');
+
+    it.todo('Return | ResRegister');
+  });
+
+  // WTEST: - usex, returnx
+  describe('Withdraw', () => {
+    it.todo('Use | withdraw');
+
+    it.todo('Return | ResWithdraw');
   });
 });

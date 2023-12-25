@@ -21,14 +21,8 @@ describe('AuthService', () => {
     profileService = module.get<ProfileService>(ProfileService);
   });
 
-  // SIGNTOKENTEST: - make, use, return
+  // STTEST: - use, return
   describe('Sign Token', () => {
-    it('Make | signToken', () => {
-      service.signToken = jest.fn();
-      service.signToken(typeof user.username);
-      expect(service.signToken).toHaveBeenCalledWith('string');
-    });
-
     it('Use | getUserByUsername', async () => {
       jest.spyOn(profileService, 'getUserByUsername');
       await service.signToken(user.username);
@@ -54,14 +48,8 @@ describe('AuthService', () => {
     });
   });
 
-  // VERIFYTOKENTEST: - make, use, return
+  // VTTEST: - use, return
   describe('Verify Token', () => {
-    it('Make | verifyToken', () => {
-      service.verifyToken = jest.fn();
-      service.verifyToken(typeof accessToken);
-      expect(service.verifyToken).toHaveBeenCalledWith('string');
-    });
-
     it('Use | verify', () => {
       jest.spyOn(jwtService, 'verify');
       service.verifyToken(accessToken);

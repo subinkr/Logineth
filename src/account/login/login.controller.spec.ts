@@ -14,7 +14,38 @@ describe('LoginController', () => {
     controller = module.get<LoginController>(LoginController);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  // LLTEST: - usex, returnx
+  describe('Local Login', () => {
+    it.todo('Use | localLogin');
+
+    it.todo('Return | ResLogin');
+  });
+
+  // GLTEST: - usex, returnx
+  describe('Github Login', () => {
+    it.todo('Use | githubLogin');
+
+    it.todo('Return | ResLogin');
+  });
+
+  // GLTEST: - usex, returnx
+  describe('Google Login', () => {
+    it.todo('Use | googleLogin');
+
+    it.todo('Return | ResLogin');
+  });
+
+  // KLTEST: - usex, returnx
+  describe('Kakao Login', () => {
+    it.todo('Use | kakaoLogin');
+
+    it.todo('Return | ResLogin');
+  });
+
+  // LTEST: - usex, returnx
+  describe('Logout', () => {
+    it.todo('Use | logout');
+
+    it.todo('Return | ResLogout');
   });
 });

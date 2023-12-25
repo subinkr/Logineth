@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
 import { RegisterService } from './register.service';
 import { RegisterController } from './register.controller';
-import { AuthService } from 'src/common/auth/auth.service';
+import { JwtService } from '@nestjs/jwt';
+import { AuthModule } from 'src/common/auth/auth.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModel } from 'src/source-code/entities/user.entity';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([UserModel]), AuthModule],
   controllers: [RegisterController],
-  providers: [RegisterService, AuthService],
+  providers: [RegisterService, JwtService],
+  exports: [RegisterModule, RegisterService],
 })
 export class RegisterModule {}

@@ -8,5 +8,6 @@ import { UserModel } from 'src/source-code/entities/user.entity';
   imports: [TypeOrmModule.forFeature([UserModel])],
   controllers: [ProfileController],
   providers: [ProfileService],
+  exports: [ProfileModule, ProfileService],
 })
 export class ProfileModule {}

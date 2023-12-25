@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: '18'
       - name: Install npm packages
-        run: cd ~/logineth && git pull && npm ci
+        run: cd /home/ubuntu/logineth && git pull && npm ci
       - name: Build
         run: npm run build
       - name: Deploy

@@ -9,7 +9,7 @@ import { RegisterService } from './register.service';
 describe('RegisterController', () => {
   let controller: RegisterController;
   let registerService: RegisterService;
-  const { user, notExistUser, notExistUser2, accessToken } = MockUserModel;
+  const { user, notExistUser, notExistUser2 } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -35,7 +35,7 @@ describe('RegisterController', () => {
       const result = await controller.localRegister(reqLocalRegister);
       expect(result).toBeInstanceOf(ResRegister);
 
-      const resLocalRegister: ResRegister = { accessToken, user };
+      const resLocalRegister: ResRegister = { accessToken: '', user };
       const keys = Object.keys(result);
       const required = Object.keys(resLocalRegister);
       expect(keys).toEqual(expect.arrayContaining(required));

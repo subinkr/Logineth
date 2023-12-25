@@ -45,4 +45,28 @@ describe('RegisterService', () => {
       await expect(result).rejects.toThrow(NotAcceptableException);
     });
   });
+
+  describe('Github Register', () => {
+    it.todo('Use | hashPassword');
+
+    it.todo('Use | signToken');
+  });
+
+  describe('Google Register', () => {
+    it.todo('Use | hashPassword');
+
+    it.todo('Use | signToken');
+  });
+
+  describe('Kakao Register', () => {
+    it.todo('Use | hashPassword');
+
+    it.todo('Use | signToken');
+  });
+
+  describe('Withdraw', () => {
+    it.todo('Use | hashPassword');
+
+    it.todo('Use | signToken');
+  });
 });

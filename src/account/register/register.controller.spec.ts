@@ -42,9 +42,31 @@ describe('RegisterController', () => {
     });
   });
 
+  // GRTEST: - usex, returnx
   describe('Github Register', () => {
     it.todo('Use | githubRegister');
 
     it.todo('Return | ResRegister');
+  });
+
+  // GRTEST: - usex, returnx
+  describe('Google Register', () => {
+    it.todo('Use | googleRegister');
+
+    it.todo('Return | ResRegister');
+  });
+
+  // KRTEST: - usex, returnx
+  describe('Kakao Register', () => {
+    it.todo('Use | kakaoRegister');
+
+    it.todo('Return | ResRegister');
+  });
+
+  // WTEST: - usex, returnx
+  describe('Withdraw', () => {
+    it.todo('Use | withdraw');
+
+    it.todo('Return | ResWithdraw');
   });
 });

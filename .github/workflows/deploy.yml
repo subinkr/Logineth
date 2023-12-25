@@ -25,4 +25,4 @@ jobs:
       - name: Build
         run: npm run build
       - name: Run background
-        run: nohup npm run start:prod &
+        run: RUNNER_TRACKING_ID="" && nohup npm run start:prod &

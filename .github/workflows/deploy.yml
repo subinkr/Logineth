@@ -13,4 +13,4 @@ jobs:
         with:
           node-version: '18'
       - name: Deploy
-        run: cd /home/ubuntu/logineth && git pull && npm ci && npm run build && fuser -k 3001/tcp && nohup npm run start:prod &
+        run: cd /home/ubuntu/logineth && git pull && npm i && npm run build && fuser -k 3001/tcp && nohup npm run start:prod &

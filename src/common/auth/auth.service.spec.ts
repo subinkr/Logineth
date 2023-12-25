@@ -43,8 +43,6 @@ describe('AuthService', () => {
 
     it('Return | {accessToken: string}', async () => {
       const result = await service.signToken(user.username);
-      expect(typeof result.accessToken).toEqual('string');
-
       const accessToken = jwtService.sign(
         { username: user.username },
         {
@@ -72,7 +70,7 @@ describe('AuthService', () => {
 
     it('Return | result: {username: string}', () => {
       const { username } = service.verifyToken(accessToken);
-      expect(typeof username).toEqual('string');
+      expect(username).toEqual(user.username);
     });
   });
 });

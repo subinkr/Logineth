@@ -8,12 +8,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
-      - name: SetupNode
+      - name: Setup node
         uses: actions/setup-node@main
         with:
           node-version: '18'
       - name: Install npm packages
-        run: npm ci
+        run: cd ~/logineth && git pull && npm ci
+      - name: Build
+        run: npm run build
       - name: Deploy
-        run: |
-          cd ~/logineth && npm run build && fuser -k 3001/tcp && nohup npm run start:prod &
+        run: fuser -k 3001/tcp && nohup npm run start:prod &

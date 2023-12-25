@@ -1,14 +1,14 @@
 name: main
 
-on: pull_request
+on: push
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Use checkout
         uses: actions/checkout@v4
-      - name: Node.js setup
+      - name: Use node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'

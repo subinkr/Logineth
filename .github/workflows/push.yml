@@ -1,15 +1,11 @@
-name: main
-
+name: push
 on: push
-
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
-      - name: Use checkout
-        uses: actions/checkout@v4
-      - name: Use node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
         with:
           node-version: '18'
       - name: Install npm packages

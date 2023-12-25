@@ -18,17 +18,11 @@ describe('ProfileService', () => {
     service = module.get<ProfileService>(ProfileService);
   });
 
+  // GUBUTEST: - return, error
   describe('Get User By Username', () => {
-    it('Make | getUserByUsername', () => {
-      service.getUserByUsername = jest.fn();
-      service.getUserByUsername(user.username);
-      expect(service.getUserByUsername).toHaveBeenCalledWith(user.username);
-    });
-
     it('Return | {user: UserModel}', async () => {
       const result = await service.getUserByUsername(user.username);
-      const keys = Object.keys(result);
-      expect(keys).toEqual(expect.arrayContaining(['user']));
+      expect(result.user).toStrictEqual(user);
     });
 
     it('Error | Cannot find user', async () => {

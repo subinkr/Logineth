@@ -37,7 +37,6 @@ export class AuthService {
       password,
       parseInt(process.env.HASH_SALT) || 10,
     );
-    console.log(hashPassword);
     return { hashPassword };
   }
 }

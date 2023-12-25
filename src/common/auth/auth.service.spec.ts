@@ -10,7 +10,7 @@ describe('AuthService', () => {
   let service: AuthService;
   let jwtService: JwtService;
   let profileService: ProfileService;
-  const { user, accessToken } = MockUserModel;
+  const { user } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -39,9 +39,10 @@ describe('AuthService', () => {
 
   // VTTEST: - use
   describe('Verify Token', () => {
-    it('Use | verify', () => {
+    it('Use | verify', async () => {
       jest.spyOn(jwtService, 'verify');
-      service.verifyToken(accessToken);
+      const { accessToken } = await service.signToken(user.username);
+      service.verifyToken(`Bearer ${accessToken}`);
       expect(jwtService.verify).toHaveBeenCalled();
     });
   });

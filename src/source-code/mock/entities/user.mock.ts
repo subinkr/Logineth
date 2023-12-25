@@ -6,7 +6,7 @@ export class MockUserModel {
   static user: UserModel = {
     id: 1,
     username: 'username',
-    password: 'p@ssw0rd',
+    password: '$2b$10$G4R91NGJ3hXa4EFszIjDhumEY31yMwkvu9TSGVSb.iEfPNcdSYIu2',
     nickname: 'nickname',
     image: null,
     role: Role.ADMIN,

@@ -14,7 +14,7 @@ env:
   HASH_SALT: ${{ secrets.HASH_SALT }}
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: ['self-hosted', 'Linux', 'X64']
     steps:
       - name: Checkout
         uses: actions/checkout@main

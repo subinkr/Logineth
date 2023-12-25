@@ -6,8 +6,10 @@ jobs:
   test:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@main
-      - uses: actions/setup-node@main
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: SetupNode
+        uses: actions/setup-node@main
         with:
           node-version: '18'
       - name: Install npm packages

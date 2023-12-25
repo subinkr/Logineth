@@ -1,0 +1,11 @@
+name: deploy
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Deploy
+        run: |
+          fuser -k 3001/tcp && npm run build && nohup npm run start:prod &

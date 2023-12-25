@@ -9,7 +9,7 @@ import { RegisterService } from './register.service';
 describe('RegisterController', () => {
   let controller: RegisterController;
   let registerService: RegisterService;
-  const { user, accessToken } = MockUserModel;
+  const { user, notExistUser, notExistUser2, accessToken } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,19 +21,17 @@ describe('RegisterController', () => {
     registerService = module.get<RegisterService>(RegisterService);
   });
 
-  // LRTEST: - usex, returnx
+  // LRTEST: - use, return
   describe('Local Register', () => {
-    const reqLocalRegister: ReqLocalRegister = {
-      ...user,
-      password: 'p@ssw0rd',
-    };
     it('Use | localRegister', async () => {
+      const reqLocalRegister: ReqLocalRegister = { ...notExistUser };
       jest.spyOn(registerService, 'localRegister');
       await controller.localRegister(reqLocalRegister);
       expect(registerService.localRegister).toHaveBeenCalled();
     });
 
     it('Return | ResLocalRegister', async () => {
+      const reqLocalRegister: ReqLocalRegister = { ...notExistUser2 };
       const result = await controller.localRegister(reqLocalRegister);
       expect(result).toBeInstanceOf(ResLocalRegister);
 

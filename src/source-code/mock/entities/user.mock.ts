@@ -18,7 +18,19 @@ export class MockUserModel {
   static notExistUser: UserModel = {
     id: 0,
     username: 'notExistUser',
-    password: '',
+    password: 'p@ssw0rd',
+    nickname: '',
+    image: null,
+    role: Role.USER,
+    provider: Provider.LOCAL,
+    createdAt: null,
+    updatedAt: null,
+  };
+
+  static notExistUser2: UserModel = {
+    id: 0,
+    username: 'notExistUser2',
+    password: 'p@ssw0rd',
     nickname: '',
     image: null,
     role: Role.USER,
@@ -37,9 +49,7 @@ export class MockUserModel {
       ? MockUserModel.userList.filter((user) => user.id === id)
       : MockUserModel.userList.filter((user) => user.username === username);
 
-    if (user.username === 'notExistUser') {
-      MockUserModel.userList.pop();
-    }
+    if (!user) return null;
 
     return user;
   }
@@ -49,7 +59,9 @@ export class MockUserModel {
       ? MockUserModel.userList.filter((user) => user.id === id)
       : MockUserModel.userList.filter((user) => user.username === username);
 
-    return !!user;
+    if (user) return true;
+
+    return false;
   }
 
   save(notExistUser: UserModel) {

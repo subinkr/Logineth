@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ProfileService } from 'src/account/profile/profile.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -9,7 +10,7 @@ export class AuthService {
     private readonly profileService: ProfileService,
   ) {}
 
-  async signToken(username: string): Promise<{ accessToken: string }> {
+  async signToken(username: string) {
     await this.profileService.getUserByUsername(username);
 
     const accessToken = this.jwtService.sign(
@@ -22,12 +23,21 @@ export class AuthService {
     return { accessToken };
   }
 
-  verifyToken(accessToken: string): { username: string } {
+  verifyToken(accessToken: string) {
     const token = accessToken.split(' ')[1];
     const result = this.jwtService.verify(token, {
       secret: process.env.JWT_SECRET || 'test',
     });
 
     return result;
+  }
+
+  async hashPassword(password: string) {
+    const hashPassword = await bcrypt.hash(
+      password,
+      parseInt(process.env.HASH_SALT) || 10,
+    );
+    console.log(hashPassword);
+    return { hashPassword };
   }
 }

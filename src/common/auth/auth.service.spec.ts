@@ -4,6 +4,7 @@ import { MockUserModel } from '../../source-code/mock/entities/user.mock';
 import { JwtService } from '@nestjs/jwt';
 import { ProfileService } from 'src/account/profile/profile.service';
 import { providers } from 'src/source-code/mock/providers/providers';
+import * as bcrypt from 'bcrypt';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -42,6 +43,15 @@ describe('AuthService', () => {
       jest.spyOn(jwtService, 'verify');
       service.verifyToken(accessToken);
       expect(jwtService.verify).toHaveBeenCalled();
+    });
+  });
+
+  // HPTEST: - return
+  describe('Hash Password', () => {
+    it('Return | {hashPassword: string}', async () => {
+      const { hashPassword } = await service.hashPassword('p@ssw0rd');
+      const verify = await bcrypt.compare('p@ssw0rd', hashPassword);
+      expect(verify).toBeTruthy();
     });
   });
 });

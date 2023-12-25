@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { RegisterService } from './register.service';
 import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { plainToInstance } from 'class-transformer';
-import { ResLocalRegister } from './dto/res-local-register.dto';
+import { ResRegister } from './dto/res-register.dto';
 import {
   ApiNotAcceptableResponse,
   ApiNotFoundResponse,
@@ -20,11 +20,11 @@ export class RegisterController {
 
   @Post('local')
   @ApiOperation({ summary: 'Local register' })
-  @ApiOkResponse({ type: ResLocalRegister })
+  @ApiOkResponse({ type: ResRegister })
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
   @ApiNotAcceptableResponse(notAcceptable('이미 사용중인 아이디입니다.'))
   async localRegister(@Body() reqLocalRegister: ReqLocalRegister) {
     const result = await this.registerService.localRegister(reqLocalRegister);
-    return plainToInstance(ResLocalRegister, result);
+    return plainToInstance(ResRegister, result);
   }
 }

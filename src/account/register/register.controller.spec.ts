@@ -5,6 +5,7 @@ import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { ResRegister } from './dto/res-register.dto';
 import { RegisterService } from './register.service';
+import { ReqOAuthRegister } from './dto/req-oauth-register.dto';
 
 describe('RegisterController', () => {
   let controller: RegisterController;

@@ -5,6 +5,8 @@ import { AuthService } from 'src/common/auth/auth.service';
 import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { NotAcceptableException } from '@nestjs/common';
+import { ReqOAuthRegister } from './dto/req-oauth-register.dto';
+import { Provider } from 'src/source-code/enum/provider';
 
 describe('RegisterService', () => {
   let service: RegisterService;
@@ -46,22 +48,50 @@ describe('RegisterService', () => {
     });
   });
 
-  describe('Github Register', () => {
-    it.todo('Use | hashPassword');
+  // ORTEST: - use, error
+  describe('OAuth Register', () => {
+    const reqOAuthRegister: ReqOAuthRegister = { code: '' };
 
-    it.todo('Use | signToken');
-  });
+    it('Use | getGithubUserInfo', async () => {
+      jest.spyOn(service, 'getGithubUserInfo');
+      service.getGithubUserInfo = jest
+        .fn()
+        .mockReturnValue({ id: null, nickname: null, image: null });
+      await service.oAuthRegister(reqOAuthRegister, Provider.GITHUB);
+      expect(service.getGithubUserInfo).toHaveBeenCalled();
+    });
 
-  describe('Google Register', () => {
-    it.todo('Use | hashPassword');
+    it('Use | getGoogleUserInfo', async () => {
+      jest.spyOn(service, 'getGoogleUserInfo');
+      service.getGoogleUserInfo = jest
+        .fn()
+        .mockReturnValue({ id: null, nickname: null, image: null });
+      await service.oAuthRegister(reqOAuthRegister, Provider.GOOGLE);
+      expect(service.getGoogleUserInfo).toHaveBeenCalled();
+    });
 
-    it.todo('Use | signToken');
-  });
+    it('Use | getKakaoUserInfo', async () => {
+      jest.spyOn(service, 'getKakaoUserInfo');
+      service.getKakaoUserInfo = jest
+        .fn()
+        .mockReturnValue({ id: null, nickname: null, image: null });
+      await service.oAuthRegister(reqOAuthRegister, Provider.KAKAO);
+      expect(service.getKakaoUserInfo).toHaveBeenCalled();
+    });
 
-  describe('Kakao Register', () => {
-    it.todo('Use | hashPassword');
+    it('Use | signToken', async () => {
+      jest.spyOn(authService, 'signToken');
+      service.getGithubUserInfo = jest
+        .fn()
+        .mockReturnValue({ id: null, nickname: null, image: null });
+      await service.oAuthRegister(reqOAuthRegister, Provider.GITHUB);
+      expect(authService.signToken).toHaveBeenCalled();
+    });
 
-    it.todo('Use | signToken');
+    it('Error | Cannot get user info', async () => {
+      const result = service.oAuthRegister(reqOAuthRegister, Provider.GITHUB);
+      await expect(result).rejects.toThrow(NotAcceptableException);
+    });
   });
 
   describe('Withdraw', () => {

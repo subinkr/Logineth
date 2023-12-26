@@ -4,6 +4,8 @@ import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserModel } from 'src/source-code/entities/user.entity';
 import { Repository } from 'typeorm';
+import { ReqGithubRegister } from './dto/req-github-register.dto copy';
+import { Provider } from 'src/source-code/enum/provider';
 
 @Injectable()
 export class RegisterService {
@@ -29,5 +31,51 @@ export class RegisterService {
     const { accessToken } = await this.authService.signToken(username);
 
     return { accessToken, user };
+  }
+
+  async githubRegister(reqGithubRegister: ReqGithubRegister) {
+    const { code } = reqGithubRegister;
+
+    const { id, nickname, image } = await this.getGithubUserInfo(code);
+    const username = `${Provider.GITHUB}-${id}`;
+
+    let user = await this.userRepo.findOne({ where: { username } });
+    if (!user) {
+      user = await this.userRepo.save({
+        username,
+        password: '',
+        nickname,
+        image,
+      });
+    }
+
+    const { accessToken } = await this.authService.signToken(username);
+
+    return { accessToken, user };
+  }
+
+  async getGithubUserInfo(code: string) {
+    const tokenResponse = await fetch(
+      'https://github.com/login/oauth/access_token',
+      {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Accept: 'application/json',
+        },
+        body: `client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}&code=${code}`,
+      },
+    );
+    const tokenResult = await tokenResponse.json();
+
+    const accessToken = tokenResult.access_token;
+    const response = await fetch('https://api.github.com/user', {
+      method: 'get',
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    const result = await response.json();
+    const { id, login: nickname, avatar_url: image } = result;
+
+    return { id, nickname, image };
   }
 }

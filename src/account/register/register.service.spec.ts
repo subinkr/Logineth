@@ -5,6 +5,7 @@ import { AuthService } from 'src/common/auth/auth.service';
 import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { NotAcceptableException } from '@nestjs/common';
+import { ReqGithubRegister } from './dto/req-github-register.dto copy';
 
 describe('RegisterService', () => {
   let service: RegisterService;
@@ -47,19 +48,29 @@ describe('RegisterService', () => {
   });
 
   describe('Github Register', () => {
-    it.todo('Use | hashPassword');
+    it('Use | getGithubUserInfo', async () => {
+      const reqGithubRegister: ReqGithubRegister = { code: '' };
+      jest.spyOn(service, 'getGithubUserInfo');
+      await service.githubRegister(reqGithubRegister);
+      expect(service.getGithubUserInfo).toHaveBeenCalled();
+    });
 
-    it.todo('Use | signToken');
+    it('Use | signToken', async () => {
+      const reqGithubRegister: ReqGithubRegister = { code: '' };
+      jest.spyOn(authService, 'signToken');
+      await service.githubRegister(reqGithubRegister);
+      expect(authService.signToken).toHaveBeenCalled();
+    });
   });
 
   describe('Google Register', () => {
-    it.todo('Use | hashPassword');
+    it.todo('Use | getGoogleUserInfo');
 
     it.todo('Use | signToken');
   });
 
   describe('Kakao Register', () => {
-    it.todo('Use | hashPassword');
+    it.todo('Use | getKakaoUserInfo');
 
     it.todo('Use | signToken');
   });

@@ -12,6 +12,7 @@ import {
 } from '@nestjs/swagger';
 import { notAcceptable } from 'src/source-code/error/swagger/not-acceptable';
 import { notFound } from 'src/source-code/error/swagger/not-found';
+import { ReqGithubRegister } from './dto/req-github-register.dto copy';
 
 @Controller('register')
 @ApiTags('account | register')
@@ -25,6 +26,14 @@ export class RegisterController {
   @ApiNotAcceptableResponse(notAcceptable('이미 사용중인 아이디입니다.'))
   async localRegister(@Body() reqLocalRegister: ReqLocalRegister) {
     const result = await this.registerService.localRegister(reqLocalRegister);
+    return plainToInstance(ResRegister, result);
+  }
+
+  @Post('github')
+  @ApiOperation({ summary: 'Github register' })
+  @ApiOkResponse({ type: ResRegister })
+  async githubRegister(@Body() reqGithubRegister: ReqGithubRegister) {
+    const result = await this.registerService.githubRegister(reqGithubRegister);
     return plainToInstance(ResRegister, result);
   }
 }

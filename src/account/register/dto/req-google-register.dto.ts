@@ -5,5 +5,5 @@ export class ReqGoogleRegister {
   @ApiProperty({ example: 'Google access token string' })
   @IsNotEmpty()
   @IsString()
-  accessToken: string;
+  googleToken: string;
 }

@@ -6,6 +6,7 @@ import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { NotAcceptableException } from '@nestjs/common';
 import { ReqGithubRegister } from './dto/req-github-register.dto copy';
+import { ReqGoogleRegister } from './dto/req-google-register.dto';
 
 describe('RegisterService', () => {
   let service: RegisterService;
@@ -64,9 +65,19 @@ describe('RegisterService', () => {
   });
 
   describe('Google Register', () => {
-    it.todo('Use | getGoogleUserInfo');
+    it('Use | getGoogleUserInfo', async () => {
+      const reqGoogleRegister: ReqGoogleRegister = { googleToken: '' };
+      jest.spyOn(service, 'getGoogleUserInfo');
+      await service.googleRegister(reqGoogleRegister);
+      expect(service.getGoogleUserInfo).toHaveBeenCalled();
+    });
 
-    it.todo('Use | signToken');
+    it('Use | signToken', async () => {
+      const reqGoogleRegister: ReqGoogleRegister = { googleToken: '' };
+      jest.spyOn(authService, 'signToken');
+      await service.googleRegister(reqGoogleRegister);
+      expect(authService.signToken).toHaveBeenCalled();
+    });
   });
 
   describe('Kakao Register', () => {

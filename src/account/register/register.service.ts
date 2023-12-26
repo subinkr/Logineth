@@ -6,6 +6,7 @@ import { UserModel } from 'src/source-code/entities/user.entity';
 import { Repository } from 'typeorm';
 import { ReqGithubRegister } from './dto/req-github-register.dto copy';
 import { Provider } from 'src/source-code/enum/provider';
+import { ReqGoogleRegister } from './dto/req-google-register.dto';
 
 @Injectable()
 export class RegisterService {
@@ -54,6 +55,27 @@ export class RegisterService {
     return { accessToken, user };
   }
 
+  async googleRegister(reqGoogleRegister: ReqGoogleRegister) {
+    const { googleToken } = reqGoogleRegister;
+
+    const { id, nickname, image } = await this.getGoogleUserInfo(googleToken);
+    const username = `${Provider.GOOGLE}-${id}`;
+
+    let user = await this.userRepo.findOne({ where: { username } });
+    if (!user) {
+      user = await this.userRepo.save({
+        username,
+        password: '',
+        nickname,
+        image,
+      });
+    }
+
+    const { accessToken } = await this.authService.signToken(username);
+
+    return { accessToken, user };
+  }
+
   async getGithubUserInfo(code: string) {
     const tokenResponse = await fetch(
       'https://github.com/login/oauth/access_token',
@@ -75,6 +97,20 @@ export class RegisterService {
     });
     const result = await response.json();
     const { id, login: nickname, avatar_url: image } = result;
+
+    return { id, nickname, image };
+  }
+
+  async getGoogleUserInfo(googleToken: string) {
+    const response = await fetch(
+      'https://www.googleapis.com/oauth2/v2/userinfo',
+      {
+        method: 'get',
+        headers: { Authorization: `Bearer ${googleToken}` },
+      },
+    );
+    const result = await response.json();
+    const { id, email: nickname, picture: image } = result;
 
     return { id, nickname, image };
   }

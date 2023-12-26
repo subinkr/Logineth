@@ -12,7 +12,8 @@ import {
 } from '@nestjs/swagger';
 import { notAcceptable } from 'src/source-code/error/swagger/not-acceptable';
 import { notFound } from 'src/source-code/error/swagger/not-found';
-import { ReqGithubRegister } from './dto/req-github-register.dto copy';
+import { ReqOAuthRegister } from './dto/req-oauth-register.dto';
+import { Provider } from 'src/source-code/enum/provider';
 
 @Controller('register')
 @ApiTags('account | register')
@@ -32,8 +33,33 @@ export class RegisterController {
   @Post('github')
   @ApiOperation({ summary: 'Github register' })
   @ApiOkResponse({ type: ResRegister })
-  async githubRegister(@Body() reqGithubRegister: ReqGithubRegister) {
-    const result = await this.registerService.githubRegister(reqGithubRegister);
+  async githubRegister(@Body() reqOAuthRegister: ReqOAuthRegister) {
+    const result = await this.registerService.oAuthRegister(
+      reqOAuthRegister,
+      Provider.GITHUB,
+    );
+    return plainToInstance(ResRegister, result);
+  }
+
+  @Post('google')
+  @ApiOperation({ summary: 'Google register' })
+  @ApiOkResponse({ type: ResRegister })
+  async googleRegister(@Body() reqOAuthRegister: ReqOAuthRegister) {
+    const result = await this.registerService.oAuthRegister(
+      reqOAuthRegister,
+      Provider.GOOGLE,
+    );
+    return plainToInstance(ResRegister, result);
+  }
+
+  @Post('kakao')
+  @ApiOperation({ summary: 'Kakao register' })
+  @ApiOkResponse({ type: ResRegister })
+  async kakaoRegister(@Body() reqOAuthRegister: ReqOAuthRegister) {
+    const result = await this.registerService.oAuthRegister(
+      reqOAuthRegister,
+      Provider.KAKAO,
+    );
     return plainToInstance(ResRegister, result);
   }
 }

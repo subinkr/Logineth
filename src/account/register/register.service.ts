@@ -4,9 +4,8 @@ import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserModel } from 'src/source-code/entities/user.entity';
 import { Repository } from 'typeorm';
-import { ReqGithubRegister } from './dto/req-github-register.dto copy';
 import { Provider } from 'src/source-code/enum/provider';
-import { ReqGoogleRegister } from './dto/req-google-register.dto';
+import { ReqOAuthRegister } from './dto/req-oauth-register.dto';
 
 @Injectable()
 export class RegisterService {
@@ -34,32 +33,24 @@ export class RegisterService {
     return { accessToken, user };
   }
 
-  async githubRegister(reqGithubRegister: ReqGithubRegister) {
-    const { code } = reqGithubRegister;
+  async oAuthRegister(reqOAuthRegister: ReqOAuthRegister, provider: Provider) {
+    const { code } = reqOAuthRegister;
 
-    const { id, nickname, image } = await this.getGithubUserInfo(code);
-    const username = `${Provider.GITHUB}-${id}`;
-
-    let user = await this.userRepo.findOne({ where: { username } });
-    if (!user) {
-      user = await this.userRepo.save({
-        username,
-        password: '',
-        nickname,
-        image,
-      });
+    let userInfo = { id: null, nickname: null, image: null };
+    switch (provider) {
+      case Provider.GITHUB:
+        userInfo = await this.getGithubUserInfo(code);
+        break;
+      case Provider.GOOGLE:
+        userInfo = await this.getGoogleUserInfo(code);
+        break;
+      case Provider.KAKAO:
+        userInfo = await this.getKakaoUserInfo(code);
+        break;
     }
+    const { id, nickname, image } = userInfo;
 
-    const { accessToken } = await this.authService.signToken(username);
-
-    return { accessToken, user };
-  }
-
-  async googleRegister(reqGoogleRegister: ReqGoogleRegister) {
-    const { googleToken } = reqGoogleRegister;
-
-    const { id, nickname, image } = await this.getGoogleUserInfo(googleToken);
-    const username = `${Provider.GOOGLE}-${id}`;
+    const username = `${provider}-${id}`;
 
     let user = await this.userRepo.findOne({ where: { username } });
     if (!user) {
@@ -97,6 +88,9 @@ export class RegisterService {
     });
     const result = await response.json();
     const { id, login: nickname, avatar_url: image } = result;
+    if (!id) {
+      throw new NotAcceptableException('유저 정보를 가져오지 못했습니다.');
+    }
 
     return { id, nickname, image };
   }
@@ -111,6 +105,35 @@ export class RegisterService {
     );
     const result = await response.json();
     const { id, email: nickname, picture: image } = result;
+    if (!id) {
+      throw new NotAcceptableException('유저 정보를 가져오지 못했습니다.');
+    }
+
+    return { id, nickname, image };
+  }
+
+  async getKakaoUserInfo(code: string) {
+    const tokenResponse = await fetch('https://kauth.kakao.com/oauth/token', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `grant_type=authorization_code&client_id=${process.env.KAKAO_CLIENT_ID}&redirect_uri=${process.env.KAKAO_REDIRECT}&code=${code}`,
+    });
+    const tokenResult = await tokenResponse.json();
+
+    const kakaoToken = tokenResult.access_token;
+    const response = await fetch('https://kapi.kakao.com/v2/user/me', {
+      method: 'get',
+      headers: {
+        Authorization: `Bearer ${kakaoToken}`,
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+      },
+    });
+    const result = await response.json();
+    const { id } = result;
+    const { nickname, profile_image: image } = result.properties;
+    if (!id) {
+      throw new NotAcceptableException('유저 정보를 가져오지 못했습니다.');
+    }
 
     return { id, nickname, image };
   }

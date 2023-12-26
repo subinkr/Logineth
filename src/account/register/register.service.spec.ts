@@ -5,8 +5,8 @@ import { AuthService } from 'src/common/auth/auth.service';
 import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { NotAcceptableException } from '@nestjs/common';
-import { ReqGithubRegister } from './dto/req-github-register.dto copy';
-import { ReqGoogleRegister } from './dto/req-google-register.dto';
+import { ReqOAuthRegister } from './dto/req-oauth-register.dto';
+import { Provider } from 'src/source-code/enum/provider';
 
 describe('RegisterService', () => {
   let service: RegisterService;
@@ -48,42 +48,50 @@ describe('RegisterService', () => {
     });
   });
 
-  describe('Github Register', () => {
+  // ORTEST: - use, error
+  describe('OAuth Register', () => {
+    const reqOAuthRegister: ReqOAuthRegister = { code: '' };
+
     it('Use | getGithubUserInfo', async () => {
-      const reqGithubRegister: ReqGithubRegister = { code: '' };
       jest.spyOn(service, 'getGithubUserInfo');
-      await service.githubRegister(reqGithubRegister);
+      service.getGithubUserInfo = jest
+        .fn()
+        .mockReturnValue({ id: null, nickname: null, image: null });
+      await service.oAuthRegister(reqOAuthRegister, Provider.GITHUB);
       expect(service.getGithubUserInfo).toHaveBeenCalled();
     });
 
-    it('Use | signToken', async () => {
-      const reqGithubRegister: ReqGithubRegister = { code: '' };
-      jest.spyOn(authService, 'signToken');
-      await service.githubRegister(reqGithubRegister);
-      expect(authService.signToken).toHaveBeenCalled();
-    });
-  });
-
-  describe('Google Register', () => {
     it('Use | getGoogleUserInfo', async () => {
-      const reqGoogleRegister: ReqGoogleRegister = { googleToken: '' };
       jest.spyOn(service, 'getGoogleUserInfo');
-      await service.googleRegister(reqGoogleRegister);
+      service.getGoogleUserInfo = jest
+        .fn()
+        .mockReturnValue({ id: null, nickname: null, image: null });
+      await service.oAuthRegister(reqOAuthRegister, Provider.GOOGLE);
       expect(service.getGoogleUserInfo).toHaveBeenCalled();
     });
 
+    it('Use | getKakaoUserInfo', async () => {
+      jest.spyOn(service, 'getKakaoUserInfo');
+      service.getKakaoUserInfo = jest
+        .fn()
+        .mockReturnValue({ id: null, nickname: null, image: null });
+      await service.oAuthRegister(reqOAuthRegister, Provider.KAKAO);
+      expect(service.getKakaoUserInfo).toHaveBeenCalled();
+    });
+
     it('Use | signToken', async () => {
-      const reqGoogleRegister: ReqGoogleRegister = { googleToken: '' };
       jest.spyOn(authService, 'signToken');
-      await service.googleRegister(reqGoogleRegister);
+      service.getGithubUserInfo = jest
+        .fn()
+        .mockReturnValue({ id: null, nickname: null, image: null });
+      await service.oAuthRegister(reqOAuthRegister, Provider.GITHUB);
       expect(authService.signToken).toHaveBeenCalled();
     });
-  });
 
-  describe('Kakao Register', () => {
-    it.todo('Use | getKakaoUserInfo');
-
-    it.todo('Use | signToken');
+    it('Error | Cannot get user info', async () => {
+      const result = service.oAuthRegister(reqOAuthRegister, Provider.GITHUB);
+      await expect(result).rejects.toThrow(NotAcceptableException);
+    });
   });
 
   describe('Withdraw', () => {

@@ -33,6 +33,7 @@ export class RegisterController {
   @Post('oauth/:provider')
   @ApiOperation({ summary: 'OAuth register' })
   @ApiOkResponse({ type: ResRegister })
+  @ApiNotAcceptableResponse(notAcceptable('유저 정보를 가져오지 못했습니다.'))
   async oAuthRegister(
     @Param('provider', new ParseEnumPipe(Provider)) provider: Provider,
     @Body() reqOAuthRegister: ReqOAuthRegister,

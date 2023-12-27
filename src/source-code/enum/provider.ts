@@ -1,6 +1,6 @@
 export enum Provider {
-  LOCAL = 'LOCAL',
-  GITHUB = 'GITHUB',
-  GOOGLE = 'GOOGLE',
-  KAKAO = 'KAKAO',
+  LOCAL = 'local',
+  GITHUB = 'github',
+  GOOGLE = 'google',
+  KAKAO = 'kakao',
 }

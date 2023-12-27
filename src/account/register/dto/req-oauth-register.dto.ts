@@ -2,8 +2,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class ReqOAuthRegister {
-  @ApiProperty({ example: 'Github: code | Google: access_token | Kakao: code' })
+  @ApiProperty({ example: 'token' })
   @IsNotEmpty()
   @IsString()
-  code: string;
+  token: string;
 }

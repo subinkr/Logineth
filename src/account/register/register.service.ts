@@ -34,21 +34,24 @@ export class RegisterService {
   }
 
   async oAuthRegister(reqOAuthRegister: ReqOAuthRegister, provider: Provider) {
-    const { code } = reqOAuthRegister;
+    const { token } = reqOAuthRegister;
 
     let userInfo = { id: null, nickname: null, image: null };
     switch (provider) {
       case Provider.GITHUB:
-        userInfo = await this.getGithubUserInfo(code);
+        userInfo = await this.getGithubUserInfo(token);
         break;
       case Provider.GOOGLE:
-        userInfo = await this.getGoogleUserInfo(code);
+        userInfo = await this.getGoogleUserInfo(token);
         break;
       case Provider.KAKAO:
-        userInfo = await this.getKakaoUserInfo(code);
+        userInfo = await this.getKakaoUserInfo(token);
         break;
     }
     const { id, nickname, image } = userInfo;
+    if (!id) {
+      throw new NotAcceptableException('유저 정보를 가져오지 못했습니다.');
+    }
 
     const username = `${provider}-${id}`;
 
@@ -67,73 +70,42 @@ export class RegisterService {
     return { accessToken, user };
   }
 
-  async getGithubUserInfo(code: string) {
-    const tokenResponse = await fetch(
-      'https://github.com/login/oauth/access_token',
-      {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Accept: 'application/json',
-        },
-        body: `client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}&code=${code}`,
-      },
-    );
-    const tokenResult = await tokenResponse.json();
-
-    const accessToken = tokenResult.access_token;
+  async getGithubUserInfo(token: string) {
     const response = await fetch('https://api.github.com/user', {
       method: 'get',
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
     const result = await response.json();
     const { id, login: nickname, avatar_url: image } = result;
-    if (!id) {
-      throw new NotAcceptableException('유저 정보를 가져오지 못했습니다.');
-    }
 
     return { id, nickname, image };
   }
 
-  async getGoogleUserInfo(googleToken: string) {
+  async getGoogleUserInfo(token: string) {
     const response = await fetch(
       'https://www.googleapis.com/oauth2/v2/userinfo',
       {
         method: 'get',
-        headers: { Authorization: `Bearer ${googleToken}` },
+        headers: { Authorization: `Bearer ${token}` },
       },
     );
     const result = await response.json();
     const { id, email: nickname, picture: image } = result;
-    if (!id) {
-      throw new NotAcceptableException('유저 정보를 가져오지 못했습니다.');
-    }
 
     return { id, nickname, image };
   }
 
-  async getKakaoUserInfo(code: string) {
-    const tokenResponse = await fetch('https://kauth.kakao.com/oauth/token', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `grant_type=authorization_code&client_id=${process.env.KAKAO_CLIENT_ID}&redirect_uri=${process.env.KAKAO_REDIRECT}&code=${code}`,
-    });
-    const tokenResult = await tokenResponse.json();
-
-    const kakaoToken = tokenResult.access_token;
+  async getKakaoUserInfo(token: string) {
     const response = await fetch('https://kapi.kakao.com/v2/user/me', {
       method: 'get',
       headers: {
-        Authorization: `Bearer ${kakaoToken}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
       },
     });
     const result = await response.json();
     const { id } = result;
     const { nickname, profile_image: image } = result.properties;
-    if (!id) {
-      throw new NotAcceptableException('유저 정보를 가져오지 못했습니다.');
-    }
 
     return { id, nickname, image };
   }

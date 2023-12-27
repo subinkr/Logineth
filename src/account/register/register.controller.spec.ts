@@ -6,11 +6,12 @@ import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { ResRegister } from './dto/res-register.dto';
 import { RegisterService } from './register.service';
 import { ReqOAuthRegister } from './dto/req-oauth-register.dto';
+import { Provider } from 'src/source-code/enum/provider';
 
 describe('RegisterController', () => {
   let controller: RegisterController;
   let registerService: RegisterService;
-  const { user, notExistUser, notExistUser2 } = MockUserModel;
+  const { user, accessToken, notExistUser, notExistUser2 } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -36,32 +37,41 @@ describe('RegisterController', () => {
       const result = await controller.localRegister(reqLocalRegister);
       expect(result).toBeInstanceOf(ResRegister);
 
-      const resLocalRegister: ResRegister = { accessToken: '', user };
+      const resRegister: ResRegister = { accessToken, user };
       const keys = Object.keys(result);
-      const required = Object.keys(resLocalRegister);
+      const required = Object.keys(resRegister);
       expect(keys).toEqual(expect.arrayContaining(required));
     });
   });
 
-  // GRTEST: - usex, returnx
-  describe('Github Register', () => {
-    it.todo('Use | githubRegister');
+  // GRTEST: - use, return
+  describe('OAuth Register', () => {
+    it('Use | oAuthRegister', async () => {
+      const reqOAuthRegister: ReqOAuthRegister = { token: '' };
+      jest.spyOn(registerService, 'oAuthRegister');
+      registerService.oAuthRegister = jest
+        .fn()
+        .mockReturnValue({ id: 10, nickname: 'github', image: null });
+      await controller.oAuthRegister(Provider.GITHUB, reqOAuthRegister);
+      expect(registerService.oAuthRegister).toHaveBeenCalled();
+    });
 
-    it.todo('Return | ResRegister');
-  });
+    it('Return | ResRegister', async () => {
+      const reqOAuthRegister: ReqOAuthRegister = { token: '' };
+      registerService.getGithubUserInfo = jest
+        .fn()
+        .mockReturnValue({ id: 10, nickname: 'github', image: null });
+      const result = await controller.oAuthRegister(
+        Provider.GITHUB,
+        reqOAuthRegister,
+      );
+      expect(result).toBeInstanceOf(ResRegister);
 
-  // GRTEST: - usex, returnx
-  describe('Google Register', () => {
-    it.todo('Use | googleRegister');
-
-    it.todo('Return | ResRegister');
-  });
-
-  // KRTEST: - usex, returnx
-  describe('Kakao Register', () => {
-    it.todo('Use | kakaoRegister');
-
-    it.todo('Return | ResRegister');
+      const resRegister: ResRegister = { accessToken, user };
+      const keys = Object.keys(result);
+      const required = Object.keys(resRegister);
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
   });
 
   // WTEST: - usex, returnx

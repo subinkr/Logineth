@@ -4,14 +4,21 @@ import { providers } from 'src/source-code/mock/providers/providers';
 import { AuthService } from 'src/common/auth/auth.service';
 import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
-import { NotAcceptableException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  NotAcceptableException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ReqOAuthRegister } from './dto/req-oauth-register.dto';
 import { Provider } from 'src/source-code/enum/provider';
+import { ProfileService } from '../profile/profile.service';
 
 describe('RegisterService', () => {
   let service: RegisterService;
   let authService: AuthService;
-  const { user, notExistUser, notExistUser2, accessToken } = MockUserModel;
+  let profileService: ProfileService;
+  const { user, otherUser, notExistUser, notExistUser2, accessToken } =
+    MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,6 +27,7 @@ describe('RegisterService', () => {
 
     service = module.get<RegisterService>(RegisterService);
     authService = module.get<AuthService>(AuthService);
+    profileService = module.get<ProfileService>(ProfileService);
   });
 
   // LRTEST: - use, error
@@ -98,9 +106,20 @@ describe('RegisterService', () => {
     });
   });
 
-  describe('Withdraw', () => {
-    it.todo('Use | hashPassword');
+  describe('Withdraw Register', () => {
+    it('Use | getUserByUsername', async () => {
+      jest.spyOn(profileService, 'getUserByUsername');
+      profileService.getUserByUsername = jest.fn().mockReturnValue({ user });
+      await service.withdrawRegister(user.username, user.username);
+      expect(profileService.getUserByUsername).toHaveBeenCalled();
+    });
 
-    it.todo('Use | signToken');
+    it('Error | Cannot delete other user', async () => {
+      const result = service.withdrawRegister(
+        user.username,
+        otherUser.username,
+      );
+      await expect(result).rejects.toThrow(ForbiddenException);
+    });
   });
 });

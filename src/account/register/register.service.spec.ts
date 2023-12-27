@@ -50,7 +50,7 @@ describe('RegisterService', () => {
 
   // ORTEST: - use, error
   describe('OAuth Register', () => {
-    const reqOAuthRegister: ReqOAuthRegister = { code: '' };
+    const reqOAuthRegister: ReqOAuthRegister = { token: '' };
 
     it('Use | getGithubUserInfo', async () => {
       jest.spyOn(service, 'getGithubUserInfo');

@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Param, ParseEnumPipe, Post } from '@nestjs/common';
 import { RegisterService } from './register.service';
 import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { plainToInstance } from 'class-transformer';
@@ -30,35 +30,16 @@ export class RegisterController {
     return plainToInstance(ResRegister, result);
   }
 
-  @Post('github')
-  @ApiOperation({ summary: 'Github register' })
+  @Post('oauth/:provider')
+  @ApiOperation({ summary: 'OAuth register' })
   @ApiOkResponse({ type: ResRegister })
-  async githubRegister(@Body() reqOAuthRegister: ReqOAuthRegister) {
+  async oAuthRegister(
+    @Param('provider', new ParseEnumPipe(Provider)) provider: Provider,
+    @Body() reqOAuthRegister: ReqOAuthRegister,
+  ) {
     const result = await this.registerService.oAuthRegister(
       reqOAuthRegister,
-      Provider.GITHUB,
-    );
-    return plainToInstance(ResRegister, result);
-  }
-
-  @Post('google')
-  @ApiOperation({ summary: 'Google register' })
-  @ApiOkResponse({ type: ResRegister })
-  async googleRegister(@Body() reqOAuthRegister: ReqOAuthRegister) {
-    const result = await this.registerService.oAuthRegister(
-      reqOAuthRegister,
-      Provider.GOOGLE,
-    );
-    return plainToInstance(ResRegister, result);
-  }
-
-  @Post('kakao')
-  @ApiOperation({ summary: 'Kakao register' })
-  @ApiOkResponse({ type: ResRegister })
-  async kakaoRegister(@Body() reqOAuthRegister: ReqOAuthRegister) {
-    const result = await this.registerService.oAuthRegister(
-      reqOAuthRegister,
-      Provider.KAKAO,
+      provider,
     );
     return plainToInstance(ResRegister, result);
   }

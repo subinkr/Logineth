@@ -10,7 +10,7 @@ describe('AuthService', () => {
   let service: AuthService;
   let jwtService: JwtService;
   let profileService: ProfileService;
-  const { user } = MockUserModel;
+  const { user, accessToken } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -26,12 +26,14 @@ describe('AuthService', () => {
   describe('Sign Token', () => {
     it('Use | getUserByUsername', async () => {
       jest.spyOn(profileService, 'getUserByUsername');
+      profileService.getUserByUsername = jest.fn().mockReturnValue(user);
       await service.signToken(user.username);
       expect(profileService.getUserByUsername).toHaveBeenCalled();
     });
 
     it('Use | sign', async () => {
       jest.spyOn(jwtService, 'sign');
+      profileService.getUserByUsername = jest.fn().mockReturnValue(accessToken);
       await service.signToken(user.username);
       expect(jwtService.sign).toHaveBeenCalled();
     });
@@ -41,7 +43,7 @@ describe('AuthService', () => {
   describe('Verify Token', () => {
     it('Use | verify', async () => {
       jest.spyOn(jwtService, 'verify');
-      const { accessToken } = await service.signToken(user.username);
+      jwtService.verify = jest.fn().mockReturnValue(true);
       service.verifyToken(`Bearer ${accessToken}`);
       expect(jwtService.verify).toHaveBeenCalled();
     });

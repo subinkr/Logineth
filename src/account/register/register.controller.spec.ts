@@ -51,7 +51,7 @@ describe('RegisterController', () => {
       jest.spyOn(registerService, 'oAuthRegister');
       registerService.oAuthRegister = jest
         .fn()
-        .mockReturnValue({ id: 10, nickname: 'github', image: null });
+        .mockReturnValue({ accessToken, user });
       await controller.oAuthRegister(Provider.GITHUB, reqOAuthRegister);
       expect(registerService.oAuthRegister).toHaveBeenCalled();
     });

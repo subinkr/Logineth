@@ -11,7 +11,7 @@ import { Provider } from 'src/source-code/enum/provider';
 describe('RegisterService', () => {
   let service: RegisterService;
   let authService: AuthService;
-  const { user, notExistUser, notExistUser2 } = MockUserModel;
+  const { user, notExistUser, notExistUser2, accessToken } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -27,6 +27,9 @@ describe('RegisterService', () => {
     it('Use | hashPassword', async () => {
       const reqLocalRegister: ReqLocalRegister = { ...notExistUser };
       jest.spyOn(authService, 'hashPassword');
+      authService.hashPassword = jest
+        .fn()
+        .mockReturnValue({ password: user.password });
       await service.localRegister(reqLocalRegister);
       expect(authService.hashPassword).toHaveBeenCalled();
     });
@@ -34,6 +37,7 @@ describe('RegisterService', () => {
     it('Use | signToken', async () => {
       const reqLocalRegister: ReqLocalRegister = { ...notExistUser2 };
       jest.spyOn(authService, 'signToken');
+      authService.signToken = jest.fn().mockReturnValue({ accessToken });
       await service.localRegister(reqLocalRegister);
       expect(authService.signToken).toHaveBeenCalled();
     });

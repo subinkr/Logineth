@@ -16,6 +16,19 @@ export class MockUserModel {
     updatedAt: new Date(1),
   };
 
+  static otherUser: UserModel = {
+    id: 2,
+    username: 'otherUser',
+    password: '$2b$10$G4R91NGJ3hXa4EFszIjDhumEY31yMwkvu9TSGVSb.iEfPNcdSYIu2',
+    nickname: 'otherUser',
+    image: null,
+    bio: null,
+    role: Role.USER,
+    provider: Provider.LOCAL,
+    createdAt: new Date(1),
+    updatedAt: new Date(1),
+  };
+
   static notExistUser: UserModel = {
     id: 0,
     username: 'notExistUser',
@@ -42,7 +55,7 @@ export class MockUserModel {
     updatedAt: null,
   };
 
-  static userList: UserModel[] = [MockUserModel.user];
+  static userList: UserModel[] = [MockUserModel.user, MockUserModel.otherUser];
 
   static accessToken: string =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWF0IjoxNzAzNDA5OTA0LCJleHAiOjFlKzUwfQ.BBf7DDbpw-mopP6iPvu8pxc7PoTjCbt5p7h3RPWT_Cw';
@@ -71,5 +84,9 @@ export class MockUserModel {
     MockUserModel.userList.push(notExistUser);
 
     return notExistUser;
+  }
+
+  delete(id: number) {
+    return true;
   }
 }

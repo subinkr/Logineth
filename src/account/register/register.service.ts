@@ -1,4 +1,9 @@
-import { Injectable, NotAcceptableException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotAcceptableException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from 'src/common/auth/auth.service';
 import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,6 +11,8 @@ import { UserModel } from 'src/source-code/entities/user.entity';
 import { Repository } from 'typeorm';
 import { Provider } from 'src/source-code/enum/provider';
 import { ReqOAuthRegister } from './dto/req-oauth-register.dto';
+import { ProfileService } from '../profile/profile.service';
+import { Role } from 'src/source-code/enum/role';
 
 @Injectable()
 export class RegisterService {
@@ -13,6 +20,7 @@ export class RegisterService {
     @InjectRepository(UserModel)
     private readonly userRepo: Repository<UserModel>,
     private readonly authService: AuthService,
+    private readonly profileService: ProfileService,
   ) {}
 
   async localRegister(reqLocalRegister: ReqLocalRegister) {
@@ -68,6 +76,17 @@ export class RegisterService {
     const { accessToken } = await this.authService.signToken(username);
 
     return { accessToken, user };
+  }
+
+  async withdrawRegister(withdrawUsername: string, username: string) {
+    const { user } = await this.profileService.getUserByUsername(username);
+    if (withdrawUsername !== username && user.role !== Role.ADMIN) {
+      throw new ForbiddenException('다른 유저를 탈퇴할 수 없습니다.');
+    }
+
+    console.log(user);
+    await this.userRepo.delete(user.id);
+    return { message: '탈퇴했습니다.' };
   }
 
   async getGithubUserInfo(token: string) {

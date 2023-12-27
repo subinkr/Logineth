@@ -7,6 +7,7 @@ import { ResRegister } from './dto/res-register.dto';
 import { RegisterService } from './register.service';
 import { ReqOAuthRegister } from './dto/req-oauth-register.dto';
 import { Provider } from 'src/source-code/enum/provider';
+import { ResWithdrawRegister } from './dto/res-withdraw-register.dto';
 
 describe('RegisterController', () => {
   let controller: RegisterController;
@@ -74,10 +75,28 @@ describe('RegisterController', () => {
     });
   });
 
-  // WTEST: - usex, returnx
-  describe('Withdraw', () => {
-    it.todo('Use | withdraw');
+  // WTEST: - use, return
+  describe('Withdraw Register', () => {
+    it('Use | withdrawRegister', async () => {
+      jest.spyOn(registerService, 'withdrawRegister');
+      registerService.withdrawRegister = jest
+        .fn()
+        .mockReturnValue({ message: '탈퇴했습니다.' });
+      await controller.withdrawRegister(user.username, user.username);
+      expect(registerService.withdrawRegister).toHaveBeenCalled();
+    });
 
-    it.todo('Return | ResWithdraw');
+    it('Return | ResWithdraw', async () => {
+      const result = await controller.withdrawRegister(
+        user.username,
+        user.username,
+      );
+      expect(result).toBeInstanceOf(ResWithdrawRegister);
+
+      const resWithdraw: ResWithdrawRegister = { message: '' };
+      const keys = Object.keys(result);
+      const required = Object.keys(resWithdraw);
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
   });
 });

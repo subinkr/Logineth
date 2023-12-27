@@ -84,7 +84,6 @@ export class RegisterService {
       throw new ForbiddenException('다른 유저를 탈퇴할 수 없습니다.');
     }
 
-    console.log(user);
     await this.userRepo.delete(user.id);
     return { message: '탈퇴했습니다.' };
   }

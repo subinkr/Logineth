@@ -56,7 +56,7 @@ describe('RegisterService', () => {
       jest.spyOn(service, 'getGithubUserInfo');
       service.getGithubUserInfo = jest
         .fn()
-        .mockReturnValue({ id: null, nickname: null, image: null });
+        .mockReturnValue({ id: 10, nickname: 'github', image: null });
       await service.oAuthRegister(reqOAuthRegister, Provider.GITHUB);
       expect(service.getGithubUserInfo).toHaveBeenCalled();
     });
@@ -65,7 +65,7 @@ describe('RegisterService', () => {
       jest.spyOn(service, 'getGoogleUserInfo');
       service.getGoogleUserInfo = jest
         .fn()
-        .mockReturnValue({ id: null, nickname: null, image: null });
+        .mockReturnValue({ id: 11, nickname: 'google', image: null });
       await service.oAuthRegister(reqOAuthRegister, Provider.GOOGLE);
       expect(service.getGoogleUserInfo).toHaveBeenCalled();
     });
@@ -74,7 +74,7 @@ describe('RegisterService', () => {
       jest.spyOn(service, 'getKakaoUserInfo');
       service.getKakaoUserInfo = jest
         .fn()
-        .mockReturnValue({ id: null, nickname: null, image: null });
+        .mockReturnValue({ id: 12, nickname: 'kakao', image: null });
       await service.oAuthRegister(reqOAuthRegister, Provider.KAKAO);
       expect(service.getKakaoUserInfo).toHaveBeenCalled();
     });
@@ -83,7 +83,7 @@ describe('RegisterService', () => {
       jest.spyOn(authService, 'signToken');
       service.getGithubUserInfo = jest
         .fn()
-        .mockReturnValue({ id: null, nickname: null, image: null });
+        .mockReturnValue({ id: 11, nickname: 'github', image: null });
       await service.oAuthRegister(reqOAuthRegister, Provider.GITHUB);
       expect(authService.signToken).toHaveBeenCalled();
     });

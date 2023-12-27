@@ -49,6 +49,9 @@ export class RegisterService {
         break;
     }
     const { id, nickname, image } = userInfo;
+    if (!id) {
+      throw new NotAcceptableException('유저 정보를 가져오지 못했습니다.');
+    }
 
     const username = `${provider}-${id}`;
 
@@ -88,9 +91,6 @@ export class RegisterService {
     });
     const result = await response.json();
     const { id, login: nickname, avatar_url: image } = result;
-    if (!id) {
-      throw new NotAcceptableException('유저 정보를 가져오지 못했습니다.');
-    }
 
     return { id, nickname, image };
   }
@@ -105,9 +105,6 @@ export class RegisterService {
     );
     const result = await response.json();
     const { id, email: nickname, picture: image } = result;
-    if (!id) {
-      throw new NotAcceptableException('유저 정보를 가져오지 못했습니다.');
-    }
 
     return { id, nickname, image };
   }
@@ -131,9 +128,6 @@ export class RegisterService {
     const result = await response.json();
     const { id } = result;
     const { nickname, profile_image: image } = result.properties;
-    if (!id) {
-      throw new NotAcceptableException('유저 정보를 가져오지 못했습니다.');
-    }
 
     return { id, nickname, image };
   }

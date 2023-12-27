@@ -4,7 +4,11 @@ import { providers } from 'src/source-code/mock/providers/providers';
 import { AuthService } from 'src/common/auth/auth.service';
 import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
-import { NotAcceptableException, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  NotAcceptableException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ReqOAuthRegister } from './dto/req-oauth-register.dto';
 import { Provider } from 'src/source-code/enum/provider';
 import { ProfileService } from '../profile/profile.service';
@@ -115,7 +119,7 @@ describe('RegisterService', () => {
         user.username,
         otherUser.username,
       );
-      await expect(result).rejects.toThrow(UnauthorizedException);
+      await expect(result).rejects.toThrow(ForbiddenException);
     });
   });
 });

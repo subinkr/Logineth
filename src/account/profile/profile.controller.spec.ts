@@ -22,9 +22,13 @@ describe('ProfileController', () => {
 
   // GUBUTEST: - use, return
   describe('Get User By Username', () => {
+    const resGetUserByUsername: ResGetUserByUsername = { user };
+
     it('Use | getUserByUsername', async () => {
       jest.spyOn(profileService, 'getUserByUsername');
-      profileService.getUserByUsername = jest.fn().mockReturnValue({ user });
+      profileService.getUserByUsername = jest
+        .fn()
+        .mockReturnValue(resGetUserByUsername);
       await controller.getUserByUsername(user.username);
       expect(profileService.getUserByUsername).toHaveBeenCalled();
     });
@@ -33,7 +37,6 @@ describe('ProfileController', () => {
       const result = await controller.getUserByUsername(user.username);
       expect(result).toBeInstanceOf(ResGetUserByUsername);
 
-      const resGetUserByUsername: ResGetUserByUsername = { user };
       const keys = Object.keys(result);
       const required = Object.keys(resGetUserByUsername);
       expect(keys).toEqual(expect.arrayContaining(required));

@@ -80,11 +80,4 @@ describe('LoginController', () => {
       expect(keys).toEqual(expect.arrayContaining(required));
     });
   });
-
-  // LTEST: - usex, returnx
-  describe('Logout', () => {
-    it.todo('Use | logout');
-
-    it.todo('Return | ResLogout');
-  });
 });

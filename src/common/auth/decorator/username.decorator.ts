@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 
 export const AuthUsername = createParamDecorator(
-  (context: ExecutionContext) => {
+  (_, context: ExecutionContext) => {
     const req = context.switchToHttp().getRequest();
     const username = req.username;
 

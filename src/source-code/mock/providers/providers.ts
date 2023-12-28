@@ -5,12 +5,14 @@ import { MockUserModel } from '../entities/user.mock';
 import { AuthService } from 'src/common/auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterService } from 'src/account/register/register.service';
+import { LoginService } from 'src/account/login/login.service';
 
 export const providers = [
   AuthService,
   JwtService,
   ProfileService,
   RegisterService,
+  LoginService,
   {
     provide: getRepositoryToken(UserModel),
     useClass: MockUserModel,

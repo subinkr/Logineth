@@ -1,72 +1,56 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LoginService } from './login.service';
+import { providers } from 'src/source-code/mock/providers/providers';
+import { ProfileService } from '../profile/profile.service';
+import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
+import { ReqLocalLogin } from './dto/req-local-login.dto';
+import { AuthService } from 'src/common/auth/auth.service';
 
 describe('LoginService', () => {
   let service: LoginService;
+  let profileService: ProfileService;
+  let authService: AuthService;
+  const { user, accessToken } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [LoginService],
+      providers,
     }).compile();
 
     service = module.get<LoginService>(LoginService);
+    profileService = module.get<ProfileService>(ProfileService);
+    authService = module.get<AuthService>(AuthService);
   });
 
   // LLTEST: - usex
   describe('Local Login', () => {
-    it.todo('Use | getUserByUsername');
+    const reqLocalLogin: ReqLocalLogin = {
+      username: user.username,
+      password: 'p@ssw0rd',
+    };
 
-    it.todo('Use | verifyPassword');
+    it('Use | getUserByUsername', async () => {
+      profileService.getUserByUsername = jest.fn().mockReturnValue({ user });
+      await service.localLogin(reqLocalLogin);
+      expect(profileService.getUserByUsername).toHaveBeenCalled();
+    });
 
-    it.todo('Use | signToken');
+    it('Use | verifyPassword', async () => {
+      authService.verifyPassword = jest.fn().mockReturnValue(true);
+      await service.localLogin(reqLocalLogin);
+      expect(authService.verifyPassword).toHaveBeenCalled();
+    });
+
+    it('Use | signToken', async () => {
+      authService.signToken = jest.fn().mockReturnValue({ accessToken });
+      await service.localLogin(reqLocalLogin);
+      expect(authService.signToken).toHaveBeenCalled();
+    });
   });
 
-  //GGITEST: - returnx, errorx
-  describe('Get Github Info', () => {
-    it.todo('Return | {id: number, nickname: string, image: string}');
-
-    it.todo('Error | Cannot get github info');
-  });
-
-  // GLTEST: - usex
-  describe('Github Login', () => {
-    it.todo('Use | getGithubInfo');
-
-    it.todo('Use | githubRegister');
-
-    it.todo('Use | signToken');
-  });
-
-  //GGITEST: - returnx, errorx
-  describe('Get Google Info', () => {
-    it.todo('Return | {id: number, nickname: string, image: string}');
-
-    it.todo('Error | Cannot get google info');
-  });
-
-  // GLTEST: - usex
-  describe('Google Login', () => {
-    it.todo('Use | getGoogleInfo');
-
-    it.todo('Use | googleRegister');
-
-    it.todo('Use | signToken');
-  });
-
-  //GGITEST: - returnx, errorx
-  describe('Get Kakao Info', () => {
-    it.todo('Return | {id: number, nickname: string, image: string}');
-
-    it.todo('Error | Cannot get kakao info');
-  });
-
-  // GLTEST: - usex
-  describe('Kakao Login', () => {
-    it.todo('Use | getKakaoInfo');
-
-    it.todo('Use | kakaoRegister');
-
-    it.todo('Use | signToken');
+  // OLTEST: - usex
+  describe('OAuth Login', () => {
+    it.todo('Use | oAuthRegister');
   });
 
   // GLTEST: - usex

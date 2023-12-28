@@ -1,43 +1,56 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LoginController } from './login.controller';
+import { providers } from 'src/source-code/mock/providers/providers';
 import { LoginService } from './login.service';
+import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
+import { ReqLocalLogin } from './dto/req-local-login.dto';
+import { ResLogin } from './dto/res-login.dto';
 
 describe('LoginController', () => {
   let controller: LoginController;
+  let loginService: LoginService;
+  const { user, accessToken } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [LoginController],
-      providers: [LoginService],
+      providers,
     }).compile();
 
     controller = module.get<LoginController>(LoginController);
+    loginService = module.get<LoginService>(LoginService);
   });
 
   // LLTEST: - usex, returnx
   describe('Local Login', () => {
-    it.todo('Use | localLogin');
+    const reqLocalLogin: ReqLocalLogin = {
+      username: user.username,
+      password: 'p@ssw0rd',
+    };
 
-    it.todo('Return | ResLogin');
+    const resLogin: ResLogin = { accessToken, user };
+
+    it('Use | localLogin', async () => {
+      jest.spyOn(loginService, 'localLogin');
+      loginService.localLogin = jest.fn().mockReturnValue(resLogin);
+      await controller.localLogin(reqLocalLogin);
+      expect(loginService.localLogin).toHaveBeenCalled();
+    });
+
+    it('Return | ResLogin', async () => {
+      const result = await controller.localLogin(reqLocalLogin);
+      expect(result).toBeInstanceOf(ResLogin);
+
+      const resLogin: ResLogin = { accessToken, user };
+      const keys = Object.keys(result);
+      const required = Object.keys(resLogin);
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
   });
 
-  // GLTEST: - usex, returnx
-  describe('Github Login', () => {
-    it.todo('Use | githubLogin');
-
-    it.todo('Return | ResLogin');
-  });
-
-  // GLTEST: - usex, returnx
-  describe('Google Login', () => {
-    it.todo('Use | googleLogin');
-
-    it.todo('Return | ResLogin');
-  });
-
-  // KLTEST: - usex, returnx
-  describe('Kakao Login', () => {
-    it.todo('Use | kakaoLogin');
+  // OLTEST: - usex, returnx
+  describe('OAuth Login', () => {
+    it.todo('Use | oAuthLogin');
 
     it.todo('Return | ResLogin');
   });

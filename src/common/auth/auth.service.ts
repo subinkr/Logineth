@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ProfileService } from 'src/account/profile/profile.service';
 import * as bcrypt from 'bcrypt';
@@ -42,6 +42,9 @@ export class AuthService {
 
   async verifyPassword(password: string, userPassword: string) {
     const result = await bcrypt.compare(password, userPassword);
+    if (!result) {
+      throw new BadRequestException('잘못된 비밀번호입니다.');
+    }
     return result;
   }
 }

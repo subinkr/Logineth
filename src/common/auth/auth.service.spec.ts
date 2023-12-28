@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ProfileService } from 'src/account/profile/profile.service';
 import { providers } from 'src/source-code/mock/providers/providers';
 import * as bcrypt from 'bcrypt';
+import { BadRequestException } from '@nestjs/common';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -63,6 +64,11 @@ describe('AuthService', () => {
     it('Return | boolean', async () => {
       const result = await service.verifyPassword('p@ssw0rd', user.password);
       expect(result).toBeTruthy();
+    });
+
+    it('Error | Result is false', async () => {
+      const result = service.verifyPassword('password', user.password);
+      await expect(result).rejects.toThrow(BadRequestException);
     });
   });
 });

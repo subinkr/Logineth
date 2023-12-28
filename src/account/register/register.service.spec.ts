@@ -5,9 +5,9 @@ import { AuthService } from 'src/common/auth/auth.service';
 import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import {
+  ConflictException,
   ForbiddenException,
   NotAcceptableException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { ReqOAuthRegister } from './dto/req-oauth-register.dto';
 import { Provider } from 'src/source-code/enum/provider';
@@ -56,7 +56,7 @@ describe('RegisterService', () => {
         ...reqLocalRegister,
         username: user.username,
       });
-      await expect(result).rejects.toThrow(NotAcceptableException);
+      await expect(result).rejects.toThrow(ConflictException);
     });
   });
 

@@ -42,4 +42,11 @@ describe('ProfileController', () => {
       expect(keys).toEqual(expect.arrayContaining(required));
     });
   });
+
+  // EUTEST: - usex, returnx
+  describe('Edit User', () => {
+    it.todo('Use | editUser');
+
+    it.todo('Return | ResEditUser');
+  });
 });

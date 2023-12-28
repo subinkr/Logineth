@@ -123,7 +123,8 @@ export class RegisterService {
     });
     const result = await response.json();
     const { id } = result;
-    const { nickname, profile_image: image } = result.properties;
+    const nickname = result?.properties?.nickname;
+    const image = result?.properties?.profile_image;
 
     return { id, nickname, image };
   }

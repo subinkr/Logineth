@@ -4,7 +4,6 @@ import {
   Delete,
   Param,
   ParseEnumPipe,
-  ParseIntPipe,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -13,10 +12,12 @@ import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { plainToInstance } from 'class-transformer';
 import { ResRegister } from './dto/res-register.dto';
 import {
+  ApiConflictResponse,
+  ApiCreatedResponse,
   ApiForbiddenResponse,
+  ApiNoContentResponse,
   ApiNotAcceptableResponse,
   ApiNotFoundResponse,
-  ApiOkResponse,
   ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -30,6 +31,7 @@ import { AuthUsername } from 'src/common/auth/decorator/username.decorator';
 import { AuthGuard } from 'src/common/auth/auth.guard';
 import { unauthorized } from 'src/source-code/error/swagger/unauthorized';
 import { forbidden } from 'src/source-code/error/swagger/forbidden';
+import { conflict } from 'src/source-code/error/swagger/conflict';
 
 @Controller('register')
 @ApiTags('account | register')
@@ -38,9 +40,9 @@ export class RegisterController {
 
   @Post('local')
   @ApiOperation({ summary: 'Local register' })
-  @ApiOkResponse({ type: ResRegister })
+  @ApiCreatedResponse({ type: ResRegister })
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
-  @ApiNotAcceptableResponse(notAcceptable('이미 사용중인 아이디입니다.'))
+  @ApiConflictResponse(conflict('이미 사용중인 아이디입니다.'))
   async localRegister(
     @Body() reqLocalRegister: ReqLocalRegister,
   ): Promise<ResRegister> {
@@ -50,7 +52,7 @@ export class RegisterController {
 
   @Post('oauth/:provider')
   @ApiOperation({ summary: 'OAuth register' })
-  @ApiOkResponse({ type: ResRegister })
+  @ApiCreatedResponse({ type: ResRegister })
   @ApiNotAcceptableResponse(notAcceptable('유저 정보를 가져오지 못했습니다.'))
   async oAuthRegister(
     @Param('provider', new ParseEnumPipe(Provider)) provider: Provider,
@@ -66,7 +68,7 @@ export class RegisterController {
   @Delete('withdraw/:withdrawUsername')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Withdraw Register' })
-  @ApiOkResponse({ type: ResWithdrawRegister })
+  @ApiNoContentResponse({ type: ResWithdrawRegister })
   @ApiUnauthorizedResponse(unauthorized('로그인이 필요합니다.'))
   @ApiForbiddenResponse(forbidden('다른 유저를 탈퇴할 수 없습니다.'))
   async withdrawRegister(

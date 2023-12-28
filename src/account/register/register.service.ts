@@ -1,8 +1,8 @@
 import {
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotAcceptableException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from 'src/common/auth/auth.service';
 import { ReqLocalRegister } from './dto/req-local-register.dto';
@@ -27,7 +27,7 @@ export class RegisterService {
     const { username, password } = reqLocalRegister;
     const existUser = await this.userRepo.exist({ where: { username } });
     if (existUser) {
-      throw new NotAcceptableException('이미 사용중인 아이디입니다.');
+      throw new ConflictException('이미 사용중인 아이디입니다.');
     }
 
     const { hashPassword } = await this.authService.hashPassword(password);

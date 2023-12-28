@@ -101,8 +101,15 @@ describe('RegisterService', () => {
     });
 
     it('Error | Cannot get user info', async () => {
-      const result = service.oAuthRegister(reqOAuthRegister, Provider.GITHUB);
-      await expect(result).rejects.toThrow(NotAcceptableException);
+      await expect(
+        service.oAuthRegister(reqOAuthRegister, Provider.GITHUB),
+      ).rejects.toThrow(NotAcceptableException);
+      await expect(
+        service.oAuthRegister(reqOAuthRegister, Provider.GOOGLE),
+      ).rejects.toThrow(NotAcceptableException);
+      await expect(
+        service.oAuthRegister(reqOAuthRegister, Provider.KAKAO),
+      ).rejects.toThrow(NotAcceptableException);
     });
   });
 

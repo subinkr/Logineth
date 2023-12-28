@@ -75,8 +75,14 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.(controller|service).(t|j)s"
     ],
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "lines": 90
+      }
+    },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {

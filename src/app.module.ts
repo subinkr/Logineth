@@ -6,11 +6,12 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AccountModule } from './account/account.module';
 import { UserModel } from './source-code/entities/user.entity';
-import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
     CommonModule,
+    AccountModule,
     ConfigModule.forRoot({
       envFilePath: process.env.NODE_ENV === 'prod' ? '.env.prod' : '.env.dev',
       isGlobal: true,
@@ -29,7 +30,6 @@ import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
       },
     }),
     TypeOrmModule.forFeature([]),
-    AccountModule,
   ],
   controllers: [AppController],
   providers: [

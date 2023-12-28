@@ -1,7 +1,7 @@
 name: deploy
 on:
   push:
-    branches: [main]
+    branches: [deploy]
 env:
   SERVER_PORT: ${{ secrets.SERVER_PORT }}
   DB_AWS_HOSTNAME: ${{ secrets.DB_AWS_HOSTNAME }}

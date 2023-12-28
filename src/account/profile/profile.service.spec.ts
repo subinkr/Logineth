@@ -32,7 +32,7 @@ describe('ProfileService', () => {
   });
 
   // EUTEST: - usex
-  describe('Edit User', async () => {
+  describe('Edit User', () => {
     it.todo('Use | getUserByUsername');
   });
 });

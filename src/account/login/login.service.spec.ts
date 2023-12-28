@@ -64,9 +64,4 @@ describe('LoginService', () => {
       expect(registerService.oAuthRegister).toHaveBeenCalled();
     });
   });
-
-  // GLTEST: - usex
-  describe('Logout', () => {
-    it.todo('Use | signToken');
-  });
 });

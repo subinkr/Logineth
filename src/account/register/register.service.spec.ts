@@ -113,6 +113,7 @@ describe('RegisterService', () => {
     });
   });
 
+  // WRTEST: - use, error
   describe('Withdraw Register', () => {
     it('Use | getUserByUsername', async () => {
       jest.spyOn(profileService, 'getUserByUsername');

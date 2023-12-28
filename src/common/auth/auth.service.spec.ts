@@ -57,4 +57,12 @@ describe('AuthService', () => {
       expect(verify).toBeTruthy();
     });
   });
+
+  // VPTEST: - return
+  describe('Verify Password', () => {
+    it('Return | boolean', async () => {
+      const result = await service.verifyPassword('p@ssw0rd', user.password);
+      expect(result).toBeTruthy();
+    });
+  });
 });

@@ -5,11 +5,16 @@ import { ProfileService } from '../profile/profile.service';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { ReqLocalLogin } from './dto/req-local-login.dto';
 import { AuthService } from 'src/common/auth/auth.service';
+import { RegisterService } from '../register/register.service';
+import { ResLogin } from './dto/res-login.dto';
+import { ReqOAuthLogin } from './dto/req-oauth-login.dto';
+import { Provider } from 'src/source-code/enum/provider';
 
 describe('LoginService', () => {
   let service: LoginService;
   let profileService: ProfileService;
   let authService: AuthService;
+  let registerService: RegisterService;
   const { user, accessToken } = MockUserModel;
 
   beforeEach(async () => {
@@ -20,9 +25,10 @@ describe('LoginService', () => {
     service = module.get<LoginService>(LoginService);
     profileService = module.get<ProfileService>(ProfileService);
     authService = module.get<AuthService>(AuthService);
+    registerService = module.get<RegisterService>(RegisterService);
   });
 
-  // LLTEST: - usex
+  // LLTEST: - use
   describe('Local Login', () => {
     const reqLocalLogin: ReqLocalLogin = {
       username: user.username,
@@ -48,13 +54,14 @@ describe('LoginService', () => {
     });
   });
 
-  // OLTEST: - usex
+  // OLTEST: - use
   describe('OAuth Login', () => {
-    it.todo('Use | oAuthRegister');
-  });
-
-  // GLTEST: - usex
-  describe('Logout', () => {
-    it.todo('Use | signToken');
+    const reqOAuthLogin: ReqOAuthLogin = { token: '' };
+    const resLogin: ResLogin = { accessToken, user };
+    it('Use | oAuthRegister', async () => {
+      registerService.oAuthRegister = jest.fn().mockReturnValue(resLogin);
+      await service.oAuthLogin(reqOAuthLogin, Provider.GITHUB);
+      expect(registerService.oAuthRegister).toHaveBeenCalled();
+    });
   });
 });

@@ -5,10 +5,14 @@ import { LoginService } from './login.service';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { ReqLocalLogin } from './dto/req-local-login.dto';
 import { ResLogin } from './dto/res-login.dto';
+import { ReqOAuthLogin } from './dto/req-oauth-login.dto';
+import { Provider } from 'src/source-code/enum/provider';
+import { RegisterService } from '../register/register.service';
 
 describe('LoginController', () => {
   let controller: LoginController;
   let loginService: LoginService;
+  let registerService: RegisterService;
   const { user, accessToken } = MockUserModel;
 
   beforeEach(async () => {
@@ -19,9 +23,10 @@ describe('LoginController', () => {
 
     controller = module.get<LoginController>(LoginController);
     loginService = module.get<LoginService>(LoginService);
+    registerService = module.get<RegisterService>(RegisterService);
   });
 
-  // LLTEST: - usex, returnx
+  // LLTEST: - use, return
   describe('Local Login', () => {
     const reqLocalLogin: ReqLocalLogin = {
       username: user.username,
@@ -48,17 +53,31 @@ describe('LoginController', () => {
     });
   });
 
-  // OLTEST: - usex, returnx
+  // OLTEST: - use, return
   describe('OAuth Login', () => {
-    it.todo('Use | oAuthLogin');
+    const reqOAuthLogin: ReqOAuthLogin = { token: '' };
+    const resLogin: ResLogin = { accessToken, user };
 
-    it.todo('Return | ResLogin');
-  });
+    it('Use | oAuthLogin', async () => {
+      loginService.oAuthLogin = jest.fn().mockReturnValue(resLogin);
+      await controller.oAuthLogin(Provider.GITHUB, reqOAuthLogin);
+      expect(loginService.oAuthLogin).toHaveBeenCalled();
+    });
 
-  // LTEST: - usex, returnx
-  describe('Logout', () => {
-    it.todo('Use | logout');
+    it('Return | ResLogin', async () => {
+      registerService.getGithubUserInfo = jest
+        .fn()
+        .mockReturnValue({ id: 11, nickname: 'github', image: null });
 
-    it.todo('Return | ResLogout');
+      const result = await controller.oAuthLogin(
+        Provider.GITHUB,
+        reqOAuthLogin,
+      );
+      expect(result).toBeInstanceOf(ResLogin);
+
+      const keys = Object.keys(result);
+      const required = Object.keys(resLogin);
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
   });
 });

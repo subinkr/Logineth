@@ -30,4 +30,9 @@ describe('ProfileService', () => {
       await expect(result).rejects.toThrow(NotFoundException);
     });
   });
+
+  // EUTEST: - usex
+  describe('Edit User', () => {
+    it.todo('Use | getUserByUsername');
+  });
 });

@@ -4,12 +4,12 @@ import { UserModel } from 'src/source-code/entities/user.entity';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 
 export class ResRegister {
-  @ApiProperty({ example: MockUserModel.accessToken, required: false })
+  @ApiProperty({ example: MockUserModel.accessToken })
   @IsNotEmpty()
   @IsString()
   accessToken: string;
 
-  @ApiProperty({ example: MockUserModel.user, required: false })
+  @ApiProperty({ example: MockUserModel.user })
   @IsNotEmpty()
   @IsInstance(UserModel)
   user: UserModel;

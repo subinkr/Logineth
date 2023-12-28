@@ -39,4 +39,9 @@ export class AuthService {
     );
     return { hashPassword };
   }
+
+  async verifyPassword(password: string, userPassword: string) {
+    const result = await bcrypt.compare(password, userPassword);
+    return result;
+  }
 }

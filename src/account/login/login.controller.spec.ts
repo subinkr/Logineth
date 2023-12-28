@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LoginController } from './login.controller';
-import { LoginService } from './login.service';
+import { providers } from 'src/source-code/mock/providers/providers';
 
 describe('LoginController', () => {
   let controller: LoginController;
@@ -8,7 +8,7 @@ describe('LoginController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [LoginController],
-      providers: [LoginService],
+      providers,
     }).compile();
 
     controller = module.get<LoginController>(LoginController);
@@ -21,23 +21,9 @@ describe('LoginController', () => {
     it.todo('Return | ResLogin');
   });
 
-  // GLTEST: - usex, returnx
-  describe('Github Login', () => {
-    it.todo('Use | githubLogin');
-
-    it.todo('Return | ResLogin');
-  });
-
-  // GLTEST: - usex, returnx
-  describe('Google Login', () => {
-    it.todo('Use | googleLogin');
-
-    it.todo('Return | ResLogin');
-  });
-
-  // KLTEST: - usex, returnx
-  describe('Kakao Login', () => {
-    it.todo('Use | kakaoLogin');
+  // OLTEST: - usex, returnx
+  describe('OAuth Login', () => {
+    it.todo('Use | oAuthLogin');
 
     it.todo('Return | ResLogin');
   });

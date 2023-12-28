@@ -1,15 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LoginService } from './login.service';
+import { RegisterService } from '../register/register.service';
+import { providers } from 'src/source-code/mock/providers/providers';
 
 describe('LoginService', () => {
   let service: LoginService;
+  let registerService: RegisterService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [LoginService],
+      providers,
     }).compile();
 
     service = module.get<LoginService>(LoginService);
+    registerService = module.get<RegisterService>(RegisterService);
   });
 
   // LLTEST: - usex
@@ -21,52 +25,9 @@ describe('LoginService', () => {
     it.todo('Use | signToken');
   });
 
-  //GGITEST: - returnx, errorx
-  describe('Get Github Info', () => {
-    it.todo('Return | {id: number, nickname: string, image: string}');
-
-    it.todo('Error | Cannot get github info');
-  });
-
-  // GLTEST: - usex
-  describe('Github Login', () => {
-    it.todo('Use | getGithubInfo');
-
-    it.todo('Use | githubRegister');
-
-    it.todo('Use | signToken');
-  });
-
-  //GGITEST: - returnx, errorx
-  describe('Get Google Info', () => {
-    it.todo('Return | {id: number, nickname: string, image: string}');
-
-    it.todo('Error | Cannot get google info');
-  });
-
-  // GLTEST: - usex
-  describe('Google Login', () => {
-    it.todo('Use | getGoogleInfo');
-
-    it.todo('Use | googleRegister');
-
-    it.todo('Use | signToken');
-  });
-
-  //GGITEST: - returnx, errorx
-  describe('Get Kakao Info', () => {
-    it.todo('Return | {id: number, nickname: string, image: string}');
-
-    it.todo('Error | Cannot get kakao info');
-  });
-
-  // GLTEST: - usex
-  describe('Kakao Login', () => {
-    it.todo('Use | getKakaoInfo');
-
-    it.todo('Use | kakaoRegister');
-
-    it.todo('Use | signToken');
+  // OLTEST: - usex
+  describe('OAuth Login', () => {
+    it.todo('Use | oAuthRegister');
   });
 
   // GLTEST: - usex

@@ -12,7 +12,11 @@ describe('FriendService', () => {
     service = module.get<FriendService>(FriendService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+  describe('Follow', () => {});
+
+  describe('Unfollow', () => {});
+
+  describe('Find Friend', () => {});
+
+  describe('Invite Friend', () => {});
 });

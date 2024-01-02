@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 
 export class ReqLocalLogin {
-  @ApiProperty({ example: MockUserModel.user.username })
+  @ApiProperty({ example: MockUserModel.swaggerUser.username })
   @IsNotEmpty()
   @IsString()
   username: string;

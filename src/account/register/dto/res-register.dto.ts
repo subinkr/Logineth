@@ -9,7 +9,7 @@ export class ResRegister {
   @IsString()
   accessToken: string;
 
-  @ApiProperty({ example: MockUserModel.user })
+  @ApiProperty({ example: MockUserModel.swaggerUser })
   @IsNotEmpty()
   @IsInstance(UserModel)
   user: UserModel;

@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 
 export class ReqLocalRegister {
-  @ApiProperty({ example: MockUserModel.user.username })
+  @ApiProperty({ example: MockUserModel.swaggerUser.username })
   @IsNotEmpty()
   @IsString()
   @MinLength(5)
@@ -15,12 +15,12 @@ export class ReqLocalRegister {
   @MinLength(8)
   password: string;
 
-  @ApiProperty({ example: MockUserModel.user.nickname })
+  @ApiProperty({ example: MockUserModel.swaggerUser.nickname })
   @IsNotEmpty()
   @IsString()
   nickname: string;
 
-  @ApiProperty({ example: MockUserModel.user.nickname, required: false })
+  @ApiProperty({ example: MockUserModel.swaggerUser.nickname, required: false })
   @IsString()
   image?: string;
 }

@@ -55,6 +55,18 @@ export class MockUserModel {
     updatedAt: null,
   };
 
+  static swaggerUser = {
+    id: 1,
+    username: 'username',
+    nickname: 'nickname',
+    image: null,
+    bio: null,
+    role: Role.ADMIN,
+    provider: Provider.LOCAL,
+    createdAt: new Date(1),
+    updatedAt: new Date(1),
+  };
+
   static userList: UserModel[] = [MockUserModel.user, MockUserModel.otherUser];
 
   static accessToken: string =

@@ -70,6 +70,7 @@ export class RegisterService {
         password: '',
         nickname,
         image,
+        provider,
       });
     }
 

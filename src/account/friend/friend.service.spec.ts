@@ -12,11 +12,19 @@ describe('FriendService', () => {
     service = module.get<FriendService>(FriendService);
   });
 
-  describe('Follow', () => {});
+  describe('Follow', () => {
+    it.todo('');
+  });
 
-  describe('Unfollow', () => {});
+  describe('Unfollow', () => {
+    it.todo('');
+  });
 
-  describe('Find Friend', () => {});
+  describe('Find Friend', () => {
+    it.todo('');
+  });
 
-  describe('Invite Friend', () => {});
+  describe('Invite Friend', () => {
+    it.todo('');
+  });
 });

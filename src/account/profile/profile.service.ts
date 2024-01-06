@@ -11,7 +11,6 @@ export class ProfileService {
   ) {}
 
   async getUserByID(id: number) {
-    console.log(id);
     const user = await this.userRepo.findOne({
       where: { id },
     });

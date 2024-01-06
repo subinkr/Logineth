@@ -9,13 +9,14 @@ import { RegisterService } from '../register/register.service';
 import { ResLogin } from './dto/res-login.dto';
 import { ReqOAuthLogin } from './dto/req-oauth-login.dto';
 import { Provider } from 'src/source-code/enum/provider';
+import { NotFoundException } from '@nestjs/common';
 
 describe('LoginService', () => {
   let service: LoginService;
   let profileService: ProfileService;
   let authService: AuthService;
   let registerService: RegisterService;
-  const { user, accessToken } = MockUserModel;
+  const { user, notExistUser, accessToken } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

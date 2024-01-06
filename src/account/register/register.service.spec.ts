@@ -115,18 +115,15 @@ describe('RegisterService', () => {
 
   // WRTEST: - use, error
   describe('Withdraw Register', () => {
-    it('Use | getUserByUsername', async () => {
-      jest.spyOn(profileService, 'getUserByUsername');
-      profileService.getUserByUsername = jest.fn().mockReturnValue({ user });
-      await service.withdrawRegister(user.username, user.username);
-      expect(profileService.getUserByUsername).toHaveBeenCalled();
+    it('Use | getUserByID', async () => {
+      jest.spyOn(profileService, 'getUserByID');
+      profileService.getUserByID = jest.fn().mockReturnValue({ user });
+      await service.withdrawRegister(user.id, user.id);
+      expect(profileService.getUserByID).toHaveBeenCalled();
     });
 
     it('Error | Cannot delete other user', async () => {
-      const result = service.withdrawRegister(
-        user.username,
-        otherUser.username,
-      );
+      const result = service.withdrawRegister(user.id, otherUser.id);
       await expect(result).rejects.toThrow(ForbiddenException);
     });
   });

@@ -3,7 +3,7 @@ import { ProfileController } from './profile.controller';
 import { providers } from 'src/source-code/mock/providers/providers';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { ProfileService } from './profile.service';
-import { ResGetUserByUsername } from './dto/res-get-user-by-username.dto';
+import { ResGetUserByID } from './dto/res-get-user-by-id.dto';
 
 describe('ProfileController', () => {
   let controller: ProfileController;
@@ -21,24 +21,22 @@ describe('ProfileController', () => {
   });
 
   // GUBUTEST: - use, return
-  describe('Get User By Username', () => {
-    const resGetUserByUsername: ResGetUserByUsername = { user };
+  describe('Get User By ID', () => {
+    const resGetUserByID: ResGetUserByID = { user };
 
-    it('Use | getUserByUsername', async () => {
-      jest.spyOn(profileService, 'getUserByUsername');
-      profileService.getUserByUsername = jest
-        .fn()
-        .mockReturnValue(resGetUserByUsername);
-      await controller.getUserByUsername(user.username);
-      expect(profileService.getUserByUsername).toHaveBeenCalled();
+    it('Use | getUserByID', async () => {
+      jest.spyOn(profileService, 'getUserByID');
+      profileService.getUserByID = jest.fn().mockReturnValue(resGetUserByID);
+      await controller.getUserByID(user.id);
+      expect(profileService.getUserByID).toHaveBeenCalled();
     });
 
-    it('Return | ResGetUserByUsername', async () => {
-      const result = await controller.getUserByUsername(user.username);
-      expect(result).toBeInstanceOf(ResGetUserByUsername);
+    it('Return | ResGetUserByID', async () => {
+      const result = await controller.getUserByID(user.id);
+      expect(result).toBeInstanceOf(ResGetUserByID);
 
       const keys = Object.keys(result);
-      const required = Object.keys(resGetUserByUsername);
+      const required = Object.keys(resGetUserByID);
       expect(keys).toEqual(expect.arrayContaining(required));
     });
   });

@@ -11,8 +11,8 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    const { username } = this.authService.verifyToken(accessToken);
-    req.username = username;
+    const { id } = this.authService.verifyToken(accessToken);
+    req.id = id;
 
     return true;
   }

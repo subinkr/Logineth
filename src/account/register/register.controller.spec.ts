@@ -81,15 +81,12 @@ describe('RegisterController', () => {
     it('Use | withdrawRegister', async () => {
       jest.spyOn(registerService, 'withdrawRegister');
       registerService.withdrawRegister = jest.fn().mockReturnValue(resWithdraw);
-      await controller.withdrawRegister(user.username, user.username);
+      await controller.withdrawRegister(user.id, user.id);
       expect(registerService.withdrawRegister).toHaveBeenCalled();
     });
 
     it('Return | ResWithdraw', async () => {
-      const result = await controller.withdrawRegister(
-        user.username,
-        user.username,
-      );
+      const result = await controller.withdrawRegister(user.id, user.id);
       expect(result).toBeInstanceOf(ResWithdrawRegister);
 
       const keys = Object.keys(result);

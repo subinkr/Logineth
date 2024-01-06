@@ -18,6 +18,19 @@ describe('ProfileService', () => {
     service = module.get<ProfileService>(ProfileService);
   });
 
+  // GUBITEST: - return, error
+  describe('Get User By ID', () => {
+    it('Return | {user: UserModel}', async () => {
+      const result = await service.getUserByID(user.id);
+      expect(result.user).toStrictEqual(user);
+    });
+
+    it('Error | Cannot find user', async () => {
+      const result = service.getUserByID(notExistUser.id);
+      await expect(result).rejects.toThrow(NotFoundException);
+    });
+  });
+
   // GUBUTEST: - return, error
   describe('Get User By Username', () => {
     it('Return | {user: UserModel}', async () => {
@@ -33,6 +46,6 @@ describe('ProfileService', () => {
 
   // EUTEST: - usex
   describe('Edit User', () => {
-    it.todo('Use | getUserByUsername');
+    it.todo('Use | getUserByID');
   });
 });

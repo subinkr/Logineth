@@ -10,11 +10,11 @@ export class AuthService {
     private readonly profileService: ProfileService,
   ) {}
 
-  async signToken(username: string) {
-    await this.profileService.getUserByUsername(username);
+  async signToken(id: number) {
+    await this.profileService.getUserByID(id);
 
     const accessToken = this.jwtService.sign(
-      { username },
+      { id },
       {
         secret: process.env.JWT_SECRET || 'test',
         expiresIn: process.env.JWT_EXPIRE || 1234,

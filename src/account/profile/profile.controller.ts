@@ -1,6 +1,6 @@
-import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { ProfileService } from './profile.service';
-import { ResGetUserByUsername } from './dto/res-get-user-by-username.dto';
+import { ResGetUserByID } from './dto/res-get-user-by-id.dto';
 import { plainToInstance } from 'class-transformer';
 import {
   ApiNotFoundResponse,
@@ -15,14 +15,14 @@ import { notFound } from 'src/source-code/error/swagger/not-found';
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
-  @Get(':username')
-  @ApiOperation({ summary: 'Get user by username' })
-  @ApiOkResponse({ type: ResGetUserByUsername })
+  @Get(':id')
+  @ApiOperation({ summary: 'Get user by id' })
+  @ApiOkResponse({ type: ResGetUserByID })
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
-  async getUserByUsername(
-    @Param('username') username: string,
-  ): Promise<ResGetUserByUsername> {
-    const result = await this.profileService.getUserByUsername(username);
-    return plainToInstance(ResGetUserByUsername, result);
+  async getUserByID(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<ResGetUserByID> {
+    const result = await this.profileService.getUserByID(id);
+    return plainToInstance(ResGetUserByID, result);
   }
 }

@@ -36,7 +36,7 @@ export class RegisterService {
       ...reqLocalRegister,
       password: hashPassword,
     });
-    const { accessToken } = await this.authService.signToken(username);
+    const { accessToken } = await this.authService.signToken(user.id);
 
     return { accessToken, user };
   }
@@ -74,14 +74,14 @@ export class RegisterService {
       });
     }
 
-    const { accessToken } = await this.authService.signToken(username);
+    const { accessToken } = await this.authService.signToken(user.id);
 
     return { accessToken, user };
   }
 
-  async withdrawRegister(withdrawUsername: string, username: string) {
-    const { user } = await this.profileService.getUserByUsername(username);
-    if (withdrawUsername !== username && user.role !== Role.ADMIN) {
+  async withdrawRegister(withdrawID: number, id: number) {
+    const { user } = await this.profileService.getUserByID(id);
+    if (withdrawID !== id && user.role !== Role.ADMIN) {
       throw new ForbiddenException('다른 유저를 탈퇴할 수 없습니다.');
     }
 

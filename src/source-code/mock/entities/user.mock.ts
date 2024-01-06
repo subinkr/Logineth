@@ -29,6 +29,19 @@ export class MockUserModel {
     updatedAt: new Date(1),
   };
 
+  static addedUser: UserModel = {
+    id: 3,
+    username: 'addedUser',
+    password: '$2b$10$G4R91NGJ3hXa4EFszIjDhumEY31yMwkvu9TSGVSb.iEfPNcdSYIu2',
+    nickname: 'addedUser',
+    image: null,
+    bio: null,
+    role: Role.USER,
+    provider: Provider.LOCAL,
+    createdAt: new Date(1),
+    updatedAt: new Date(1),
+  };
+
   static notExistUser: UserModel = {
     id: 0,
     username: 'notExistUser',
@@ -92,13 +105,13 @@ export class MockUserModel {
     return false;
   }
 
-  save(notExistUser: UserModel) {
-    MockUserModel.userList.push(notExistUser);
+  save() {
+    MockUserModel.userList.push(MockUserModel.addedUser);
 
-    return notExistUser;
+    return MockUserModel.addedUser;
   }
 
-  delete(id: number) {
+  delete() {
     return true;
   }
 }

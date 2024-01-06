@@ -10,6 +10,18 @@ export class ProfileService {
     private readonly userRepo: Repository<UserModel>,
   ) {}
 
+  async getUserByID(id: number) {
+    console.log(id);
+    const user = await this.userRepo.findOne({
+      where: { id },
+    });
+    if (!user) {
+      throw new NotFoundException('유저를 찾을 수 없습니다.');
+    }
+
+    return { user };
+  }
+
   async getUserByUsername(username: string) {
     const user = await this.userRepo.findOne({
       where: { username },

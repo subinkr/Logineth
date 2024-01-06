@@ -25,17 +25,17 @@ describe('AuthService', () => {
 
   // STTEST: - use
   describe('Sign Token', () => {
-    it('Use | getUserByUsername', async () => {
-      jest.spyOn(profileService, 'getUserByUsername');
-      profileService.getUserByUsername = jest.fn().mockReturnValue(user);
-      await service.signToken(user.username);
-      expect(profileService.getUserByUsername).toHaveBeenCalled();
+    it('Use | getUserByID', async () => {
+      jest.spyOn(profileService, 'getUserByID');
+      profileService.getUserByID = jest.fn().mockReturnValue(user);
+      await service.signToken(user.id);
+      expect(profileService.getUserByID).toHaveBeenCalled();
     });
 
     it('Use | sign', async () => {
       jest.spyOn(jwtService, 'sign');
-      profileService.getUserByUsername = jest.fn().mockReturnValue(accessToken);
-      await service.signToken(user.username);
+      profileService.getUserByID = jest.fn().mockReturnValue(accessToken);
+      await service.signToken(user.id);
       expect(jwtService.sign).toHaveBeenCalled();
     });
   });

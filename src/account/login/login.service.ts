@@ -21,7 +21,7 @@ export class LoginService {
 
     await this.authService.verifyPassword(password, user.password);
 
-    const { accessToken } = await this.authService.signToken(username);
+    const { accessToken } = await this.authService.signToken(user.id);
 
     return { accessToken, user };
   }

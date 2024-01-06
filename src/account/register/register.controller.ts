@@ -4,6 +4,7 @@ import {
   Delete,
   Param,
   ParseEnumPipe,
+  ParseIntPipe,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -65,20 +66,17 @@ export class RegisterController {
     return plainToInstance(ResRegister, result);
   }
 
-  @Delete('withdraw/:withdrawUsername')
+  @Delete('withdraw/:withdrawID')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Withdraw Register' })
   @ApiNoContentResponse({ type: ResWithdrawRegister })
   @ApiUnauthorizedResponse(unauthorized('로그인이 필요합니다.'))
   @ApiForbiddenResponse(forbidden('다른 유저를 탈퇴할 수 없습니다.'))
   async withdrawRegister(
-    @Param('withdrawUsername') withdrawUsername: string,
-    @AuthUsername() username: string,
+    @Param('withdrawID', ParseIntPipe) withdrawID: number,
+    @AuthUsername() id: number,
   ): Promise<ResWithdrawRegister> {
-    const result = await this.registerService.withdrawRegister(
-      withdrawUsername,
-      username,
-    );
+    const result = await this.registerService.withdrawRegister(withdrawID, id);
 
     return plainToInstance(ResWithdrawRegister, result);
   }

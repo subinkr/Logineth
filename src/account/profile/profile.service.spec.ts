@@ -3,12 +3,12 @@ import { ProfileService } from './profile.service';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { UserModel } from 'src/source-code/entities/user.entity';
 import { providers } from 'src/source-code/mock/providers/providers';
-import { NotFoundException } from '@nestjs/common';
+import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { ReqEditUser } from './dto/req-edit-user.dto';
 
 describe('ProfileService', () => {
   let service: ProfileService;
-  const user: UserModel = MockUserModel.user;
-  const notExistUser: UserModel = MockUserModel.notExistUser;
+  const { user, otherUser, notExistUser } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -44,8 +44,24 @@ describe('ProfileService', () => {
     });
   });
 
-  // EUTEST: - usex
+  // EUTEST: - use
   describe('Edit User', () => {
-    it.todo('Use | getUserByID');
+    const reqEditUser: ReqEditUser = {
+      image: user.image,
+      nickname: user.nickname,
+      bio: user.bio,
+    };
+
+    it('Use | getUserByID', async () => {
+      jest.spyOn(service, 'getUserByID');
+      service.getUserByID = jest.fn().mockReturnValue(user);
+      await service.editUser(user.id, reqEditUser, user.id);
+      expect(service.getUserByID).toHaveBeenCalled();
+    });
+
+    it('Error | Cannot edit other user.', async () => {
+      const result = service.editUser(user.id, reqEditUser, otherUser.id);
+      await expect(result).rejects.toThrow(ForbiddenException);
+    });
   });
 });

@@ -28,7 +28,7 @@ import { notFound } from 'src/source-code/error/swagger/not-found';
 import { ReqOAuthRegister } from './dto/req-oauth-register.dto';
 import { Provider } from 'src/source-code/enum/provider';
 import { ResWithdrawRegister } from './dto/res-withdraw-register.dto';
-import { AuthUsername } from 'src/common/auth/decorator/username.decorator';
+import { AuthID } from 'src/common/auth/decorator/id.decorator';
 import { AuthGuard } from 'src/common/auth/auth.guard';
 import { unauthorized } from 'src/source-code/error/swagger/unauthorized';
 import { forbidden } from 'src/source-code/error/swagger/forbidden';
@@ -74,7 +74,7 @@ export class RegisterController {
   @ApiForbiddenResponse(forbidden('다른 유저를 탈퇴할 수 없습니다.'))
   async withdrawRegister(
     @Param('withdrawID', ParseIntPipe) withdrawID: number,
-    @AuthUsername() id: number,
+    @AuthID() id: number,
   ): Promise<ResWithdrawRegister> {
     const result = await this.registerService.withdrawRegister(withdrawID, id);
 

@@ -109,7 +109,8 @@ export class RegisterService {
       },
     );
     const result = await response.json();
-    const { id, email: nickname, picture: image } = result;
+    result.nickname = result?.email?.split('@')[0];
+    const { id, nickname, picture: image } = result;
 
     return { id, nickname, image };
   }

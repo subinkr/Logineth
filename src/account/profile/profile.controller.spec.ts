@@ -4,6 +4,8 @@ import { providers } from 'src/source-code/mock/providers/providers';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { ProfileService } from './profile.service';
 import { ResGetUserByID } from './dto/res-get-user-by-id.dto';
+import { ReqEditUser } from './dto/req-edit-user.dto';
+import { ResEditUser } from './dto/res-edit-user.dto';
 
 describe('ProfileController', () => {
   let controller: ProfileController;
@@ -41,10 +43,29 @@ describe('ProfileController', () => {
     });
   });
 
-  // EUTEST: - usex, returnx
+  // EUTEST: - use, return
   describe('Edit User', () => {
-    it.todo('Use | editUser');
+    const reqEditUser: ReqEditUser = {
+      image: user.image,
+      nickname: user.nickname,
+      bio: user.bio,
+    };
+    const resEditUser: ResEditUser = { message: '수정되었습니다.' };
 
-    it.todo('Return | ResEditUser');
+    it('Use | editUser', async () => {
+      jest.spyOn(profileService, 'editUser');
+      profileService.editUser = jest.fn().mockReturnValue(resEditUser);
+      await controller.editUser(user.id, reqEditUser, user.id);
+      expect(profileService.editUser).toHaveBeenCalled();
+    });
+
+    it('Return | ResEditUser', async () => {
+      const result = await controller.editUser(user.id, reqEditUser, user.id);
+      expect(result).toBeInstanceOf(ResEditUser);
+
+      const keys = Object.keys(result);
+      const required = Object.keys(resEditUser);
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
   });
 });

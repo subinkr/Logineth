@@ -1,9 +1,10 @@
-import { Column, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { BaseModel } from './base.entity';
 import { RoomModel } from './room.entity';
 import { UserModel } from './user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
+@Entity()
 export class ChatModel extends BaseModel {
   @ApiProperty({ example: 'content', required: false })
   @Column()

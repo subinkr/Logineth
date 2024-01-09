@@ -1,10 +1,12 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { BaseModel } from './base.entity';
 import { Exclude } from 'class-transformer';
 import { Role } from '../enum/role';
 import { Provider } from '../enum/provider';
 import { ApiProperty } from '@nestjs/swagger';
 import { MockUserModel } from '../mock/entities/user.mock';
+import { ChatModel } from './chat.entity';
+import { RoomModel } from './room.entity';
 
 @Entity()
 export class UserModel extends BaseModel {
@@ -43,4 +45,22 @@ export class UserModel extends BaseModel {
   })
   @Column({ type: 'enum', enum: Provider, default: Provider.LOCAL })
   provider: string;
+
+  @ApiProperty({ example: [], required: false })
+  @ManyToMany(() => UserModel, (user) => user.followingUsers)
+  followerUsers: UserModel[];
+
+  @ApiProperty({ example: [], required: false })
+  @ManyToMany(() => UserModel, (user) => user.followerUsers)
+  @JoinTable({ name: 'follow_model' })
+  followingUsers: UserModel[];
+
+  @ApiProperty({ example: [], required: false })
+  @OneToMany(() => ChatModel, (chat) => chat.user)
+  chats: ChatModel[];
+
+  @ApiProperty({ example: [], required: false })
+  @ManyToMany(() => RoomModel, (room) => room.users)
+  @JoinTable({ name: 'room_model' })
+  rooms: RoomModel[];
 }

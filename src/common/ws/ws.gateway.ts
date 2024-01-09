@@ -8,7 +8,7 @@ import {
 import { WsService } from './ws.service';
 import { Server, Socket } from 'socket.io';
 import { RoomGatewaySendMessage } from './dto/room-gateway-send-message.dto';
-import { cors } from 'src/source-code/env/cors';
+import { cors } from 'src/source-code/common/cors';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { AuthID } from '../auth/decorator/id.decorator';

@@ -9,6 +9,8 @@ import { LoginService } from 'src/account/login/login.service';
 import { WsService } from 'src/common/ws/ws.service';
 import { RoomModel } from 'src/source-code/entities/room.entity';
 import { ChatModel } from 'src/source-code/entities/chat.entity';
+import { MockRoomModel } from '../entities/room.mock';
+import { MockChatModel } from '../entities/chat.mock';
 
 export const providers = [
   AuthService,
@@ -21,12 +23,12 @@ export const providers = [
     provide: getRepositoryToken(UserModel),
     useClass: MockUserModel,
   },
-  // {
-  //   provide: getRepositoryToken(RoomModel),
-  //   useClass: MockRoomModel,
-  // },
-  // {
-  //   provide: getRepositoryToken(ChatModel),
-  //   useClass: MockChatModel,
-  // },
+  {
+    provide: getRepositoryToken(RoomModel),
+    useClass: MockRoomModel,
+  },
+  {
+    provide: getRepositoryToken(ChatModel),
+    useClass: MockChatModel,
+  },
 ];

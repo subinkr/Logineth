@@ -4,7 +4,7 @@ import { Role } from 'src/source-code/enum/role';
 import { lazyArray } from '../common/lazyArray';
 
 export class MockUserModel {
-  static defaultUserAttributes: UserModel = {
+  static defaultUser: UserModel = {
     id: 1,
     username: 'username',
     password: '$2b$10$G4R91NGJ3hXa4EFszIjDhumEY31yMwkvu9TSGVSb.iEfPNcdSYIu2',
@@ -22,25 +22,25 @@ export class MockUserModel {
   };
 
   static user: UserModel = {
-    ...this.defaultUserAttributes,
+    ...this.defaultUser,
   };
 
   static otherUser: UserModel = {
-    ...this.defaultUserAttributes,
+    ...this.defaultUser,
     id: 2,
     username: 'otherUser',
     nickname: 'otherUser',
   };
 
   static addedUser: UserModel = {
-    ...this.defaultUserAttributes,
+    ...this.defaultUser,
     id: 3,
     username: 'addedUser',
     nickname: 'addedUser',
   };
 
   static notExistUser: UserModel = {
-    ...this.defaultUserAttributes,
+    ...this.defaultUser,
     id: 0,
     username: 'notExistUser',
     password: 'p@ssw0rd',
@@ -48,7 +48,7 @@ export class MockUserModel {
   };
 
   static notExistUser2: UserModel = {
-    ...this.defaultUserAttributes,
+    ...this.defaultUser,
     id: 0,
     username: 'notExistUser2',
     password: 'p@ssw0rd',

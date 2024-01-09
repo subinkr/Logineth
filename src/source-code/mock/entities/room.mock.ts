@@ -2,7 +2,7 @@ import { RoomModel } from 'src/source-code/entities/room.entity';
 import { lazyArray } from '../common/lazyArray';
 
 export class MockRoomModel {
-  static defaultRoomAttributes: RoomModel = {
+  static defaultRoom: RoomModel = {
     id: 1,
     createdAt: new Date(1),
     updatedAt: new Date(1),
@@ -11,6 +11,6 @@ export class MockRoomModel {
   };
 
   static room: RoomModel = {
-    ...this.defaultRoomAttributes,
+    ...this.defaultRoom,
   };
 }

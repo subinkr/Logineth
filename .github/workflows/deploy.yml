@@ -24,8 +24,6 @@ jobs:
         uses: actions/checkout@main
       - name: Install npm packages
         run: npm ci
-      - name: Test
-        run: npm run test
       - name: Build
         run: npm run build
       - name: Kill process

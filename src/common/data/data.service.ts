@@ -30,7 +30,10 @@ export class DataService {
   }
 
   async runBucket(bucket: any, params: any, file: Express.Multer.File) {
-    return bucket.putObject(params).promise().then(this.returnImage);
+    return bucket
+      .putObject(params)
+      .promise()
+      .then(() => this.returnImage(file));
   }
 
   returnImage(file: Express.Multer.File) {

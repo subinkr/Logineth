@@ -8,6 +8,6 @@ import { ProfileService } from 'src/account/profile/profile.service';
 @Module({
   imports: [TypeOrmModule.forFeature([UserModel])],
   providers: [AuthService, JwtService, ProfileService],
-  exports: [AuthModule, AuthService],
+  exports: [AuthService, JwtService],
 })
 export class AuthModule {}

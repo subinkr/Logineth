@@ -11,7 +11,7 @@ export class MockUserModel {
     nickname: 'nickname',
     image: null,
     bio: null,
-    role: Role.ADMIN,
+    role: Role.USER,
     provider: Provider.LOCAL,
     createdAt: new Date(1),
     updatedAt: new Date(1),
@@ -23,6 +23,7 @@ export class MockUserModel {
 
   static user: UserModel = {
     ...this.defaultUser,
+    role: Role.ADMIN,
   };
 
   static otherUser: UserModel = {

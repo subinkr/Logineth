@@ -1,71 +1,63 @@
 import { UserModel } from 'src/source-code/entities/user.entity';
 import { Provider } from 'src/source-code/enum/provider';
 import { Role } from 'src/source-code/enum/role';
+import { lazyArray } from '../common/lazyArray';
+import { RoomModel } from 'src/source-code/entities/room.entity';
+import { ChatModel } from 'src/source-code/entities/chat.entity';
+import { MockRoomModel } from './room.mock';
 
 export class MockUserModel {
-  static user: UserModel = {
+  static defaultUser: UserModel = {
     id: 1,
     username: 'username',
     password: '$2b$10$G4R91NGJ3hXa4EFszIjDhumEY31yMwkvu9TSGVSb.iEfPNcdSYIu2',
     nickname: 'nickname',
     image: null,
     bio: null,
-    role: Role.ADMIN,
+    role: Role.USER,
     provider: Provider.LOCAL,
     createdAt: new Date(1),
     updatedAt: new Date(1),
+    followingUsers: lazyArray<UserModel>(),
+    followerUsers: lazyArray<UserModel>(),
+    rooms: lazyArray<RoomModel>(),
+    chats: lazyArray<ChatModel>(),
+  };
+
+  static user: UserModel = {
+    ...this.defaultUser,
+    role: Role.ADMIN,
+    rooms: lazyArray<RoomModel>([MockRoomModel.room]),
   };
 
   static otherUser: UserModel = {
+    ...this.defaultUser,
     id: 2,
     username: 'otherUser',
-    password: '$2b$10$G4R91NGJ3hXa4EFszIjDhumEY31yMwkvu9TSGVSb.iEfPNcdSYIu2',
     nickname: 'otherUser',
-    image: null,
-    bio: null,
-    role: Role.USER,
-    provider: Provider.LOCAL,
-    createdAt: new Date(1),
-    updatedAt: new Date(1),
   };
 
   static addedUser: UserModel = {
+    ...this.defaultUser,
     id: 3,
     username: 'addedUser',
-    password: '$2b$10$G4R91NGJ3hXa4EFszIjDhumEY31yMwkvu9TSGVSb.iEfPNcdSYIu2',
     nickname: 'addedUser',
-    image: null,
-    bio: null,
-    role: Role.USER,
-    provider: Provider.LOCAL,
-    createdAt: new Date(1),
-    updatedAt: new Date(1),
   };
 
   static notExistUser: UserModel = {
+    ...this.defaultUser,
     id: 0,
     username: 'notExistUser',
     password: 'p@ssw0rd',
     nickname: '',
-    image: null,
-    bio: null,
-    role: Role.USER,
-    provider: Provider.LOCAL,
-    createdAt: null,
-    updatedAt: null,
   };
 
   static notExistUser2: UserModel = {
+    ...this.defaultUser,
     id: 0,
     username: 'notExistUser2',
     password: 'p@ssw0rd',
     nickname: '',
-    image: null,
-    bio: null,
-    role: Role.USER,
-    provider: Provider.LOCAL,
-    createdAt: null,
-    updatedAt: null,
   };
 
   static swaggerUser = {
@@ -110,6 +102,8 @@ export class MockUserModel {
 
     return MockUserModel.addedUser;
   }
+
+  update() {}
 
   delete() {
     return true;

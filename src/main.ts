@@ -2,13 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { cors } from './source-code/common/cors';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    cors: {
-      origin: ['http://localhost:3000', 'https://logineth.subin.kr'],
-    },
-  });
+  const app = await NestFactory.create(AppModule, { cors });
 
   const config = new DocumentBuilder()
     .setTitle('Logineth')

@@ -79,9 +79,9 @@ export class RegisterService {
     return { accessToken, user };
   }
 
-  async withdrawRegister(withdrawID: number, id: number) {
-    const { user } = await this.profileService.getUserByID(id);
-    if (withdrawID !== id && user.role !== Role.ADMIN) {
+  async withdrawRegister(withdrawID: number, loginUserID: number) {
+    const { user } = await this.profileService.getUserByID(loginUserID);
+    if (withdrawID !== loginUserID && user.role !== Role.ADMIN) {
       throw new ForbiddenException('다른 유저를 탈퇴할 수 없습니다.');
     }
 

@@ -27,7 +27,6 @@ describe('ProfileController', () => {
     const resGetUserByID: ResGetUserByID = { user };
 
     it('Use | getUserByID', async () => {
-      jest.spyOn(profileService, 'getUserByID');
       profileService.getUserByID = jest.fn().mockReturnValue(resGetUserByID);
       await controller.getUserByID(user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
@@ -53,7 +52,6 @@ describe('ProfileController', () => {
     const resEditUser: ResEditUser = { message: '수정되었습니다.' };
 
     it('Use | editUser', async () => {
-      jest.spyOn(profileService, 'editUser');
       profileService.editUser = jest.fn().mockReturnValue(resEditUser);
       await controller.editUser(user.id, reqEditUser, user.id);
       expect(profileService.editUser).toHaveBeenCalled();

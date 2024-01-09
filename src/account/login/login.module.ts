@@ -9,6 +9,6 @@ import { ProfileModule } from '../profile/profile.module';
   imports: [RegisterModule, AuthModule, ProfileModule],
   controllers: [LoginController],
   providers: [LoginService],
-  exports: [LoginModule, LoginService],
+  exports: [LoginService],
 })
 export class LoginModule {}

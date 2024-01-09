@@ -1,11 +1,11 @@
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { CommonModule } from './common/common.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AccountModule } from './account/account.module';
 import { UserModel } from './source-code/entities/user.entity';
+import { RoomModel } from './source-code/entities/room.entity';
+import { ChatModel } from './source-code/entities/chat.entity';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
@@ -23,17 +23,14 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [UserModel],
+      entities: [UserModel, RoomModel, ChatModel],
       synchronize: true,
       ssl: process.env.DB_AWS_HOSTNAME && {
         rejectUnauthorized: false,
       },
     }),
-    TypeOrmModule.forFeature([]),
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
     { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
   ],
 })

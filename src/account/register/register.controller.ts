@@ -74,9 +74,12 @@ export class RegisterController {
   @ApiForbiddenResponse(forbidden('다른 유저를 탈퇴할 수 없습니다.'))
   async withdrawRegister(
     @Param('withdrawID', ParseIntPipe) withdrawID: number,
-    @AuthID() id: number,
+    @AuthID() loginUserID: number,
   ): Promise<ResWithdrawRegister> {
-    const result = await this.registerService.withdrawRegister(withdrawID, id);
+    const result = await this.registerService.withdrawRegister(
+      withdrawID,
+      loginUserID,
+    );
 
     return plainToInstance(ResWithdrawRegister, result);
   }

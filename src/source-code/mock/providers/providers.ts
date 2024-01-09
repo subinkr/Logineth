@@ -6,6 +6,12 @@ import { AuthService } from 'src/common/auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterService } from 'src/account/register/register.service';
 import { LoginService } from 'src/account/login/login.service';
+import { WsService } from 'src/common/ws/ws.service';
+import { RoomModel } from 'src/source-code/entities/room.entity';
+import { ChatModel } from 'src/source-code/entities/chat.entity';
+import { MockRoomModel } from '../entities/room.mock';
+import { MockChatModel } from '../entities/chat.mock';
+import { DataService } from 'src/common/data/data.service';
 
 export const providers = [
   AuthService,
@@ -13,8 +19,18 @@ export const providers = [
   ProfileService,
   RegisterService,
   LoginService,
+  WsService,
+  DataService,
   {
     provide: getRepositoryToken(UserModel),
     useClass: MockUserModel,
+  },
+  {
+    provide: getRepositoryToken(RoomModel),
+    useClass: MockRoomModel,
+  },
+  {
+    provide: getRepositoryToken(ChatModel),
+    useClass: MockChatModel,
   },
 ];

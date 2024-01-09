@@ -30,7 +30,6 @@ describe('RegisterController', () => {
     const resRegister: ResRegister = { accessToken, user };
 
     it('Use | localRegister', async () => {
-      jest.spyOn(registerService, 'localRegister');
       registerService.localRegister = jest.fn().mockReturnValue(resRegister);
       await controller.localRegister(reqLocalRegister);
       expect(registerService.localRegister).toHaveBeenCalled();
@@ -52,7 +51,6 @@ describe('RegisterController', () => {
     const resRegister: ResRegister = { accessToken, user };
 
     it('Use | oAuthRegister', async () => {
-      jest.spyOn(registerService, 'oAuthRegister');
       registerService.oAuthRegister = jest.fn().mockReturnValue(resRegister);
       await controller.oAuthRegister(Provider.GITHUB, reqOAuthRegister);
       expect(registerService.oAuthRegister).toHaveBeenCalled();
@@ -79,7 +77,6 @@ describe('RegisterController', () => {
     const resWithdraw: ResWithdrawRegister = { message: '탈퇴했습니다.' };
 
     it('Use | withdrawRegister', async () => {
-      jest.spyOn(registerService, 'withdrawRegister');
       registerService.withdrawRegister = jest.fn().mockReturnValue(resWithdraw);
       await controller.withdrawRegister(user.id, user.id);
       expect(registerService.withdrawRegister).toHaveBeenCalled();

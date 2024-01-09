@@ -48,19 +48,19 @@ export class UserModel extends BaseModel {
 
   @ApiProperty({ example: [], required: false })
   @ManyToMany(() => UserModel, (user) => user.followingUsers)
-  followerUsers: UserModel[];
+  followerUsers: Promise<UserModel[]>;
 
   @ApiProperty({ example: [], required: false })
   @ManyToMany(() => UserModel, (user) => user.followerUsers)
   @JoinTable({ name: 'follow_model' })
-  followingUsers: UserModel[];
+  followingUsers: Promise<UserModel[]>;
 
   @ApiProperty({ example: [], required: false })
   @OneToMany(() => ChatModel, (chat) => chat.user)
-  chats: ChatModel[];
+  chats: Promise<ChatModel[]>;
 
   @ApiProperty({ example: [], required: false })
   @ManyToMany(() => RoomModel, (room) => room.users)
-  @JoinTable({ name: 'room_model' })
-  rooms: RoomModel[];
+  @JoinTable({ name: 'user_room_model' })
+  rooms: Promise<RoomModel[]>;
 }

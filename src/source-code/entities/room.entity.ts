@@ -8,9 +8,9 @@ import { ApiProperty } from '@nestjs/swagger';
 export class RoomModel extends BaseModel {
   @ApiProperty({ example: [], required: false })
   @OneToMany(() => ChatModel, (chat) => chat.room)
-  chats: ChatModel[];
+  chats: Promise<ChatModel[]>;
 
   @ApiProperty({ example: [], required: false })
   @ManyToMany(() => UserModel, (user) => user.rooms)
-  users: UserModel[];
+  users: Promise<UserModel[]>;
 }

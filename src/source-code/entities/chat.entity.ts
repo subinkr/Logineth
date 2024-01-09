@@ -12,12 +12,14 @@ export class ChatModel extends BaseModel {
   @ApiProperty({ example: [], required: false })
   @ManyToOne(() => RoomModel, (room) => room.chats, {
     onDelete: 'CASCADE',
+    eager: true,
   })
   room: RoomModel;
 
   @ApiProperty({ example: [], required: false })
   @ManyToOne(() => UserModel, (user) => user.chats, {
     onDelete: 'CASCADE',
+    eager: true,
   })
   user: UserModel;
 }

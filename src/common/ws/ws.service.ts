@@ -17,16 +17,17 @@ export class WsService {
     private readonly profileService: ProfileService,
   ) {}
 
-  async sendMessage(data: RoomGatewaySendMessage, roomID: number) {
-    const {
-      user: { id: userID },
-      content,
-    } = data;
+  async sendMessage(
+    data: RoomGatewaySendMessage,
+    roomID: number,
+    loginUserID: number,
+  ) {
+    const { content } = data;
 
     if (!content) {
       throw new BadRequestException('내용이 없습니다.');
     }
-    const { user } = await this.profileService.getUserByID(userID);
+    const { user } = await this.profileService.getUserByID(loginUserID);
 
     const rooms = await user.rooms;
     const roomIdx = rooms.findIndex((room) => room.id === roomID);

@@ -26,13 +26,16 @@ export class DataService {
       Key: file.originalname,
     };
 
-    return bucket
-      .putObject(params)
-      .promise()
-      .then(() => {
-        return {
-          image: `https://${process.env.AWS_S3_BUCKET}.s3.ap-northeast-2.amazonaws.com/${file.originalname}`,
-        };
-      });
+    return this.runBucket(bucket, params, file);
+  }
+
+  async runBucket(bucket: any, params: any, file: Express.Multer.File) {
+    return bucket.putObject(params).promise().then(this.returnImage);
+  }
+
+  returnImage(file: Express.Multer.File) {
+    return {
+      image: `https://${process.env.AWS_S3_BUCKET}.s3.ap-northeast-2.amazonaws.com/${file.originalname}`,
+    };
   }
 }

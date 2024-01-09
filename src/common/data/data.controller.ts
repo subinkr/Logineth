@@ -7,6 +7,8 @@ import {
 import { DataService } from './data.service';
 import { ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { plainToInstance } from 'class-transformer';
+import { ResUploadImageToS3 } from './dto/res-upload-image-to-s3.dto';
 
 @Controller('')
 export class DataController {
@@ -28,6 +30,7 @@ export class DataController {
     },
   })
   uploadImageToS3(@UploadedFile() file: Express.Multer.File) {
-    return this.dataService.uploadImageToS3(file);
+    const result = this.dataService.uploadImageToS3(file);
+    return plainToInstance(ResUploadImageToS3, result);
   }
 }

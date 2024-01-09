@@ -16,9 +16,9 @@ export class ProfileService {
     private readonly userRepo: Repository<UserModel>,
   ) {}
 
-  async getUserByID(id: number) {
+  async getUserByID(targetUserID: number) {
     const user = await this.userRepo.findOne({
-      where: { id },
+      where: { id: targetUserID },
     });
     if (!user) {
       throw new NotFoundException('유저를 찾을 수 없습니다.');
@@ -38,14 +38,18 @@ export class ProfileService {
     return { user };
   }
 
-  async editUser(targetId: number, reqEditUser: ReqEditUser, id: number) {
-    const { user } = await this.getUserByID(id);
-    if (targetId !== id && user.role !== Role.ADMIN) {
+  async editUser(
+    targetUserID: number,
+    reqEditUser: ReqEditUser,
+    loginUserID: number,
+  ) {
+    const { user } = await this.getUserByID(loginUserID);
+    if (targetUserID !== loginUserID && user.role !== Role.ADMIN) {
       throw new ForbiddenException('다른 유저를 수정할 수 없습니다.');
     }
 
-    await this.getUserByID(targetId);
-    await this.userRepo.save({ id: targetId, ...reqEditUser });
+    await this.getUserByID(targetUserID);
+    await this.userRepo.update(targetUserID, { ...reqEditUser });
 
     return { message: '수정되었습니다.' };
   }

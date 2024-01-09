@@ -34,9 +34,9 @@ export class ProfileController {
   @ApiOkResponse({ type: ResGetUserByID })
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
   async getUserByID(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) targetUserID: number,
   ): Promise<ResGetUserByID> {
-    const result = await this.profileService.getUserByID(id);
+    const result = await this.profileService.getUserByID(targetUserID);
     return plainToInstance(ResGetUserByID, result);
   }
 
@@ -47,14 +47,14 @@ export class ProfileController {
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
   @ApiForbiddenResponse(forbidden('다른 유저를 수정할 수 없습니다.'))
   async editUser(
-    @Param('id', ParseIntPipe) targetId: number,
+    @Param('id', ParseIntPipe) targetUserID: number,
     @Body() reqEditUser: ReqEditUser,
-    @AuthID() id: number,
+    @AuthID() loginUserID: number,
   ): Promise<ResEditUser> {
     const result = await this.profileService.editUser(
-      targetId,
+      targetUserID,
       reqEditUser,
-      id,
+      loginUserID,
     );
     return plainToInstance(ResEditUser, result);
   }

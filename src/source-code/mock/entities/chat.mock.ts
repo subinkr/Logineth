@@ -17,6 +17,10 @@ export class MockChatModel {
   };
   static chats: ChatModel[] = [MockChatModel.chat];
 
+  save() {
+    return MockChatModel.chat;
+  }
+
   find() {
     return MockChatModel.chats;
   }

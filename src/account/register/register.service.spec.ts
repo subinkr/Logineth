@@ -34,7 +34,6 @@ describe('RegisterService', () => {
   describe('Local Register', () => {
     it('Use | hashPassword', async () => {
       const reqLocalRegister: ReqLocalRegister = { ...notExistUser };
-      jest.spyOn(authService, 'hashPassword');
       authService.hashPassword = jest
         .fn()
         .mockReturnValue({ password: user.password });
@@ -44,7 +43,6 @@ describe('RegisterService', () => {
 
     it('Use | signToken', async () => {
       const reqLocalRegister: ReqLocalRegister = { ...notExistUser2 };
-      jest.spyOn(authService, 'signToken');
       authService.signToken = jest.fn().mockReturnValue({ accessToken });
       await service.localRegister(reqLocalRegister);
       expect(authService.signToken).toHaveBeenCalled();
@@ -65,7 +63,6 @@ describe('RegisterService', () => {
     const reqOAuthRegister: ReqOAuthRegister = { token: '' };
 
     it('Use | getGithubUserInfo', async () => {
-      jest.spyOn(service, 'getGithubUserInfo');
       service.getGithubUserInfo = jest
         .fn()
         .mockReturnValue({ id: 10, nickname: 'github', image: null });
@@ -74,7 +71,6 @@ describe('RegisterService', () => {
     });
 
     it('Use | getGoogleUserInfo', async () => {
-      jest.spyOn(service, 'getGoogleUserInfo');
       service.getGoogleUserInfo = jest
         .fn()
         .mockReturnValue({ id: 11, nickname: 'google', image: null });
@@ -83,7 +79,6 @@ describe('RegisterService', () => {
     });
 
     it('Use | getKakaoUserInfo', async () => {
-      jest.spyOn(service, 'getKakaoUserInfo');
       service.getKakaoUserInfo = jest
         .fn()
         .mockReturnValue({ id: 12, nickname: 'kakao', image: null });
@@ -116,7 +111,6 @@ describe('RegisterService', () => {
   // WRTEST: - use, error
   describe('Withdraw Register', () => {
     it('Use | getUserByID', async () => {
-      jest.spyOn(profileService, 'getUserByID');
       profileService.getUserByID = jest.fn().mockReturnValue({ user });
       await service.withdrawRegister(user.id, user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();

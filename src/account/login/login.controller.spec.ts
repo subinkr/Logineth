@@ -36,7 +36,6 @@ describe('LoginController', () => {
     const resLogin: ResLogin = { accessToken, user };
 
     it('Use | localLogin', async () => {
-      jest.spyOn(loginService, 'localLogin');
       loginService.localLogin = jest.fn().mockReturnValue(resLogin);
       await controller.localLogin(reqLocalLogin);
       expect(loginService.localLogin).toHaveBeenCalled();

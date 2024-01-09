@@ -26,7 +26,6 @@ describe('WsController', () => {
     const resGetRoom: ResGetRoom = { chats: [] };
 
     it('Use | getRoom', async () => {
-      jest.spyOn(wsService, 'getRoom');
       wsService.getRoom = jest.fn().mockReturnValue(resGetRoom);
       await controller.getRoom(room.id, 1, user.id);
       expect(wsService.getRoom).toHaveBeenCalled();

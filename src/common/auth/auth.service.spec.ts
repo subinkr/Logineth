@@ -26,7 +26,6 @@ describe('AuthService', () => {
   // STTEST: - use
   describe('Sign Token', () => {
     it('Use | getUserByID', async () => {
-      jest.spyOn(profileService, 'getUserByID');
       profileService.getUserByID = jest.fn().mockReturnValue(user);
       await service.signToken(user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
@@ -43,7 +42,6 @@ describe('AuthService', () => {
   // VTTEST: - use
   describe('Verify Token', () => {
     it('Use | verify', async () => {
-      jest.spyOn(jwtService, 'verify');
       jwtService.verify = jest.fn().mockReturnValue(true);
       service.verifyToken(`Bearer ${accessToken}`);
       expect(jwtService.verify).toHaveBeenCalled();

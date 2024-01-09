@@ -53,7 +53,6 @@ describe('ProfileService', () => {
     };
 
     it('Use | getUserByID', async () => {
-      jest.spyOn(service, 'getUserByID');
       service.getUserByID = jest.fn().mockReturnValue(user);
       await service.editUser(user.id, reqEditUser, user.id);
       expect(service.getUserByID).toHaveBeenCalled();

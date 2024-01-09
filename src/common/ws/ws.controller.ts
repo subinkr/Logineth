@@ -7,13 +7,22 @@ import {
 } from '@nestjs/common';
 import { AuthID } from '../auth/decorator/id.decorator';
 import { AuthGuard } from '../auth/auth.guard';
+import { WsService } from './ws.service';
+import { ResGetRoom } from './dto/res-get-room.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('')
 export class WsController {
-  @Get('room/:roomID')
+  constructor(private readonly wsService: WsService) {}
+
+  @Get('room/:roomID/:page')
   @UseGuards(AuthGuard)
   async getRoom(
     @Param('roomID', ParseIntPipe) roomID: number,
-    @AuthID() userID: number,
-  ) {}
+    @Param('page', ParseIntPipe) page: number,
+    @AuthID() loginUserID: number,
+  ) {
+    const result = await this.wsService.getRoom(roomID, page, loginUserID);
+    return plainToInstance(ResGetRoom, result);
+  }
 }

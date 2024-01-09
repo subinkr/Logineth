@@ -2,6 +2,9 @@ import { UserModel } from 'src/source-code/entities/user.entity';
 import { Provider } from 'src/source-code/enum/provider';
 import { Role } from 'src/source-code/enum/role';
 import { lazyArray } from '../common/lazyArray';
+import { RoomModel } from 'src/source-code/entities/room.entity';
+import { ChatModel } from 'src/source-code/entities/chat.entity';
+import { MockRoomModel } from './room.mock';
 
 export class MockUserModel {
   static defaultUser: UserModel = {
@@ -15,15 +18,16 @@ export class MockUserModel {
     provider: Provider.LOCAL,
     createdAt: new Date(1),
     updatedAt: new Date(1),
-    followingUsers: lazyArray(),
-    followerUsers: lazyArray(),
-    rooms: lazyArray(),
-    chats: lazyArray(),
+    followingUsers: lazyArray<UserModel>(),
+    followerUsers: lazyArray<UserModel>(),
+    rooms: lazyArray<RoomModel>(),
+    chats: lazyArray<ChatModel>(),
   };
 
   static user: UserModel = {
     ...this.defaultUser,
     role: Role.ADMIN,
+    rooms: lazyArray<RoomModel>([MockRoomModel.room]),
   };
 
   static otherUser: UserModel = {
@@ -98,6 +102,8 @@ export class MockUserModel {
 
     return MockUserModel.addedUser;
   }
+
+  update() {}
 
   delete() {
     return true;

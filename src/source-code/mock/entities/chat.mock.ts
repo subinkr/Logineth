@@ -16,4 +16,8 @@ export class MockChatModel {
     ...this.defaultChat,
   };
   static chats: ChatModel[] = [MockChatModel.chat];
+
+  find() {
+    return MockChatModel.chats;
+  }
 }

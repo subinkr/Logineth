@@ -1,9 +1,10 @@
 import { UserModel } from 'src/source-code/entities/user.entity';
 import { Provider } from 'src/source-code/enum/provider';
 import { Role } from 'src/source-code/enum/role';
+import { lazyArray } from '../common/lazyArray';
 
 export class MockUserModel {
-  static user: UserModel = {
+  static defaultUserAttributes: UserModel = {
     id: 1,
     username: 'username',
     password: '$2b$10$G4R91NGJ3hXa4EFszIjDhumEY31yMwkvu9TSGVSb.iEfPNcdSYIu2',
@@ -14,58 +15,44 @@ export class MockUserModel {
     provider: Provider.LOCAL,
     createdAt: new Date(1),
     updatedAt: new Date(1),
+    followingUsers: lazyArray(),
+    followerUsers: lazyArray(),
+    rooms: lazyArray(),
+    chats: lazyArray(),
+  };
+
+  static user: UserModel = {
+    ...this.defaultUserAttributes,
   };
 
   static otherUser: UserModel = {
+    ...this.defaultUserAttributes,
     id: 2,
     username: 'otherUser',
-    password: '$2b$10$G4R91NGJ3hXa4EFszIjDhumEY31yMwkvu9TSGVSb.iEfPNcdSYIu2',
     nickname: 'otherUser',
-    image: null,
-    bio: null,
-    role: Role.USER,
-    provider: Provider.LOCAL,
-    createdAt: new Date(1),
-    updatedAt: new Date(1),
   };
 
   static addedUser: UserModel = {
+    ...this.defaultUserAttributes,
     id: 3,
     username: 'addedUser',
-    password: '$2b$10$G4R91NGJ3hXa4EFszIjDhumEY31yMwkvu9TSGVSb.iEfPNcdSYIu2',
     nickname: 'addedUser',
-    image: null,
-    bio: null,
-    role: Role.USER,
-    provider: Provider.LOCAL,
-    createdAt: new Date(1),
-    updatedAt: new Date(1),
   };
 
   static notExistUser: UserModel = {
+    ...this.defaultUserAttributes,
     id: 0,
     username: 'notExistUser',
     password: 'p@ssw0rd',
     nickname: '',
-    image: null,
-    bio: null,
-    role: Role.USER,
-    provider: Provider.LOCAL,
-    createdAt: null,
-    updatedAt: null,
   };
 
   static notExistUser2: UserModel = {
+    ...this.defaultUserAttributes,
     id: 0,
     username: 'notExistUser2',
     password: 'p@ssw0rd',
     nickname: '',
-    image: null,
-    bio: null,
-    role: Role.USER,
-    provider: Provider.LOCAL,
-    createdAt: null,
-    updatedAt: null,
   };
 
   static swaggerUser = {

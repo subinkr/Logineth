@@ -77,7 +77,7 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/account/**/*.(controller|service).(t|j)s"
+      "**/*.(controller|service).(t|j)s"
     ],
     "collectCoverage": true,
     "coverageThreshold": {

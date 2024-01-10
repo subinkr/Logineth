@@ -1,14 +1,13 @@
-import { Entity, ManyToMany, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 import { BaseModel } from './base.entity';
 import { ChatModel } from './chat.entity';
 import { UserModel } from './user.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
 
 @Entity()
 export class RoomModel extends BaseModel {
   @ApiProperty({ example: [], required: false })
-  @IsString()
+  @Column()
   name: string;
 
   @ApiProperty({ example: [], required: false })

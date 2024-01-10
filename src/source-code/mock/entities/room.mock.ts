@@ -16,4 +16,8 @@ export class MockRoomModel {
   static room: RoomModel = {
     ...this.defaultRoom,
   };
+
+  save() {}
+
+  delete() {}
 }

@@ -3,6 +3,7 @@ import { FriendService } from './friend.service';
 import { ProfileService } from '../profile/profile.service';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { BadRequestException, ForbiddenException } from '@nestjs/common';
+import { providers } from 'src/source-code/mock/providers/providers';
 
 describe('FriendService', () => {
   let service: FriendService;
@@ -11,7 +12,7 @@ describe('FriendService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [FriendService],
+      providers,
     }).compile();
 
     service = module.get<FriendService>(FriendService);
@@ -21,7 +22,7 @@ describe('FriendService', () => {
   // FTEST: - use, error
   describe('Following', () => {
     it('Use | getUserByID', async () => {
-      profileService.getUserByID = jest.fn();
+      profileService.getUserByID = jest.fn().mockReturnValue({ user });
       await service.following(otherUser.id, user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
     });
@@ -40,8 +41,8 @@ describe('FriendService', () => {
   // UFTEST: - use, error
   describe('UnFollowing', () => {
     it('Use | getUserByID', async () => {
-      profileService.getUserByID = jest.fn();
-      await service.unFollowing(otherUser.id, user.id);
+      profileService.getUserByID = jest.fn().mockReturnValue({ user });
+      await service.unFollowing(influencer.id, user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
     });
 

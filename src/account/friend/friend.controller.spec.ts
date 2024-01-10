@@ -9,7 +9,7 @@ import { ResUnFollowing } from './dto/res-un-following.dto';
 describe('FriendController', () => {
   let controller: FriendController;
   let friendService: FriendService;
-  const { user, otherUser } = MockUserModel;
+  const { user, otherUser, influencer } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -46,12 +46,12 @@ describe('FriendController', () => {
     const resUnFollowing: ResUnFollowing = { message: '언팔로우 성공' };
     it('Use | unFollowing', async () => {
       friendService.unFollowing = jest.fn();
-      await controller.unFollowing(otherUser.id, user.id);
+      await controller.unFollowing(influencer.id, user.id);
       expect(friendService.unFollowing).toHaveBeenCalled();
     });
 
     it('Return | ResUnFollowing', async () => {
-      const result = await controller.unFollowing(otherUser.id, user.id);
+      const result = await controller.unFollowing(influencer.id, user.id);
       expect(result).toBeInstanceOf(ResUnFollowing);
 
       const keys = Object.keys(result);

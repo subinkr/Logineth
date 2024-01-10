@@ -10,6 +10,7 @@ import { ProfileService } from '../profile/profile.service';
 import { ResFollowing } from './dto/res-following.dto';
 import { ResUnFollowing } from './dto/res-un-following.dto';
 import { RoomModel } from 'src/source-code/entities/room.entity';
+import { ResGetUser } from '../profile/dto/res-get-user.dto';
 
 @Injectable()
 export class FriendService {
@@ -96,7 +97,7 @@ export class FriendService {
     const followerIdx = followerUsers.findIndex(
       (user) => user.id === loginUserID,
     );
-    if (roomIdx !== -1 && followerIdx !== -1) {
+    if (roomIdx !== -1 && followerIdx === -1) {
       await this.roomRepo.delete(rooms[roomIdx].id);
     }
 

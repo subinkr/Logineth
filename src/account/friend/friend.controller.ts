@@ -1,4 +1,11 @@
-import { Controller, Delete, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Param,
+  ParseIntPipe,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { FriendService } from './friend.service';
 import { AuthID } from 'src/common/auth/decorator/id.decorator';
 import { AuthGuard } from 'src/common/auth/auth.guard';
@@ -13,7 +20,7 @@ export class FriendController {
   @Post('following/:targetUserID')
   @UseGuards(AuthGuard)
   async following(
-    @Param('targetUserID') targetUserID: number,
+    @Param('targetUserID', ParseIntPipe) targetUserID: number,
     @AuthID() loginUserID: number,
   ) {
     const result = await this.friendService.following(
@@ -26,7 +33,7 @@ export class FriendController {
   @Delete('unFollowing/:targetUserID')
   @UseGuards(AuthGuard)
   async unFollowing(
-    @Param('targetUserID') targetUserID: number,
+    @Param('targetUserID', ParseIntPipe) targetUserID: number,
     @AuthID() loginUserID: number,
   ) {
     const result = await this.friendService.unFollowing(

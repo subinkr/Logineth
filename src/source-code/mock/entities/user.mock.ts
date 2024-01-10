@@ -36,6 +36,7 @@ export class MockUserModel {
     role: Role.ADMIN,
     rooms: lazyArray<RoomModel>([MockRoomModel.room]),
     followingUsers: lazyArray<UserModel>([MockUserModel.influencer]),
+    followerUsers: lazyArray<UserModel>([MockUserModel.influencer]),
   };
 
   static otherUser: UserModel = {
@@ -80,7 +81,11 @@ export class MockUserModel {
     updatedAt: new Date(1),
   };
 
-  static userList: UserModel[] = [MockUserModel.user, MockUserModel.otherUser];
+  static userList: UserModel[] = [
+    MockUserModel.user,
+    MockUserModel.otherUser,
+    MockUserModel.influencer,
+  ];
 
   static accessToken: string =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWF0IjoxNzAzNDA5OTA0LCJleHAiOjFlKzUwfQ.BBf7DDbpw-mopP6iPvu8pxc7PoTjCbt5p7h3RPWT_Cw';

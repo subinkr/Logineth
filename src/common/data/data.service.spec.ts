@@ -29,20 +29,10 @@ describe('DataService', () => {
     service = module.get<DataService>(DataService);
   });
 
-  // RITEST: - return
-  describe('Return Image', () => {
-    it('Return | {image: string}', () => {
-      const result = service.returnImage(emptyFile);
-      const keys = Object.keys(result);
-      const required = Object.keys(resUploadImageToS3);
-      expect(keys).toEqual(expect.arrayContaining(required));
-    });
-  });
-
   // RBTEST: - use
   describe('Run Bucket', () => {
-    const then = () => {
-      return service.returnImage(emptyFile);
+    const then = (callback: Function) => {
+      return callback();
     };
     const promise = () => {
       return { then };
@@ -54,10 +44,9 @@ describe('DataService', () => {
     };
     const params = {};
 
-    it('Use | returnImage', async () => {
-      service.returnImage = jest.fn().mockReturnValue(resUploadImageToS3);
-      await service.runBucket(bucket, params, emptyFile);
-      expect(service.returnImage).toHaveBeenCalled();
+    it('Return | {image: string}', async () => {
+      const result = await service.runBucket(bucket, params, emptyFile);
+      expect(typeof result.image).toBe('string');
     });
   });
 

@@ -30,15 +30,10 @@ export class DataService {
   }
 
   async runBucket(bucket: any, params: any, file: Express.Multer.File) {
-    return bucket
-      .putObject(params)
-      .promise()
-      .then(() => this.returnImage(file));
-  }
-
-  returnImage(file: Express.Multer.File) {
-    return {
+    const callback = () => ({
       image: `https://${process.env.AWS_S3_BUCKET}.s3.ap-northeast-2.amazonaws.com/${file.originalname}`,
-    };
+    });
+
+    return bucket.putObject(params).promise().then(callback);
   }
 }

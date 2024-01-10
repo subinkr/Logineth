@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { WsService } from './ws.service';
 import { providers } from 'src/source-code/mock/providers/providers';
 import { ProfileService } from 'src/account/profile/profile.service';
-import { MockChatModel } from 'src/source-code/mock/entities/chat.mock';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { MockRoomModel } from 'src/source-code/mock/entities/room.mock';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
@@ -13,7 +12,6 @@ describe('WsService', () => {
   let profileService: ProfileService;
   const { user, otherUser } = MockUserModel;
   const { room } = MockRoomModel;
-  const { chats } = MockChatModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -38,6 +36,7 @@ describe('WsService', () => {
     });
   });
 
+  // SMTEST: - use, error
   describe('Send Message', () => {
     const roomGatewaySendMessage: RoomGatewaySendMessage = {
       content: 'content',

@@ -24,4 +24,8 @@ export class MockChatModel {
   find() {
     return MockChatModel.chats;
   }
+
+  findAndCount() {
+    return [[], 0];
+  }
 }

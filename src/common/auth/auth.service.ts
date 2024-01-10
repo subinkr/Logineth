@@ -10,7 +10,7 @@ export class AuthService {
     private readonly profileService: ProfileService,
   ) {}
 
-  async signToken(id: number) {
+  async signToken(id: number): Promise<{ accessToken: string }> {
     await this.profileService.getUserByID(id);
 
     const accessToken = this.jwtService.sign(
@@ -23,7 +23,7 @@ export class AuthService {
     return { accessToken };
   }
 
-  verifyToken(accessToken: string) {
+  verifyToken(accessToken: string): { id: boolean } {
     const token = accessToken.split(' ')[1];
     const result = this.jwtService.verify(token, {
       secret: process.env.JWT_SECRET || 'test',
@@ -32,7 +32,7 @@ export class AuthService {
     return result;
   }
 
-  async hashPassword(password: string) {
+  async hashPassword(password: string): Promise<{ hashPassword: string }> {
     const hashPassword = await bcrypt.hash(
       password,
       parseInt(process.env.HASH_SALT) || 10,
@@ -40,7 +40,10 @@ export class AuthService {
     return { hashPassword };
   }
 
-  async verifyPassword(password: string, userPassword: string) {
+  async verifyPassword(
+    password: string,
+    userPassword: string,
+  ): Promise<boolean> {
     const result = await bcrypt.compare(password, userPassword);
     if (!result) {
       throw new BadRequestException('잘못된 비밀번호입니다.');

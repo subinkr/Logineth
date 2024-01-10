@@ -5,6 +5,7 @@ import { ProfileService } from '../profile/profile.service';
 import { ReqOAuthLogin } from './dto/req-oauth-login.dto';
 import { Provider } from 'src/source-code/enum/provider';
 import { RegisterService } from '../register/register.service';
+import { ResLogin } from './dto/res-login.dto';
 
 @Injectable()
 export class LoginService {
@@ -14,7 +15,7 @@ export class LoginService {
     private readonly registerService: RegisterService,
   ) {}
 
-  async localLogin(reqLocalLogin: ReqLocalLogin) {
+  async localLogin(reqLocalLogin: ReqLocalLogin): Promise<ResLogin> {
     const { username, password } = reqLocalLogin;
 
     const { user } = await this.profileService.getUserByUsername(username);
@@ -26,7 +27,10 @@ export class LoginService {
     return { accessToken, user };
   }
 
-  async oAuthLogin(reqOAuthLogin: ReqOAuthLogin, provider: Provider) {
+  async oAuthLogin(
+    reqOAuthLogin: ReqOAuthLogin,
+    provider: Provider,
+  ): Promise<ResLogin> {
     return await this.registerService.oAuthRegister(reqOAuthLogin, provider);
   }
 }

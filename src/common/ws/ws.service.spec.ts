@@ -4,7 +4,7 @@ import { providers } from 'src/source-code/mock/providers/providers';
 import { ProfileService } from 'src/account/profile/profile.service';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { MockRoomModel } from 'src/source-code/mock/entities/room.mock';
-import { BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { RoomGatewaySendMessage } from './dto/room-gateway-send-message.dto';
 
 describe('WsService', () => {
@@ -32,7 +32,7 @@ describe('WsService', () => {
 
     it('Error | Cannot access not included room', async () => {
       const result = service.getRoom(room.id, 1, otherUser.id);
-      await expect(result).rejects.toThrow(UnauthorizedException);
+      await expect(result).rejects.toThrow(ForbiddenException);
     });
   });
 
@@ -59,7 +59,7 @@ describe('WsService', () => {
         room.id,
         otherUser.id,
       );
-      await expect(result).rejects.toThrow(UnauthorizedException);
+      await expect(result).rejects.toThrow(ForbiddenException);
     });
   });
 });

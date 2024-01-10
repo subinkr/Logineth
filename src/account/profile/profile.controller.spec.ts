@@ -3,7 +3,7 @@ import { ProfileController } from './profile.controller';
 import { providers } from 'src/source-code/mock/providers/providers';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { ProfileService } from './profile.service';
-import { ResGetUserByID } from './dto/res-get-user-by-id.dto';
+import { ResGetUser } from './dto/res-get-user.dto';
 import { ReqEditUser } from './dto/req-edit-user.dto';
 import { ResEditUser } from './dto/res-edit-user.dto';
 
@@ -24,20 +24,20 @@ describe('ProfileController', () => {
 
   // GUBUTEST: - use, return
   describe('Get User By ID', () => {
-    const resGetUserByID: ResGetUserByID = { user };
+    const resGetUser: ResGetUser = { user };
 
     it('Use | getUserByID', async () => {
-      profileService.getUserByID = jest.fn().mockReturnValue(resGetUserByID);
+      profileService.getUserByID = jest.fn().mockReturnValue(resGetUser);
       await controller.getUserByID(user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
     });
 
-    it('Return | ResGetUserByID', async () => {
+    it('Return | ResGetUser', async () => {
       const result = await controller.getUserByID(user.id);
-      expect(result).toBeInstanceOf(ResGetUserByID);
+      expect(result).toBeInstanceOf(ResGetUser);
 
       const keys = Object.keys(result);
-      const required = Object.keys(resGetUserByID);
+      const required = Object.keys(resGetUser);
       expect(keys).toEqual(expect.arrayContaining(required));
     });
   });

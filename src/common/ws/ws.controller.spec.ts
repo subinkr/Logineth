@@ -23,7 +23,11 @@ describe('WsController', () => {
   });
 
   describe('Get Room', () => {
-    const resGetRoom: ResGetRoom = { chats: [] };
+    const resGetRoom: ResGetRoom = {
+      chats: [],
+      chatsCount: 0,
+      nextPage: false,
+    };
 
     it('Use | getRoom', async () => {
       wsService.getRoom = jest.fn().mockReturnValue(resGetRoom);

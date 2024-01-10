@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DataService } from './data.service';
 import { providers } from 'src/source-code/mock/providers/providers';
-import * as AWS from 'aws-sdk';
 import { Readable } from 'typeorm/platform/PlatformTools';
 import { ResUploadImageToS3 } from './dto/res-upload-image-to-s3.dto';
 
@@ -29,7 +28,7 @@ describe('DataService', () => {
     service = module.get<DataService>(DataService);
   });
 
-  // RBTEST: - use
+  // RBTEST: - return
   describe('Run Bucket', () => {
     const then = (callback: Function) => {
       return callback();

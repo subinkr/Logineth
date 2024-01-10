@@ -13,6 +13,8 @@ import { Provider } from 'src/source-code/enum/provider';
 import { ReqOAuthRegister } from './dto/req-oauth-register.dto';
 import { ProfileService } from '../profile/profile.service';
 import { Role } from 'src/source-code/enum/role';
+import { ResRegister } from './dto/res-register.dto';
+import { ResWithdrawRegister } from './dto/res-withdraw-register.dto';
 
 @Injectable()
 export class RegisterService {
@@ -23,7 +25,9 @@ export class RegisterService {
     private readonly profileService: ProfileService,
   ) {}
 
-  async localRegister(reqLocalRegister: ReqLocalRegister) {
+  async localRegister(
+    reqLocalRegister: ReqLocalRegister,
+  ): Promise<ResRegister> {
     const { username, password } = reqLocalRegister;
     const existUser = await this.userRepo.exist({ where: { username } });
     if (existUser) {
@@ -41,7 +45,10 @@ export class RegisterService {
     return { accessToken, user };
   }
 
-  async oAuthRegister(reqOAuthRegister: ReqOAuthRegister, provider: Provider) {
+  async oAuthRegister(
+    reqOAuthRegister: ReqOAuthRegister,
+    provider: Provider,
+  ): Promise<ResRegister> {
     const { token } = reqOAuthRegister;
 
     let userInfo = { id: null, nickname: null, image: null };
@@ -79,7 +86,10 @@ export class RegisterService {
     return { accessToken, user };
   }
 
-  async withdrawRegister(withdrawID: number, loginUserID: number) {
+  async withdrawRegister(
+    withdrawID: number,
+    loginUserID: number,
+  ): Promise<ResWithdrawRegister> {
     const { user } = await this.profileService.getUserByID(loginUserID);
     if (withdrawID !== loginUserID && user.role !== Role.ADMIN) {
       throw new ForbiddenException('다른 유저를 탈퇴할 수 없습니다.');

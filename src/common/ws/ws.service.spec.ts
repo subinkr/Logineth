@@ -2,10 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { WsService } from './ws.service';
 import { providers } from 'src/source-code/mock/providers/providers';
 import { ProfileService } from 'src/account/profile/profile.service';
-import { MockChatModel } from 'src/source-code/mock/entities/chat.mock';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { MockRoomModel } from 'src/source-code/mock/entities/room.mock';
-import { BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { RoomGatewaySendMessage } from './dto/room-gateway-send-message.dto';
 
 describe('WsService', () => {
@@ -13,7 +12,6 @@ describe('WsService', () => {
   let profileService: ProfileService;
   const { user, otherUser } = MockUserModel;
   const { room } = MockRoomModel;
-  const { chats } = MockChatModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -34,10 +32,11 @@ describe('WsService', () => {
 
     it('Error | Cannot access not included room', async () => {
       const result = service.getRoom(room.id, 1, otherUser.id);
-      await expect(result).rejects.toThrow(UnauthorizedException);
+      await expect(result).rejects.toThrow(ForbiddenException);
     });
   });
 
+  // SMTEST: - use, error
   describe('Send Message', () => {
     const roomGatewaySendMessage: RoomGatewaySendMessage = {
       content: 'content',
@@ -60,7 +59,7 @@ describe('WsService', () => {
         room.id,
         otherUser.id,
       );
-      await expect(result).rejects.toThrow(UnauthorizedException);
+      await expect(result).rejects.toThrow(ForbiddenException);
     });
   });
 });

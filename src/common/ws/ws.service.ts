@@ -1,7 +1,7 @@
 import {
   BadRequestException,
   Injectable,
-  UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ChatModel } from 'src/source-code/entities/chat.entity';
@@ -26,7 +26,7 @@ export class WsService {
     const rooms = await user.rooms;
     const roomIdx = rooms.findIndex((room) => room.id === roomID);
     if (roomIdx === -1) {
-      throw new UnauthorizedException('해당 방에 접근할 수 없습니다.');
+      throw new ForbiddenException('해당 방에 접근할 수 없습니다.');
     }
 
     const take = 30;
@@ -69,7 +69,7 @@ export class WsService {
     const rooms = await user.rooms;
     const roomIdx = rooms.findIndex((room) => room.id === roomID);
     if (roomIdx === -1) {
-      throw new UnauthorizedException('해당 방에 접근할 수 없습니다.');
+      throw new ForbiddenException('해당 방에 접근할 수 없습니다.');
     }
     const room = rooms[roomIdx];
 

@@ -12,6 +12,7 @@ import { ChatModel } from 'src/source-code/entities/chat.entity';
 import { MockRoomModel } from '../entities/room.mock';
 import { MockChatModel } from '../entities/chat.mock';
 import { DataService } from 'src/common/data/data.service';
+import { FriendService } from 'src/account/friend/friend.service';
 
 export const providers = [
   AuthService,
@@ -21,6 +22,7 @@ export const providers = [
   LoginService,
   WsService,
   DataService,
+  FriendService,
   {
     provide: getRepositoryToken(UserModel),
     useClass: MockUserModel,

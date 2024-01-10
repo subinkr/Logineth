@@ -8,6 +8,7 @@ export class MockRoomModel {
     id: 1,
     createdAt: new Date(1),
     updatedAt: new Date(1),
+    name: '1-1004',
     chats: lazyArray<ChatModel>(),
     users: lazyArray<UserModel>(),
   };

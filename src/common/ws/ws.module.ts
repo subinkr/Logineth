@@ -17,5 +17,6 @@ import { DataModule } from '../data/data.module';
   ],
   providers: [RoomGateway, WsService],
   controllers: [WsController],
+  exports: [WsService],
 })
 export class WsModule {}

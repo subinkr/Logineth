@@ -24,10 +24,18 @@ export class MockUserModel {
     chats: lazyArray<ChatModel>(),
   };
 
+  static influencer: UserModel = {
+    ...this.defaultUser,
+    id: 1004,
+    username: 'influencer',
+    nickname: 'influencer',
+  };
+
   static user: UserModel = {
     ...this.defaultUser,
     role: Role.ADMIN,
     rooms: lazyArray<RoomModel>([MockRoomModel.room]),
+    followingUsers: lazyArray<UserModel>([MockUserModel.influencer]),
   };
 
   static otherUser: UserModel = {

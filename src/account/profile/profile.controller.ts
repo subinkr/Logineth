@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
-import { ResGetUserByID } from './dto/res-get-user-by-id.dto';
+import { ResGetUser } from './dto/res-get-user.dto';
 import { plainToInstance } from 'class-transformer';
 import {
   ApiForbiddenResponse,
@@ -31,13 +31,13 @@ export class ProfileController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Get user by id' })
-  @ApiOkResponse({ type: ResGetUserByID })
+  @ApiOkResponse({ type: ResGetUser })
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
   async getUserByID(
     @Param('id', ParseIntPipe) targetUserID: number,
-  ): Promise<ResGetUserByID> {
+  ): Promise<ResGetUser> {
     const result = await this.profileService.getUserByID(targetUserID);
-    return plainToInstance(ResGetUserByID, result);
+    return plainToInstance(ResGetUser, result);
   }
 
   @Put(':id/edit')

@@ -60,7 +60,7 @@ describe('FriendService', () => {
   // FUTEST: - use
   describe('Following Users', () => {
     it('Use | getUserByID', async () => {
-      profileService.getUserByID = jest.fn();
+      profileService.getUserByID = jest.fn().mockReturnValue({ user });
       await service.getFollowingUsers(user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
     });
@@ -69,7 +69,7 @@ describe('FriendService', () => {
   // FUTEST: - use
   describe('Follower Users', () => {
     it('Use | getUserByID', async () => {
-      profileService.getUserByID = jest.fn();
+      profileService.getUserByID = jest.fn().mockReturnValue({ user });
       await service.getFollowingUsers(user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
     });

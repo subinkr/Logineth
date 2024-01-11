@@ -76,7 +76,7 @@ describe('FriendController', () => {
 
     it('Return | ResGetFollowingUsers', async () => {
       const result = await controller.getFollowingUsers(user.id);
-      expect(result).toBeInstanceOf(resGetFollowingUsers);
+      expect(result).toBeInstanceOf(ResGetFollowingUsers);
 
       const keys = Object.keys(result);
       const required = Object.keys(resGetFollowingUsers);

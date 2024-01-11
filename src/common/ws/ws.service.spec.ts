@@ -22,6 +22,15 @@ describe('WsService', () => {
     profileService = module.get<ProfileService>(ProfileService);
   });
 
+  // GRTEST: - use
+  describe('Get Rooms', () => {
+    it('Use | getUserByID', async () => {
+      profileService.getUserByID = jest.fn().mockReturnValue({ user });
+      await service.getRooms(user.id);
+      expect(profileService.getUserByID).toHaveBeenCalled();
+    });
+  });
+
   // GRTEST: - use, error
   describe('Get Room', () => {
     it('Use | getUserByID', async () => {
@@ -33,6 +42,28 @@ describe('WsService', () => {
     it('Error | Cannot access not included room', async () => {
       const result = service.getRoom(room.id, 1, otherUser.id);
       await expect(result).rejects.toThrow(ForbiddenException);
+    });
+  });
+
+  // CRTEST: - return
+  describe('Create Room', () => {
+    it('Return | {room: RoomModel}', async () => {
+      const roomName = `${user.id}-${otherUser.id}`;
+      const result = await service.createRoom(roomName, [user, otherUser]);
+      const keys = Object.keys(result);
+      const required = Object.keys({ room });
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
+  });
+
+  // DRTEST: - return
+  describe('Delete Room', () => {
+    it('Return | {message: string}', async () => {
+      const roomName = `${user.id}-${otherUser.id}`;
+      const result = await service.deleteRoom(user, roomName);
+      const keys = Object.keys(result);
+      const required = Object.keys({ message: '삭제되었습니다.' });
+      expect(keys).toEqual(expect.arrayContaining(required));
     });
   });
 

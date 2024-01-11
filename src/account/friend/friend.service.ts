@@ -9,18 +9,17 @@ import { Repository } from 'typeorm';
 import { ProfileService } from '../profile/profile.service';
 import { ResFollowing } from './dto/res-following.dto';
 import { ResUnFollowing } from './dto/res-un-following.dto';
-import { RoomModel } from 'src/source-code/entities/room.entity';
 import { ResGetFollowingUsers } from './dto/res-get-following-users.dto';
 import { ResGetFollowerUsers } from './dto/res-get-follower-users.dto';
+import { WsService } from 'src/common/ws/ws.service';
 
 @Injectable()
 export class FriendService {
   constructor(
     @InjectRepository(UserModel)
     private readonly userRepo: Repository<UserModel>,
-    @InjectRepository(RoomModel)
-    private readonly roomRepo: Repository<RoomModel>,
     private readonly profileService: ProfileService,
+    private readonly wsService: WsService,
   ) {}
 
   // FSERVICE: - {message: string}
@@ -50,14 +49,11 @@ export class FriendService {
 
     const rooms = await loginUser.rooms;
     const [smallID, bigID] = [targetUserID, loginUserID].sort((a, b) => a - b);
-    const roomIdx = rooms.findIndex(
-      (room) => room.name === `${smallID}-${bigID}`,
-    );
+    const roomName = `${smallID}-${bigID}`;
+
+    const roomIdx = rooms.findIndex((room) => room.name === roomName);
     if (roomIdx === -1) {
-      await this.roomRepo.save({
-        name: `${smallID}-${bigID}`,
-        users: Promise.resolve([loginUser, targetUser]),
-      });
+      await this.wsService.createRoom(roomName, [loginUser, targetUser]);
     }
 
     return { message: '팔로우 성공' };
@@ -87,18 +83,15 @@ export class FriendService {
     loginUser.followingUsers = Promise.resolve(followingUsers);
     await this.userRepo.save(loginUser);
 
-    const rooms = await loginUser.rooms;
     const followerUsers = await loginUser.followerUsers;
     const [smallID, bigID] = [targetUserID, loginUserID].sort((a, b) => a - b);
+    const roomName = `${smallID}-${bigID}`;
 
-    const roomIdx = rooms.findIndex(
-      (room) => room.name === `${smallID}-${bigID}`,
-    );
     const followerIdx = followerUsers.findIndex(
       (user) => user.id === loginUserID,
     );
-    if (roomIdx !== -1 && followerIdx === -1) {
-      await this.roomRepo.delete(rooms[roomIdx].id);
+    if (followerIdx === -1) {
+      await this.wsService.deleteRoom(loginUser, roomName);
     }
 
     return { message: '언팔로우 성공' };

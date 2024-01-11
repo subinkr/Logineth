@@ -4,7 +4,7 @@ import { UserModel } from 'src/source-code/entities/user.entity';
 import { ChatModel } from 'src/source-code/entities/chat.entity';
 
 export class MockRoomModel {
-  static defaultRoom: RoomModel = {
+  defaultRoom: RoomModel = {
     id: 1,
     createdAt: new Date(1),
     updatedAt: new Date(1),
@@ -14,8 +14,12 @@ export class MockRoomModel {
   };
 
   static room: RoomModel = {
-    ...this.defaultRoom,
+    ...new MockRoomModel().defaultRoom,
   };
+
+  create() {
+    return new MockRoomModel().defaultRoom;
+  }
 
   save() {}
 

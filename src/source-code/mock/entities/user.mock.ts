@@ -7,7 +7,7 @@ import { ChatModel } from 'src/source-code/entities/chat.entity';
 import { MockRoomModel } from './room.mock';
 
 export class MockUserModel {
-  static defaultUser: UserModel = {
+  defaultUser: UserModel = {
     id: 1,
     username: 'username',
     password: '$2b$10$G4R91NGJ3hXa4EFszIjDhumEY31yMwkvu9TSGVSb.iEfPNcdSYIu2',
@@ -25,14 +25,14 @@ export class MockUserModel {
   };
 
   static influencer: UserModel = {
-    ...this.defaultUser,
+    ...new MockUserModel().defaultUser,
     id: 1004,
     username: 'influencer',
     nickname: 'influencer',
   };
 
   static user: UserModel = {
-    ...this.defaultUser,
+    ...new MockUserModel().defaultUser,
     role: Role.ADMIN,
     rooms: lazyArray<RoomModel>([MockRoomModel.room]),
     followingUsers: lazyArray<UserModel>([MockUserModel.influencer]),
@@ -40,21 +40,21 @@ export class MockUserModel {
   };
 
   static otherUser: UserModel = {
-    ...this.defaultUser,
+    ...new MockUserModel().defaultUser,
     id: 2,
     username: 'otherUser',
     nickname: 'otherUser',
   };
 
   static addedUser: UserModel = {
-    ...this.defaultUser,
+    ...new MockUserModel().defaultUser,
     id: 3,
     username: 'addedUser',
     nickname: 'addedUser',
   };
 
   static notExistUser: UserModel = {
-    ...this.defaultUser,
+    ...new MockUserModel().defaultUser,
     id: 0,
     username: 'notExistUser',
     password: 'p@ssw0rd',
@@ -62,7 +62,7 @@ export class MockUserModel {
   };
 
   static notExistUser2: UserModel = {
-    ...this.defaultUser,
+    ...new MockUserModel().defaultUser,
     id: 0,
     username: 'notExistUser2',
     password: 'p@ssw0rd',
@@ -113,7 +113,7 @@ export class MockUserModel {
   save() {
     MockUserModel.users.push(MockUserModel.addedUser);
 
-    return MockUserModel.addedUser;
+    return MockUserModel.user;
   }
 
   update() {}

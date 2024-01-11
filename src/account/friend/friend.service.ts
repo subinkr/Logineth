@@ -42,10 +42,9 @@ export class FriendService {
     if (followingIdx !== -1) {
       throw new BadRequestException('이미 팔로우 중입니다.');
     }
-    await this.userRepo.save({
-      id: loginUserID,
-      followingUsers: Promise.resolve([...followingUsers, targetUser]),
-    });
+
+    loginUser.followingUsers = Promise.resolve([...followingUsers, targetUser]);
+    await this.userRepo.save(loginUser);
 
     const rooms = await loginUser.rooms;
     const [smallID, bigID] = [targetUserID, loginUserID].sort((a, b) => a - b);
@@ -74,7 +73,6 @@ export class FriendService {
       await this.profileService.getUserByID(loginUserID);
 
     const followingUsers = await loginUser.followingUsers;
-
     const followingIdx = followingUsers.findIndex(
       (user) => user.id === targetUserID,
     );
@@ -82,12 +80,9 @@ export class FriendService {
       throw new BadRequestException('이미 언팔로우 했습니다.');
     }
 
-    await this.userRepo.save({
-      id: loginUserID,
-      followingUsers: Promise.resolve([
-        ...followingUsers.slice(followingIdx, 1),
-      ]),
-    });
+    followingUsers.splice(followingIdx, 1);
+    loginUser.followingUsers = Promise.resolve(followingUsers);
+    await this.userRepo.save(loginUser);
 
     const rooms = await loginUser.rooms;
     const followerUsers = await loginUser.followerUsers;

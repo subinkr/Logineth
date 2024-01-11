@@ -10,12 +10,14 @@ import {
   ApiConsumes,
   ApiCreatedResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { plainToInstance } from 'class-transformer';
 import { ResUploadImageToS3 } from './dto/res-upload-image-to-s3.dto';
 
 @Controller('')
+@ApiTags('common | data')
 export class DataController {
   constructor(private readonly dataService: DataService) {}
 

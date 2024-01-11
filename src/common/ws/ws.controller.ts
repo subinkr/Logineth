@@ -16,11 +16,13 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger';
 import { forbidden } from 'src/source-code/error/swagger/forbidden';
 import { notFound } from 'src/source-code/error/swagger/not-found';
 
 @Controller('')
+@ApiTags('common | ws')
 export class WsController {
   constructor(private readonly wsService: WsService) {}
 

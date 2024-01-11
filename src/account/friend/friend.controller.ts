@@ -19,12 +19,14 @@ import {
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger';
 import { badRequest } from 'src/source-code/error/swagger/bad-request';
 import { forbidden } from 'src/source-code/error/swagger/forbidden';
 import { notFound } from 'src/source-code/error/swagger/not-found';
 
 @Controller('friend')
+@ApiTags('account | friend')
 export class FriendController {
   constructor(private readonly friendService: FriendService) {}
 

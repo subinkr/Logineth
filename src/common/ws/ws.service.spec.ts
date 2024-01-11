@@ -45,6 +45,28 @@ describe('WsService', () => {
     });
   });
 
+  // CRTEST: - return
+  describe('Create Room', () => {
+    it('Return | {room: RoomModel}', async () => {
+      const roomName = `${user.id}-${otherUser.id}`;
+      const result = await service.createRoom(roomName, [user, otherUser]);
+      const keys = Object.keys(result);
+      const required = Object.keys({ room });
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
+  });
+
+  // DRTEST: - return
+  describe('Delete Room', () => {
+    it('Return | {message: string}', async () => {
+      const roomName = `${user.id}-${otherUser.id}`;
+      const result = await service.deleteRoom(user, roomName);
+      const keys = Object.keys(result);
+      const required = Object.keys({ message: '삭제되었습니다.' });
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
+  });
+
   // SMTEST: - use, error
   describe('Send Message', () => {
     const roomGatewaySendMessage: RoomGatewaySendMessage = {

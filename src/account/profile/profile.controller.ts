@@ -11,6 +11,7 @@ import { ProfileService } from './profile.service';
 import { ResGetUser } from './dto/res-get-user.dto';
 import { plainToInstance } from 'class-transformer';
 import {
+  ApiBearerAuth,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -46,6 +47,7 @@ export class ProfileController {
   @ApiOkResponse({ type: ResEditUser })
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
   @ApiForbiddenResponse(forbidden('다른 유저를 수정할 수 없습니다.'))
+  @ApiBearerAuth()
   async editUser(
     @Param('id', ParseIntPipe) targetUserID: number,
     @Body() reqEditUser: ReqEditUser,

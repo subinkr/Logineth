@@ -11,6 +11,7 @@ import { WsService } from './ws.service';
 import { ResGetRoom } from './dto/res-get-room.dto';
 import { plainToInstance } from 'class-transformer';
 import {
+  ApiBearerAuth,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -29,6 +30,7 @@ export class WsController {
   @ApiOkResponse({ type: ResGetRoom })
   @ApiForbiddenResponse(forbidden('해당 방에 접근할 수 없습니다.'))
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
+  @ApiBearerAuth()
   async getRoom(
     @Param('roomID', ParseIntPipe) roomID: number,
     @Param('page', ParseIntPipe) page: number,

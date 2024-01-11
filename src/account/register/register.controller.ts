@@ -13,6 +13,7 @@ import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { plainToInstance } from 'class-transformer';
 import { ResRegister } from './dto/res-register.dto';
 import {
+  ApiBearerAuth,
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiForbiddenResponse,
@@ -72,6 +73,7 @@ export class RegisterController {
   @ApiNoContentResponse({ type: ResWithdrawRegister })
   @ApiUnauthorizedResponse(unauthorized('로그인이 필요합니다.'))
   @ApiForbiddenResponse(forbidden('다른 유저를 탈퇴할 수 없습니다.'))
+  @ApiBearerAuth()
   async withdrawRegister(
     @Param('withdrawID', ParseIntPipe) withdrawID: number,
     @AuthID() loginUserID: number,

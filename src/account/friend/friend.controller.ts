@@ -14,6 +14,7 @@ import { ResFollowing } from './dto/res-following.dto';
 import { ResUnFollowing } from './dto/res-un-following.dto';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
@@ -34,6 +35,7 @@ export class FriendController {
   @ApiBadRequestResponse(badRequest('이미 팔로우 중입니다.'))
   @ApiForbiddenResponse(forbidden('자기 자신을 팔로우 할 수 없습니다.'))
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
+  @ApiBearerAuth()
   async following(
     @Param('targetUserID', ParseIntPipe) targetUserID: number,
     @AuthID() loginUserID: number,
@@ -52,6 +54,7 @@ export class FriendController {
   @ApiBadRequestResponse(badRequest('이미 언팔로우 했습니다.'))
   @ApiForbiddenResponse(forbidden('자기 자신을 언팔로우 할 수 없습니다.'))
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
+  @ApiBearerAuth()
   async unFollowing(
     @Param('targetUserID', ParseIntPipe) targetUserID: number,
     @AuthID() loginUserID: number,

@@ -20,6 +20,16 @@ export class WsService {
     private readonly dataService: DataService,
   ) {}
 
+  // GRSERVICE: - {rooms: RoomModel[]}
+  async getRooms(loginUserID: number) {
+    const { user: loginUser } =
+      await this.profileService.getUserByID(loginUserID);
+    const rooms = await loginUser.rooms;
+
+    return { rooms };
+  }
+
+  // GRSERVICE: - {chats: ChatModel[], chatsCount: number, nextPage: number | boolean}
   async getRoom(roomID: number, page: number, loginUserID: number) {
     const { user } = await this.profileService.getUserByID(loginUserID);
 
@@ -54,6 +64,7 @@ export class WsService {
     return { chats, chatsCount, nextPage };
   }
 
+  // SMSERVICE: - {chat: ChatModel}
   async sendMessage(
     data: RoomGatewaySendMessage,
     roomID: number,

@@ -72,7 +72,7 @@ export class FriendController {
     return plainToInstance(ResUnFollowing, result);
   }
 
-  @Get('followingUsers')
+  @Get('following')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Get Following Users' })
   @ApiOkResponse({ type: ResGetFollowingUsers })
@@ -85,7 +85,7 @@ export class FriendController {
     return plainToInstance(ResGetFollowingUsers, result);
   }
 
-  @Get('followerUsers')
+  @Get('follower')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Get Follower Users' })
   @ApiOkResponse({ type: ResGetFollowerUsers })

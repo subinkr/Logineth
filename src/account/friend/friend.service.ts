@@ -10,7 +10,8 @@ import { ProfileService } from '../profile/profile.service';
 import { ResFollowing } from './dto/res-following.dto';
 import { ResUnFollowing } from './dto/res-un-following.dto';
 import { RoomModel } from 'src/source-code/entities/room.entity';
-import { ResGetUser } from '../profile/dto/res-get-user.dto';
+import { ResGetFollowingUsers } from './dto/res-get-following-users.dto';
+import { ResGetFollowerUsers } from './dto/res-get-follower-users.dto';
 
 @Injectable()
 export class FriendService {
@@ -22,6 +23,7 @@ export class FriendService {
     private readonly profileService: ProfileService,
   ) {}
 
+  // FSERVICE: - {message: string}
   async following(
     targetUserID: number,
     loginUserID: number,
@@ -61,6 +63,7 @@ export class FriendService {
     return { message: '팔로우 성공' };
   }
 
+  // UFSERVICE: - {message: string}
   async unFollowing(
     targetUserID: number,
     loginUserID: number,
@@ -99,5 +102,23 @@ export class FriendService {
     }
 
     return { message: '언팔로우 성공' };
+  }
+
+  // FUSERVICE: - {followingUsers: UserModel[]}
+  async getFollowingUsers(loginUserID: number): Promise<ResGetFollowingUsers> {
+    const { user: loginUser } =
+      await this.profileService.getUserByID(loginUserID);
+    const followingUsers = await loginUser.followingUsers;
+
+    return { followingUsers };
+  }
+
+  // FUSERVICE: - {followerUsers: UserModel[]}
+  async getFollowerUsers(loginUserID: number): Promise<ResGetFollowerUsers> {
+    const { user: loginUser } =
+      await this.profileService.getUserByID(loginUserID);
+    const followerUsers = await loginUser.followerUsers;
+
+    return { followerUsers };
   }
 }

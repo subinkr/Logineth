@@ -42,7 +42,8 @@ export class FriendService {
     if (followingIdx !== -1) {
       throw new BadRequestException('이미 팔로우 중입니다.');
     }
-    await this.userRepo.update(loginUserID, {
+    await this.userRepo.save({
+      id: loginUserID,
       followingUsers: Promise.resolve([...followingUsers, targetUser]),
     });
 
@@ -81,8 +82,9 @@ export class FriendService {
       throw new BadRequestException('이미 언팔로우 했습니다.');
     }
 
-    await this.userRepo.update(loginUserID, {
-      followerUsers: Promise.resolve([
+    await this.userRepo.save({
+      id: loginUserID,
+      followingUsers: Promise.resolve([
         ...followingUsers.slice(followingIdx, 1),
       ]),
     });

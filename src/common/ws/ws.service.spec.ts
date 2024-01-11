@@ -22,6 +22,15 @@ describe('WsService', () => {
     profileService = module.get<ProfileService>(ProfileService);
   });
 
+  // GRTEST: - use
+  describe('Get Rooms', () => {
+    it('Use | getUserByID', async () => {
+      profileService.getUserByID = jest.fn().mockReturnValue({ user });
+      await service.getRooms(user.id);
+      expect(profileService.getUserByID).toHaveBeenCalled();
+    });
+  });
+
   // GRTEST: - use, error
   describe('Get Room', () => {
     it('Use | getUserByID', async () => {

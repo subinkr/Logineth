@@ -81,7 +81,7 @@ export class MockUserModel {
     updatedAt: new Date(1),
   };
 
-  static userList: UserModel[] = [
+  static users: UserModel[] = [
     MockUserModel.user,
     MockUserModel.otherUser,
     MockUserModel.influencer,
@@ -92,8 +92,8 @@ export class MockUserModel {
 
   findOne({ where: { id, username } }) {
     const [user] = id
-      ? MockUserModel.userList.filter((user) => user.id === id)
-      : MockUserModel.userList.filter((user) => user.username === username);
+      ? MockUserModel.users.filter((user) => user.id === id)
+      : MockUserModel.users.filter((user) => user.username === username);
 
     if (!user) return null;
 
@@ -102,8 +102,8 @@ export class MockUserModel {
 
   exist({ where: { id, username } }) {
     const [user] = id
-      ? MockUserModel.userList.filter((user) => user.id === id)
-      : MockUserModel.userList.filter((user) => user.username === username);
+      ? MockUserModel.users.filter((user) => user.id === id)
+      : MockUserModel.users.filter((user) => user.username === username);
 
     if (user) return true;
 
@@ -111,7 +111,7 @@ export class MockUserModel {
   }
 
   save() {
-    MockUserModel.userList.push(MockUserModel.addedUser);
+    MockUserModel.users.push(MockUserModel.addedUser);
 
     return MockUserModel.addedUser;
   }

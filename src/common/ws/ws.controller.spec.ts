@@ -5,6 +5,7 @@ import { WsService } from './ws.service';
 import { ResGetRoom } from './dto/res-get-room.dto';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { MockRoomModel } from 'src/source-code/mock/entities/room.mock';
+import { ResGetRooms } from './dto/res-get-rooms.dto';
 
 describe('WsController', () => {
   let controller: WsController;
@@ -24,9 +25,21 @@ describe('WsController', () => {
 
   // GRTEST: - use, return
   describe('Get Rooms', () => {
-    it('Use | getRooms', async () => {});
+    const resGetRooms: ResGetRooms = { rooms: [MockRoomModel.room] };
+    it('Use | getRooms', async () => {
+      wsService.getRooms = jest.fn();
+      await controller.getRooms(user.id);
+      expect(wsService.getRooms).toHaveBeenCalled();
+    });
 
-    it('Use | ResGetRooms', async () => {});
+    it('Return | ResGetRooms', async () => {
+      const result = await controller.getRooms(user.id);
+      expect(result).toBeInstanceOf(ResGetRooms);
+
+      const keys = Object.keys(result);
+      const required = Object.keys(resGetRooms);
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
   });
 
   // GRTEST: - use, return

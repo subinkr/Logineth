@@ -20,11 +20,22 @@ import {
 } from '@nestjs/swagger';
 import { forbidden } from 'src/source-code/error/swagger/forbidden';
 import { notFound } from 'src/source-code/error/swagger/not-found';
+import { ResGetRooms } from './dto/res-get-rooms.dto';
 
 @Controller('')
 @ApiTags('common | ws')
 export class WsController {
   constructor(private readonly wsService: WsService) {}
+
+  @Get('rooms')
+  @UseGuards(AuthGuard)
+  @ApiOkResponse({ type: ResGetRooms })
+  @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
+  @ApiBearerAuth()
+  async getRooms(@AuthID() loginUserID: number): Promise<ResGetRooms> {
+    const result = await this.wsService.getRooms(loginUserID);
+    return plainToInstance(ResGetRooms, result);
+  }
 
   @Get('room/:roomID/:page')
   @UseGuards(AuthGuard)

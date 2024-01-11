@@ -3,7 +3,7 @@ import { MockRoomModel } from './room.mock';
 import { MockUserModel } from './user.mock';
 
 export class MockChatModel {
-  static defaultChat: ChatModel = {
+  defaultChat: ChatModel = {
     id: 1,
     createdAt: new Date(1),
     updatedAt: new Date(1),
@@ -13,12 +13,12 @@ export class MockChatModel {
   };
 
   static chat: ChatModel = {
-    ...this.defaultChat,
+    ...new MockChatModel().defaultChat,
   };
   static chats: ChatModel[] = [MockChatModel.chat];
 
   save() {
-    return MockChatModel.chat;
+    return new MockChatModel().defaultChat;
   }
 
   find() {

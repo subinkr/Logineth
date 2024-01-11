@@ -15,6 +15,9 @@ export class RoomModel extends BaseModel {
   chats: Promise<ChatModel[]>;
 
   @ApiProperty({ example: [], required: false })
-  @ManyToMany(() => UserModel, (user) => user.rooms, { cascade: true })
-  users: Promise<UserModel[]>;
+  @ManyToMany(() => UserModel, (user) => user.rooms, {
+    cascade: true,
+    eager: true,
+  })
+  users: UserModel[];
 }

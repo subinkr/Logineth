@@ -30,7 +30,9 @@ export class WsService {
   async getRooms(loginUserID: number) {
     const { user: loginUser } =
       await this.profileService.getUserByID(loginUserID);
-    const rooms = await loginUser.rooms;
+    const rooms = (await loginUser.rooms).sort(
+      (a, b) => b.updatedAt.getTime() - a.updatedAt.getTime(),
+    );
 
     return { rooms };
   }
@@ -74,7 +76,7 @@ export class WsService {
   async createRoom(name: string, users: UserModel[]) {
     const room = this.roomRepo.create();
     room.name = name;
-    room.users = Promise.resolve(users);
+    room.users = users;
     await this.roomRepo.save(room);
     return { room };
   }

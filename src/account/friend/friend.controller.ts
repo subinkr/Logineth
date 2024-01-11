@@ -34,6 +34,32 @@ import { ResGetFollowerUsers } from './dto/res-get-follower-users.dto';
 export class FriendController {
   constructor(private readonly friendService: FriendService) {}
 
+  @Get('follower')
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Get Follower Users' })
+  @ApiOkResponse({ type: ResGetFollowerUsers })
+  @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
+  @ApiBearerAuth()
+  async getFollowerUsers(
+    @AuthID() loginUserID: number,
+  ): Promise<ResGetFollowerUsers> {
+    const result = await this.friendService.getFollowerUsers(loginUserID);
+    return plainToInstance(ResGetFollowerUsers, result);
+  }
+
+  @Get('following')
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Get Following Users' })
+  @ApiOkResponse({ type: ResGetFollowingUsers })
+  @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
+  @ApiBearerAuth()
+  async getFollowingUsers(
+    @AuthID() loginUserID: number,
+  ): Promise<ResGetFollowingUsers> {
+    const result = await this.friendService.getFollowingUsers(loginUserID);
+    return plainToInstance(ResGetFollowingUsers, result);
+  }
+
   @Post('following/:targetUserID')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Following' })
@@ -70,31 +96,5 @@ export class FriendController {
       loginUserID,
     );
     return plainToInstance(ResUnFollowing, result);
-  }
-
-  @Get('following')
-  @UseGuards(AuthGuard)
-  @ApiOperation({ summary: 'Get Following Users' })
-  @ApiOkResponse({ type: ResGetFollowingUsers })
-  @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
-  @ApiBearerAuth()
-  async getFollowingUsers(
-    @AuthID() loginUserID: number,
-  ): Promise<ResGetFollowingUsers> {
-    const result = await this.friendService.getFollowingUsers(loginUserID);
-    return plainToInstance(ResGetFollowingUsers, result);
-  }
-
-  @Get('follower')
-  @UseGuards(AuthGuard)
-  @ApiOperation({ summary: 'Get Follower Users' })
-  @ApiOkResponse({ type: ResGetFollowerUsers })
-  @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
-  @ApiBearerAuth()
-  async getFollowerUsers(
-    @AuthID() loginUserID: number,
-  ): Promise<ResGetFollowerUsers> {
-    const result = await this.friendService.getFollowerUsers(loginUserID);
-    return plainToInstance(ResGetFollowerUsers, result);
   }
 }

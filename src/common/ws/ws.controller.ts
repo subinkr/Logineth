@@ -29,6 +29,7 @@ export class WsController {
 
   @Get('rooms')
   @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Get Rooms' })
   @ApiOkResponse({ type: ResGetRooms })
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
   @ApiBearerAuth()

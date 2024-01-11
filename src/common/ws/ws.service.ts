@@ -36,7 +36,7 @@ export class WsService {
   }
 
   // GRSERVICE: - {chats: ChatModel[], chatsCount: number, nextPage: number | boolean}
-  async getRoom(roomID: number, page: number, loginUserID: number) {
+  async getChats(roomID: number, page: number, loginUserID: number) {
     const { user } = await this.profileService.getUserByID(loginUserID);
 
     const rooms = await user.rooms;

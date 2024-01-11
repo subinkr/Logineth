@@ -10,7 +10,8 @@ import { ProfileService } from '../profile/profile.service';
 import { ResFollowing } from './dto/res-following.dto';
 import { ResUnFollowing } from './dto/res-un-following.dto';
 import { RoomModel } from 'src/source-code/entities/room.entity';
-import { ResGetUser } from '../profile/dto/res-get-user.dto';
+import { ResGetFollowingUsers } from './dto/res-get-following-users.dto';
+import { ResGetFollowerUsers } from './dto/res-get-follower-users.dto';
 
 @Injectable()
 export class FriendService {
@@ -22,6 +23,7 @@ export class FriendService {
     private readonly profileService: ProfileService,
   ) {}
 
+  // FSERVICE: - {message: string}
   async following(
     targetUserID: number,
     loginUserID: number,
@@ -42,9 +44,9 @@ export class FriendService {
     if (followingIdx !== -1) {
       throw new BadRequestException('이미 팔로우 중입니다.');
     }
-    await this.userRepo.update(loginUserID, {
-      followingUsers: Promise.resolve([...followingUsers, targetUser]),
-    });
+
+    loginUser.followingUsers = Promise.resolve([...followingUsers, targetUser]);
+    await this.userRepo.save(loginUser);
 
     const rooms = await loginUser.rooms;
     const [smallID, bigID] = [targetUserID, loginUserID].sort((a, b) => a - b);
@@ -61,6 +63,7 @@ export class FriendService {
     return { message: '팔로우 성공' };
   }
 
+  // UFSERVICE: - {message: string}
   async unFollowing(
     targetUserID: number,
     loginUserID: number,
@@ -73,19 +76,16 @@ export class FriendService {
       await this.profileService.getUserByID(loginUserID);
 
     const followingUsers = await loginUser.followingUsers;
-
     const followingIdx = followingUsers.findIndex(
       (user) => user.id === targetUserID,
     );
     if (followingIdx === -1) {
-      throw new BadRequestException('이미 언팔로우 한 유저입니다.');
+      throw new BadRequestException('이미 언팔로우 했습니다.');
     }
 
-    await this.userRepo.update(loginUserID, {
-      followerUsers: Promise.resolve([
-        ...followingUsers.slice(followingIdx, 1),
-      ]),
-    });
+    followingUsers.splice(followingIdx, 1);
+    loginUser.followingUsers = Promise.resolve(followingUsers);
+    await this.userRepo.save(loginUser);
 
     const rooms = await loginUser.rooms;
     const followerUsers = await loginUser.followerUsers;
@@ -102,5 +102,23 @@ export class FriendService {
     }
 
     return { message: '언팔로우 성공' };
+  }
+
+  // FUSERVICE: - {followingUsers: UserModel[]}
+  async getFollowingUsers(loginUserID: number): Promise<ResGetFollowingUsers> {
+    const { user: loginUser } =
+      await this.profileService.getUserByID(loginUserID);
+    const followingUsers = await loginUser.followingUsers;
+
+    return { followingUsers };
+  }
+
+  // FUSERVICE: - {followerUsers: UserModel[]}
+  async getFollowerUsers(loginUserID: number): Promise<ResGetFollowerUsers> {
+    const { user: loginUser } =
+      await this.profileService.getUserByID(loginUserID);
+    const followerUsers = await loginUser.followerUsers;
+
+    return { followerUsers };
   }
 }

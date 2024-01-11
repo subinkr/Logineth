@@ -22,6 +22,14 @@ describe('WsController', () => {
     wsService = module.get<WsService>(WsService);
   });
 
+  // GRTEST: - use, return
+  describe('Get Rooms', () => {
+    it('Use | getRooms', async () => {});
+
+    it('Use | ResGetRooms', async () => {});
+  });
+
+  // GRTEST: - use, return
   describe('Get Room', () => {
     const resGetRoom: ResGetRoom = {
       chats: [],

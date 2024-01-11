@@ -13,6 +13,7 @@ import { ReqLocalRegister } from './dto/req-local-register.dto';
 import { plainToInstance } from 'class-transformer';
 import { ResRegister } from './dto/res-register.dto';
 import {
+  ApiBearerAuth,
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiForbiddenResponse,
@@ -40,7 +41,7 @@ export class RegisterController {
   constructor(private readonly registerService: RegisterService) {}
 
   @Post('local')
-  @ApiOperation({ summary: 'Local register' })
+  @ApiOperation({ summary: 'Local Register' })
   @ApiCreatedResponse({ type: ResRegister })
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
   @ApiConflictResponse(conflict('이미 사용중인 아이디입니다.'))
@@ -52,7 +53,7 @@ export class RegisterController {
   }
 
   @Post('oauth/:provider')
-  @ApiOperation({ summary: 'OAuth register' })
+  @ApiOperation({ summary: 'OAuth Register' })
   @ApiCreatedResponse({ type: ResRegister })
   @ApiNotAcceptableResponse(notAcceptable('유저 정보를 가져오지 못했습니다.'))
   async oAuthRegister(
@@ -72,6 +73,7 @@ export class RegisterController {
   @ApiNoContentResponse({ type: ResWithdrawRegister })
   @ApiUnauthorizedResponse(unauthorized('로그인이 필요합니다.'))
   @ApiForbiddenResponse(forbidden('다른 유저를 탈퇴할 수 없습니다.'))
+  @ApiBearerAuth()
   async withdrawRegister(
     @Param('withdrawID', ParseIntPipe) withdrawID: number,
     @AuthID() loginUserID: number,

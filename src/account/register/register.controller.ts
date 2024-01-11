@@ -40,7 +40,7 @@ export class RegisterController {
   constructor(private readonly registerService: RegisterService) {}
 
   @Post('local')
-  @ApiOperation({ summary: 'Local register' })
+  @ApiOperation({ summary: 'Local Register' })
   @ApiCreatedResponse({ type: ResRegister })
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
   @ApiConflictResponse(conflict('이미 사용중인 아이디입니다.'))
@@ -52,7 +52,7 @@ export class RegisterController {
   }
 
   @Post('oauth/:provider')
-  @ApiOperation({ summary: 'OAuth register' })
+  @ApiOperation({ summary: 'OAuth Register' })
   @ApiCreatedResponse({ type: ResRegister })
   @ApiNotAcceptableResponse(notAcceptable('유저 정보를 가져오지 못했습니다.'))
   async oAuthRegister(

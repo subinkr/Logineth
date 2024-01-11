@@ -23,7 +23,7 @@ export class LoginController {
   constructor(private readonly loginService: LoginService) {}
 
   @Post('local')
-  @ApiOperation({ summary: 'Local login' })
+  @ApiOperation({ summary: 'Local Login' })
   @ApiOkResponse({ type: ResLogin })
   @ApiBadRequestResponse(badRequest('잘못된 비밀번호입니다.'))
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
@@ -34,7 +34,7 @@ export class LoginController {
   }
 
   @Post('oauth/:provider')
-  @ApiOperation({ summary: 'OAuth login' })
+  @ApiOperation({ summary: 'OAuth Login' })
   @ApiOkResponse({ type: ResLogin })
   @ApiNotAcceptableResponse(notAcceptable('유저 정보를 가져오지 못했습니다.'))
   async oAuthLogin(

@@ -12,6 +12,16 @@ import { AuthGuard } from 'src/common/auth/auth.guard';
 import { plainToInstance } from 'class-transformer';
 import { ResFollowing } from './dto/res-following.dto';
 import { ResUnFollowing } from './dto/res-un-following.dto';
+import {
+  ApiBadRequestResponse,
+  ApiForbiddenResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
+import { badRequest } from 'src/source-code/error/swagger/bad-request';
+import { forbidden } from 'src/source-code/error/swagger/forbidden';
+import { notFound } from 'src/source-code/error/swagger/not-found';
 
 @Controller('friend')
 export class FriendController {
@@ -19,10 +29,15 @@ export class FriendController {
 
   @Post('following/:targetUserID')
   @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Following' })
+  @ApiNoContentResponse({ type: ResFollowing })
+  @ApiBadRequestResponse(badRequest('이미 팔로우 중입니다.'))
+  @ApiForbiddenResponse(forbidden('자기 자신을 팔로우 할 수 없습니다.'))
+  @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
   async following(
     @Param('targetUserID', ParseIntPipe) targetUserID: number,
     @AuthID() loginUserID: number,
-  ) {
+  ): Promise<ResFollowing> {
     const result = await this.friendService.following(
       targetUserID,
       loginUserID,
@@ -32,10 +47,15 @@ export class FriendController {
 
   @Delete('unFollowing/:targetUserID')
   @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'UnFollowing' })
+  @ApiNoContentResponse({ type: ResFollowing })
+  @ApiBadRequestResponse(badRequest('이미 언팔로우 했습니다.'))
+  @ApiForbiddenResponse(forbidden('자기 자신을 언팔로우 할 수 없습니다.'))
+  @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
   async unFollowing(
     @Param('targetUserID', ParseIntPipe) targetUserID: number,
     @AuthID() loginUserID: number,
-  ) {
+  ): Promise<ResUnFollowing> {
     const result = await this.friendService.unFollowing(
       targetUserID,
       loginUserID,

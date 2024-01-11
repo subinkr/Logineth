@@ -78,7 +78,7 @@ export class FriendService {
       (user) => user.id === targetUserID,
     );
     if (followingIdx === -1) {
-      throw new BadRequestException('이미 언팔로우 한 유저입니다.');
+      throw new BadRequestException('이미 언팔로우 했습니다.');
     }
 
     await this.userRepo.update(loginUserID, {

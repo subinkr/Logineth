@@ -79,7 +79,7 @@ export class FriendController {
     return plainToInstance(ResFollowing, result);
   }
 
-  @Delete('unFollowing/:targetUserID')
+  @Delete('unfollowing/:targetUserID')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'UnFollowing' })
   @ApiNoContentResponse({ type: ResFollowing })

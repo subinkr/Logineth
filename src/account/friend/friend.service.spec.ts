@@ -57,6 +57,24 @@ describe('FriendService', () => {
     });
   });
 
+  // FUTEST: - use
+  describe('Following Users', () => {
+    it('Use | getUserByID', async () => {
+      profileService.getUserByID = jest.fn();
+      await service.getFollowingUsers(user.id);
+      expect(profileService.getUserByID).toHaveBeenCalled();
+    });
+  });
+
+  // FUTEST: - use
+  describe('Follower Users', () => {
+    it('Use | getUserByID', async () => {
+      profileService.getUserByID = jest.fn();
+      await service.getFollowingUsers(user.id);
+      expect(profileService.getUserByID).toHaveBeenCalled();
+    });
+  });
+
   describe('Find Friend', () => {
     it.todo('');
   });

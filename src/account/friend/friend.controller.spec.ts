@@ -5,6 +5,8 @@ import { providers } from 'src/source-code/mock/providers/providers';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { ResFollowing } from './dto/res-following.dto';
 import { ResUnFollowing } from './dto/res-un-following.dto';
+import { ResGetFollowingUsers } from './dto/res-get-following-users.dto';
+import { ResGetFollowerUsers } from './dto/res-get-follower-users.dto';
 
 describe('FriendController', () => {
   let controller: FriendController;
@@ -56,6 +58,50 @@ describe('FriendController', () => {
 
       const keys = Object.keys(result);
       const required = Object.keys(resUnFollowing);
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
+  });
+
+  // FUTEST: - use, return
+  describe('Get Following Users', () => {
+    const resGetFollowingUsers: ResGetFollowingUsers = {
+      followingUsers: MockUserModel.users,
+    };
+
+    it('Use | getFollowingUsers', async () => {
+      friendService.getFollowingUsers = jest.fn();
+      await controller.getFollowingUsers(user.id);
+      expect(friendService.getFollowingUsers).toHaveBeenCalled();
+    });
+
+    it('Return | ResGetFollowingUsers', async () => {
+      const result = await controller.getFollowingUsers(user.id);
+      expect(result).toBeInstanceOf(resGetFollowingUsers);
+
+      const keys = Object.keys(result);
+      const required = Object.keys(resGetFollowingUsers);
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
+  });
+
+  // FUTEST: - use, return
+  describe('Get Follower Users', () => {
+    const resGetFollowerUsers: ResGetFollowerUsers = {
+      followerUsers: MockUserModel.users,
+    };
+
+    it('Use | getFollowerUsers', async () => {
+      friendService.getFollowerUsers = jest.fn();
+      await controller.getFollowerUsers(user.id);
+      expect(friendService.getFollowerUsers).toHaveBeenCalled();
+    });
+
+    it('Return | ResGetFollowerUsers', async () => {
+      const result = await controller.getFollowerUsers(user.id);
+      expect(result).toBeInstanceOf(ResGetFollowerUsers);
+
+      const keys = Object.keys(result);
+      const required = Object.keys(resGetFollowerUsers);
       expect(keys).toEqual(expect.arrayContaining(required));
     });
   });

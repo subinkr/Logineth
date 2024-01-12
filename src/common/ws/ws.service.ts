@@ -51,7 +51,7 @@ export class WsService {
     const skip = (page - 1) * 30;
     const findAndCount = await this.chatRepo.findAndCount({
       where: { room: { id: roomID } },
-      order: { id: 'ASC' },
+      order: { id: 'DESC' },
       skip,
       take,
     });
@@ -69,7 +69,7 @@ export class WsService {
       nextPage,
     } = this.dataService.pagination(reqPagination);
 
-    return { chats, chatsCount, nextPage };
+    return { chats: chats.reverse(), chatsCount, nextPage };
   }
 
   // CRSERVICE: - {room: RoomModel}

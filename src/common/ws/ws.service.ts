@@ -16,8 +16,6 @@ import { RoomModel } from 'src/source-code/entities/room.entity';
 @Injectable()
 export class WsService {
   constructor(
-    @InjectRepository(UserModel)
-    private readonly userRepo: Repository<UserModel>,
     @InjectRepository(RoomModel)
     private readonly roomRepo: Repository<RoomModel>,
     @InjectRepository(ChatModel)
@@ -87,9 +85,8 @@ export class WsService {
 
     const roomIdx = rooms.findIndex((room) => room.name === roomName);
     if (roomIdx !== -1) {
-      rooms.splice(roomIdx, 1);
-      user.rooms = Promise.resolve(rooms);
-      await this.userRepo.save(user);
+      await this.roomRepo.save({ id: rooms[roomIdx].id, users: [] });
+      await this.roomRepo.delete(rooms[roomIdx].id);
     }
 
     return { message: '삭제되었습니다.' };

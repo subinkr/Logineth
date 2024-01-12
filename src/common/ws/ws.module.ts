@@ -12,7 +12,7 @@ import { UserModel } from 'src/source-code/entities/user.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserModel, ChatModel, RoomModel]),
+    TypeOrmModule.forFeature([ChatModel, RoomModel]),
     ProfileModule,
     AuthModule,
     DataModule,

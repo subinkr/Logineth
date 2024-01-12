@@ -34,7 +34,10 @@ export class MockUserModel {
   static user: UserModel = {
     ...new MockUserModel().defaultUser,
     role: Role.ADMIN,
-    rooms: lazyArray<RoomModel>([MockRoomModel.room]),
+    rooms: lazyArray<RoomModel>([
+      MockRoomModel.room,
+      new MockRoomModel().defaultRoom,
+    ]),
     followingUsers: lazyArray<UserModel>([MockUserModel.influencer]),
     followerUsers: lazyArray<UserModel>([MockUserModel.influencer]),
   };

@@ -32,15 +32,15 @@ describe('WsService', () => {
   });
 
   // GRTEST: - use, error
-  describe('Get Room', () => {
+  describe('Get Chats', () => {
     it('Use | getUserByID', async () => {
       profileService.getUserByID = jest.fn().mockReturnValue({ user });
-      await service.getRoom(room.id, 1, user.id);
+      await service.getChats(room.id, 1, user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
     });
 
     it('Error | Cannot access not included room', async () => {
-      const result = service.getRoom(room.id, 1, otherUser.id);
+      const result = service.getChats(room.id, 1, otherUser.id);
       await expect(result).rejects.toThrow(ForbiddenException);
     });
   });

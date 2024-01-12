@@ -23,6 +23,50 @@ describe('FriendController', () => {
     friendService = module.get<FriendService>(FriendService);
   });
 
+  // FUTEST: - use, return
+  describe('Get Follower Users', () => {
+    const resGetFollowerUsers: ResGetFollowerUsers = {
+      followerUsers: MockUserModel.users,
+    };
+
+    it('Use | getFollowerUsers', async () => {
+      friendService.getFollowerUsers = jest.fn();
+      await controller.getFollowerUsers(user.id);
+      expect(friendService.getFollowerUsers).toHaveBeenCalled();
+    });
+
+    it('Return | ResGetFollowerUsers', async () => {
+      const result = await controller.getFollowerUsers(user.id);
+      expect(result).toBeInstanceOf(ResGetFollowerUsers);
+
+      const keys = Object.keys(result);
+      const required = Object.keys(resGetFollowerUsers);
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
+  });
+
+  // FUTEST: - use, return
+  describe('Get Following Users', () => {
+    const resGetFollowingUsers: ResGetFollowingUsers = {
+      followingUsers: MockUserModel.users,
+    };
+
+    it('Use | getFollowingUsers', async () => {
+      friendService.getFollowingUsers = jest.fn();
+      await controller.getFollowingUsers(user.id);
+      expect(friendService.getFollowingUsers).toHaveBeenCalled();
+    });
+
+    it('Return | ResGetFollowingUsers', async () => {
+      const result = await controller.getFollowingUsers(user.id);
+      expect(result).toBeInstanceOf(ResGetFollowingUsers);
+
+      const keys = Object.keys(result);
+      const required = Object.keys(resGetFollowingUsers);
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
+  });
+
   // FTEST: - use, return
   describe('Following', () => {
     const resFollowing: ResFollowing = { message: '팔로우 성공' };
@@ -58,50 +102,6 @@ describe('FriendController', () => {
 
       const keys = Object.keys(result);
       const required = Object.keys(resUnFollowing);
-      expect(keys).toEqual(expect.arrayContaining(required));
-    });
-  });
-
-  // FUTEST: - use, return
-  describe('Get Following Users', () => {
-    const resGetFollowingUsers: ResGetFollowingUsers = {
-      followingUsers: MockUserModel.users,
-    };
-
-    it('Use | getFollowingUsers', async () => {
-      friendService.getFollowingUsers = jest.fn();
-      await controller.getFollowingUsers(user.id);
-      expect(friendService.getFollowingUsers).toHaveBeenCalled();
-    });
-
-    it('Return | ResGetFollowingUsers', async () => {
-      const result = await controller.getFollowingUsers(user.id);
-      expect(result).toBeInstanceOf(ResGetFollowingUsers);
-
-      const keys = Object.keys(result);
-      const required = Object.keys(resGetFollowingUsers);
-      expect(keys).toEqual(expect.arrayContaining(required));
-    });
-  });
-
-  // FUTEST: - use, return
-  describe('Get Follower Users', () => {
-    const resGetFollowerUsers: ResGetFollowerUsers = {
-      followerUsers: MockUserModel.users,
-    };
-
-    it('Use | getFollowerUsers', async () => {
-      friendService.getFollowerUsers = jest.fn();
-      await controller.getFollowerUsers(user.id);
-      expect(friendService.getFollowerUsers).toHaveBeenCalled();
-    });
-
-    it('Return | ResGetFollowerUsers', async () => {
-      const result = await controller.getFollowerUsers(user.id);
-      expect(result).toBeInstanceOf(ResGetFollowerUsers);
-
-      const keys = Object.keys(result);
-      const required = Object.keys(resGetFollowerUsers);
       expect(keys).toEqual(expect.arrayContaining(required));
     });
   });

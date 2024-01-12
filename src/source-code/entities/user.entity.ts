@@ -60,7 +60,7 @@ export class UserModel extends BaseModel {
   chats: Promise<ChatModel[]>;
 
   @ApiProperty({ example: [], required: false })
-  @ManyToMany(() => RoomModel, (room) => room.users)
+  @ManyToMany(() => RoomModel, (room) => room.users, { cascade: true })
   @JoinTable({ name: 'user_room_model' })
   rooms: Promise<RoomModel[]>;
 }

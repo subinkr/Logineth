@@ -30,13 +30,15 @@ export class WsService {
   async getRooms(loginUserID: number) {
     const { user: loginUser } =
       await this.profileService.getUserByID(loginUserID);
-    const rooms = await loginUser.rooms;
+    const rooms = (await loginUser.rooms).sort(
+      (a, b) => b.updatedAt.getTime() - a.updatedAt.getTime(),
+    );
 
     return { rooms };
   }
 
   // GRSERVICE: - {chats: ChatModel[], chatsCount: number, nextPage: number | boolean}
-  async getRoom(roomID: number, page: number, loginUserID: number) {
+  async getChats(roomID: number, page: number, loginUserID: number) {
     const { user } = await this.profileService.getUserByID(loginUserID);
 
     const rooms = await user.rooms;
@@ -67,14 +69,14 @@ export class WsService {
       nextPage,
     } = this.dataService.pagination(reqPagination);
 
-    return { chats, chatsCount, nextPage };
+    return { chats: chats.reverse(), chatsCount, nextPage };
   }
 
   // CRSERVICE: - {room: RoomModel}
   async createRoom(name: string, users: UserModel[]) {
     const room = this.roomRepo.create();
     room.name = name;
-    room.users = Promise.resolve(users);
+    room.users = users;
     await this.roomRepo.save(room);
     return { room };
   }

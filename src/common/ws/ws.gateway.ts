@@ -27,12 +27,14 @@ export class RoomGateway {
     @ConnectedSocket() socket: Socket,
     @AuthID() loginUserID: number,
   ) {
-    const roomID: number = parseInt(socket.nsp.name.split('/').slice(-1)[0]);
-    const { chat } = await this.wsService.sendMessage(
-      data,
-      roomID,
-      loginUserID,
-    );
-    socket.broadcast.emit(`${roomID}`, chat);
+    try {
+      const roomID: number = parseInt(socket.nsp.name.split('/').slice(-1)[0]);
+      const { chat } = await this.wsService.sendMessage(
+        data,
+        roomID,
+        loginUserID,
+      );
+      socket.broadcast.emit(`${roomID}`, chat);
+    } catch (e) {}
   }
 }

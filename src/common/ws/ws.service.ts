@@ -51,7 +51,7 @@ export class WsService {
     const skip = (page - 1) * 30;
     const findAndCount = await this.chatRepo.findAndCount({
       where: { room: { id: roomID } },
-      order: { id: 'DESC' },
+      order: { id: 'ASC' },
       skip,
       take,
     });

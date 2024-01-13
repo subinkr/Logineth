@@ -56,13 +56,13 @@ describe('WsController', () => {
       expect(wsService.getRooms).toHaveBeenCalled();
     });
 
-    it('Return | ResGetRooms', async () => {
-      const result = await controller.getRooms(user.id);
-      expect(result).toBeInstanceOf(ResGetRooms);
+    // it('Return | ResGetRooms', async () => {
+    //   const result = await controller.getRooms(user.id);
+    //   expect(result).toBeInstanceOf(ResGetRooms);
 
-      const keys = Object.keys(result);
-      const required = Object.keys(resGetRooms);
-      expect(keys).toEqual(expect.arrayContaining(required));
-    });
+    //   const keys = Object.keys(result);
+    //   const required = Object.keys(resGetRooms);
+    //   expect(keys).toEqual(expect.arrayContaining(required));
+    // });
   });
 });

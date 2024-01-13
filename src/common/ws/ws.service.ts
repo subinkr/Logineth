@@ -44,6 +44,8 @@ export class WsService {
     if (roomIdx === -1) {
       throw new ForbiddenException('해당 방에 접근할 수 없습니다.');
     }
+    const room = rooms[roomIdx];
+    room.viewUsers.push(user);
 
     const take = 30;
     const skip = (page - 1) * 30;
@@ -66,6 +68,7 @@ export class WsService {
       arrayCount: chatsCount,
       nextPage,
     } = this.dataService.pagination(reqPagination);
+    await this.roomRepo.save(room);
 
     return { chats: chats.reverse(), chatsCount, nextPage };
   }
@@ -111,9 +114,12 @@ export class WsService {
     if (roomIdx === -1) {
       throw new ForbiddenException('해당 방에 접근할 수 없습니다.');
     }
+
+    rooms[roomIdx].viewUsers = [user];
     const room = rooms[roomIdx];
 
     const chat = await this.chatRepo.save({ room, user, content });
+    await this.roomRepo.save(room);
 
     return { chat };
   }
@@ -126,7 +132,15 @@ export class WsService {
       throw new ForbiddenException('해당 방에 접근할 수 없습니다.');
     }
 
-    room.lastUserId = loginUserID;
+    const { user } = await this.profileService.getUserByID(loginUserID);
+    const viewUsersIdx = room.viewUsers.findIndex(
+      (user) => user.id === loginUserID,
+    );
+    if (viewUsersIdx !== -1) {
+      room.viewUsers.splice(viewUsersIdx, 1);
+    }
+    room.viewUsers.push(user);
+
     await this.roomRepo.save(room);
 
     return { message: '방을 나갔습니다.' };

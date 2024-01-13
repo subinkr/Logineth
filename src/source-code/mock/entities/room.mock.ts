@@ -9,9 +9,9 @@ export const defaultRoom: RoomModel = {
   createdAt: new Date(1),
   updatedAt: new Date(1),
   name: '1-1004',
-  lastUserId: 1,
   chats: lazyArray<ChatModel>([defaultChat]),
   users: [defaultUser, defaultUser],
+  viewUsers: [defaultUser, defaultUser],
 };
 
 export class MockRoomModel {
@@ -24,7 +24,7 @@ export class MockRoomModel {
   findOne() {
     return {
       ...defaultRoom,
-      users: [defaultUser, { ...defaultUser, id: 1004 }],
+      users: [defaultUser, defaultUser],
     };
   }
 

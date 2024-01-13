@@ -4,7 +4,7 @@ import { Role } from 'src/source-code/enum/role';
 import { lazyArray } from '../common/lazyArray';
 import { RoomModel } from 'src/source-code/entities/room.entity';
 import { ChatModel } from 'src/source-code/entities/chat.entity';
-import { MockRoomModel, defaultRoom } from './room.mock';
+import { defaultRoom } from './room.mock';
 
 export const defaultUser: UserModel = {
   id: 1,
@@ -21,6 +21,7 @@ export const defaultUser: UserModel = {
   followerUsers: lazyArray<UserModel>(),
   rooms: lazyArray<RoomModel>(),
   chats: lazyArray<ChatModel>(),
+  viewRooms: lazyArray<RoomModel>(),
 };
 
 export class MockUserModel {

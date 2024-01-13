@@ -63,4 +63,9 @@ export class UserModel extends BaseModel {
   @ManyToMany(() => RoomModel, (room) => room.users, { cascade: true })
   @JoinTable({ name: 'user_room_model' })
   rooms: Promise<RoomModel[]>;
+
+  @ApiProperty({ example: [], required: false })
+  @ManyToMany(() => RoomModel, (room) => room.viewUsers, { cascade: true })
+  @JoinTable({ name: 'user_view_room_model' })
+  viewRooms: Promise<RoomModel[]>;
 }

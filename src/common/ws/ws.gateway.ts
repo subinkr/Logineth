@@ -1,6 +1,7 @@
 import {
   ConnectedSocket,
   MessageBody,
+  OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
@@ -35,6 +36,18 @@ export class RoomGateway {
         loginUserID,
       );
       socket.broadcast.emit(`${roomID}`, chat);
+    } catch (e) {}
+  }
+
+  @SubscribeMessage('close-room')
+  async closeRoom(
+    @MessageBody() data: any,
+    @ConnectedSocket() socket: Socket,
+    @AuthID() loginUserID: number,
+  ) {
+    try {
+      const roomID: number = parseInt(socket.nsp.name.split('/').slice(-1)[0]);
+      await this.wsService.closeRoom(roomID, loginUserID);
     } catch (e) {}
   }
 }

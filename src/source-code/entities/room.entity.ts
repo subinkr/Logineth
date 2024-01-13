@@ -17,4 +17,8 @@ export class RoomModel extends BaseModel {
   @ApiProperty({ example: [], required: false })
   @ManyToMany(() => UserModel, (user) => user.rooms, { eager: true })
   users: UserModel[];
+
+  @ApiProperty({ example: [], required: false })
+  @ManyToMany(() => UserModel, (user) => user.viewRooms, { eager: true })
+  viewUsers: UserModel[];
 }

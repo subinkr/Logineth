@@ -4,60 +4,58 @@ import { Role } from 'src/source-code/enum/role';
 import { lazyArray } from '../common/lazyArray';
 import { RoomModel } from 'src/source-code/entities/room.entity';
 import { ChatModel } from 'src/source-code/entities/chat.entity';
-import { MockRoomModel } from './room.mock';
+import { defaultRoom } from './room.mock';
+
+export const defaultUser: UserModel = {
+  id: 1,
+  username: 'username',
+  password: '$2b$10$G4R91NGJ3hXa4EFszIjDhumEY31yMwkvu9TSGVSb.iEfPNcdSYIu2',
+  nickname: 'nickname',
+  image: null,
+  bio: null,
+  role: Role.USER,
+  provider: Provider.LOCAL,
+  createdAt: new Date(1),
+  updatedAt: new Date(1),
+  followingUsers: lazyArray<UserModel>(),
+  followerUsers: lazyArray<UserModel>(),
+  rooms: lazyArray<RoomModel>(),
+  chats: lazyArray<ChatModel>(),
+  viewRooms: lazyArray<RoomModel>(),
+};
 
 export class MockUserModel {
-  defaultUser: UserModel = {
-    id: 1,
-    username: 'username',
-    password: '$2b$10$G4R91NGJ3hXa4EFszIjDhumEY31yMwkvu9TSGVSb.iEfPNcdSYIu2',
-    nickname: 'nickname',
-    image: null,
-    bio: null,
-    role: Role.USER,
-    provider: Provider.LOCAL,
-    createdAt: new Date(1),
-    updatedAt: new Date(1),
-    followingUsers: lazyArray<UserModel>(),
-    followerUsers: lazyArray<UserModel>(),
-    rooms: lazyArray<RoomModel>(),
-    chats: lazyArray<ChatModel>(),
-  };
-
   static influencer: UserModel = {
-    ...new MockUserModel().defaultUser,
+    ...defaultUser,
     id: 1004,
     username: 'influencer',
     nickname: 'influencer',
   };
 
   static user: UserModel = {
-    ...new MockUserModel().defaultUser,
+    ...defaultUser,
     role: Role.ADMIN,
-    rooms: lazyArray<RoomModel>([
-      MockRoomModel.room,
-      new MockRoomModel().defaultRoom,
-    ]),
+    rooms: lazyArray<RoomModel>([defaultRoom, defaultRoom]),
     followingUsers: lazyArray<UserModel>([MockUserModel.influencer]),
     followerUsers: lazyArray<UserModel>([MockUserModel.influencer]),
   };
 
   static otherUser: UserModel = {
-    ...new MockUserModel().defaultUser,
+    ...defaultUser,
     id: 2,
     username: 'otherUser',
     nickname: 'otherUser',
   };
 
   static addedUser: UserModel = {
-    ...new MockUserModel().defaultUser,
+    ...defaultUser,
     id: 3,
     username: 'addedUser',
     nickname: 'addedUser',
   };
 
   static notExistUser: UserModel = {
-    ...new MockUserModel().defaultUser,
+    ...defaultUser,
     id: 0,
     username: 'notExistUser',
     password: 'p@ssw0rd',
@@ -65,7 +63,7 @@ export class MockUserModel {
   };
 
   static notExistUser2: UserModel = {
-    ...new MockUserModel().defaultUser,
+    ...defaultUser,
     id: 0,
     username: 'notExistUser2',
     password: 'p@ssw0rd',

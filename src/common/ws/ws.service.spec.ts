@@ -10,7 +10,7 @@ import { RoomGatewaySendMessage } from './dto/room-gateway-send-message.dto';
 describe('WsService', () => {
   let service: WsService;
   let profileService: ProfileService;
-  const { user, otherUser } = MockUserModel;
+  const { user, otherUser, notExistUser } = MockUserModel;
   const { room } = MockRoomModel;
 
   beforeEach(async () => {
@@ -90,6 +90,19 @@ describe('WsService', () => {
         room.id,
         otherUser.id,
       );
+      await expect(result).rejects.toThrow(ForbiddenException);
+    });
+  });
+
+  // CRTEST: - return, error
+  describe('Close Room', () => {
+    it('Return | {message: string}', async () => {
+      const result = await service.closeRoom(room.id, user.id);
+      expect(typeof result.message).toEqual('string');
+    });
+
+    it('Error | Cannot edit room', async () => {
+      const result = service.closeRoom(room.id, notExistUser.id);
       await expect(result).rejects.toThrow(ForbiddenException);
     });
   });

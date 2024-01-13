@@ -76,6 +76,7 @@ export class WsService {
     room.name = name;
     room.users = users;
     await this.roomRepo.save(room);
+
     return { room };
   }
 
@@ -115,5 +116,19 @@ export class WsService {
     const chat = await this.chatRepo.save({ room, user, content });
 
     return { chat };
+  }
+
+  // CRSERVICE: - {message: '방을 나갔습니다.'}
+  async closeRoom(roomID: number, loginUserID: number) {
+    const room = await this.roomRepo.findOne({ where: { id: roomID } });
+    const userIdx = room.users.findIndex((user) => user.id === loginUserID);
+    if (userIdx === -1) {
+      throw new ForbiddenException('해당 방에 접근할 수 없습니다.');
+    }
+
+    room.lastUserId = loginUserID;
+    await this.roomRepo.save(room);
+
+    return { message: '방을 나갔습니다.' };
   }
 }

@@ -8,7 +8,6 @@ import { ProfileModule } from 'src/account/profile/profile.module';
 import { AuthModule } from '../auth/auth.module';
 import { DataModule } from '../data/data.module';
 import { RoomModel } from 'src/source-code/entities/room.entity';
-import { UserModel } from 'src/source-code/entities/user.entity';
 
 @Module({
   imports: [

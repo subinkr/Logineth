@@ -1,24 +1,24 @@
 import { ChatModel } from 'src/source-code/entities/chat.entity';
-import { MockRoomModel } from './room.mock';
-import { MockUserModel } from './user.mock';
+import { defaultRoom } from './room.mock';
+import { defaultUser } from './user.mock';
+
+export const defaultChat: ChatModel = {
+  id: 1,
+  createdAt: new Date(1),
+  updatedAt: new Date(1),
+  content: 'content',
+  room: defaultRoom,
+  user: defaultUser,
+};
 
 export class MockChatModel {
-  defaultChat: ChatModel = {
-    id: 1,
-    createdAt: new Date(1),
-    updatedAt: new Date(1),
-    content: 'content',
-    room: MockRoomModel.room,
-    user: MockUserModel.user,
-  };
-
   static chat: ChatModel = {
-    ...new MockChatModel().defaultChat,
+    ...defaultChat,
   };
   static chats: ChatModel[] = [MockChatModel.chat];
 
   save() {
-    return new MockChatModel().defaultChat;
+    return defaultChat;
   }
 
   find() {

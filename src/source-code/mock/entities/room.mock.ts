@@ -1,25 +1,31 @@
 import { RoomModel } from 'src/source-code/entities/room.entity';
 import { lazyArray } from '../common/lazyArray';
-import { UserModel } from 'src/source-code/entities/user.entity';
 import { ChatModel } from 'src/source-code/entities/chat.entity';
-import { MockUserModel } from './user.mock';
+import { defaultUser } from './user.mock';
+import { defaultChat } from './chat.mock';
+
+export const defaultRoom: RoomModel = {
+  id: 1,
+  createdAt: new Date(1),
+  updatedAt: new Date(1),
+  name: '1-1004',
+  lastUserId: 1,
+  chats: lazyArray<ChatModel>([defaultChat]),
+  users: [defaultUser, defaultUser],
+};
 
 export class MockRoomModel {
-  defaultRoom: RoomModel = {
-    id: 1,
-    createdAt: new Date(1),
-    updatedAt: new Date(1),
-    name: '1-1004',
-    chats: lazyArray<ChatModel>(),
-    users: [],
-  };
-
-  static room: RoomModel = {
-    ...new MockRoomModel().defaultRoom,
-  };
+  static room: RoomModel = { ...defaultRoom };
 
   create() {
-    return new MockRoomModel().defaultRoom;
+    return defaultRoom;
+  }
+
+  findOne() {
+    return {
+      ...defaultRoom,
+      users: [defaultUser, { ...defaultUser, id: 1004 }],
+    };
   }
 
   save() {}

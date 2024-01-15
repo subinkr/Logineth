@@ -116,9 +116,11 @@ export class WsService {
     }
 
     const room = { ...rooms[roomIdx] };
-    room.viewUsers = [user];
-
     const chat = await this.chatRepo.save({ room, user, content });
+
+    room.viewUsers = [user];
+    room.lastChat =
+      content.length > 20 ? `${content.slice(0, 20)}...` : content;
     await this.roomRepo.save(room);
 
     return { chat };

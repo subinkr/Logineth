@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsString, MaxLength, MinLength } from 'class-validator';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 
 export class ReqEditUser {
@@ -8,6 +8,8 @@ export class ReqEditUser {
   image: string;
 
   @ApiProperty({ example: MockUserModel.swaggerUser.nickname })
+  @MinLength(1)
+  @MaxLength(10)
   @IsString()
   nickname: string;
 

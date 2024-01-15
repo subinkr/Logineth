@@ -72,10 +72,14 @@ describe('WsService', () => {
     const roomGatewaySendMessage: RoomGatewaySendMessage = {
       content: 'content',
     };
+    const roomGatewaySendMessage2: RoomGatewaySendMessage = {
+      content: 'contentContentContent',
+    };
 
     it('Use | getUserByID', async () => {
       profileService.getUserByID = jest.fn().mockReturnValue({ user });
       await service.sendMessage(roomGatewaySendMessage, room.id, user.id);
+      await service.sendMessage(roomGatewaySendMessage2, room.id, user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
     });
 

@@ -11,8 +11,8 @@ export const defaultRoom: RoomModel = {
   name: '1-1004',
   lastChat: 'content',
   chats: lazyArray<ChatModel>([defaultChat]),
-  users: [defaultUser, defaultUser],
-  viewUsers: [defaultUser, defaultUser],
+  users: [],
+  viewUsers: [],
 };
 
 export class MockRoomModel {

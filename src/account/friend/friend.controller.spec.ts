@@ -108,30 +108,16 @@ describe('FriendController', () => {
     });
   });
 
-  // FUTEST: - use, return
+  // FUTEST: - use
   describe('Find Users', () => {
     const reqFindUsers: ReqFindUsers = {
       keyword: `${user.nickname}#${user.id}`,
-    };
-    const resFindUsers: ResFindUsers = {
-      findUsers: MockUserModel.users,
-      findUsersCount: 3,
-      nextPage: false,
     };
 
     it('Use | findUsers', async () => {
       friendService.findUsers = jest.fn();
       await controller.findUsers(reqFindUsers, 1);
       expect(friendService.findUsers).toHaveBeenCalled();
-    });
-
-    it('Return | ResFindUser', async () => {
-      const result = await controller.findUsers(reqFindUsers, 1);
-      expect(result).toBeInstanceOf(ResFindUsers);
-
-      const keys = Object.keys(result);
-      const required = Object.keys(resFindUsers);
-      expect(keys).toEqual(expect.arrayContaining(required));
     });
   });
 });

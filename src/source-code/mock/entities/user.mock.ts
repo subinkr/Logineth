@@ -101,6 +101,10 @@ export class MockUserModel {
     return user;
   }
 
+  findAndCount() {
+    return MockUserModel.users;
+  }
+
   exist({ where: { id, username } }) {
     const [user] = id
       ? MockUserModel.users.filter((user) => user.id === id)

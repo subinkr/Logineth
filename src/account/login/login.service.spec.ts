@@ -9,14 +9,13 @@ import { RegisterService } from '../register/register.service';
 import { ResLogin } from './dto/res-login.dto';
 import { ReqOAuthLogin } from './dto/req-oauth-login.dto';
 import { Provider } from 'src/source-code/enum/provider';
-import { NotFoundException } from '@nestjs/common';
 
 describe('LoginService', () => {
   let service: LoginService;
   let profileService: ProfileService;
   let authService: AuthService;
   let registerService: RegisterService;
-  const { user, notExistUser, accessToken } = MockUserModel;
+  const { user, accessToken } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -29,16 +28,18 @@ describe('LoginService', () => {
     registerService = module.get<RegisterService>(RegisterService);
   });
 
-  // LLTEST: - use
+  // LLTEST: - use, return
   describe('Local Login', () => {
     const reqLocalLogin: ReqLocalLogin = {
       username: user.username,
       password: 'p@ssw0rd',
     };
+    const resLogin: ResLogin = { accessToken, user };
+    let result = {};
 
     it('Use | getUserByUsername', async () => {
       profileService.getUserByUsername = jest.fn().mockReturnValue({ user });
-      await service.localLogin(reqLocalLogin);
+      result = await service.localLogin(reqLocalLogin);
       expect(profileService.getUserByUsername).toHaveBeenCalled();
     });
 
@@ -53,16 +54,30 @@ describe('LoginService', () => {
       await service.localLogin(reqLocalLogin);
       expect(authService.signToken).toHaveBeenCalled();
     });
+
+    it('Return | ResLogin', async () => {
+      const keys = Object.keys(result);
+      const required = Object.keys(resLogin);
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
   });
 
-  // OLTEST: - use
+  // OLTEST: - use, return
   describe('OAuth Login', () => {
     const reqOAuthLogin: ReqOAuthLogin = { token: '' };
     const resLogin: ResLogin = { accessToken, user };
+    let result = {};
+
     it('Use | oAuthRegister', async () => {
       registerService.oAuthRegister = jest.fn().mockReturnValue(resLogin);
-      await service.oAuthLogin(reqOAuthLogin, Provider.GITHUB);
+      result = await service.oAuthLogin(reqOAuthLogin, Provider.GITHUB);
       expect(registerService.oAuthRegister).toHaveBeenCalled();
+    });
+
+    it('Return | ResLogin', async () => {
+      const keys = Object.keys(result);
+      const required = Object.keys(resLogin);
+      expect(keys).toEqual(expect.arrayContaining(required));
     });
   });
 });

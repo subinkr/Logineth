@@ -6,6 +6,8 @@ import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { MockRoomModel } from 'src/source-code/mock/entities/room.mock';
 import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { RoomGatewaySendMessage } from './dto/room-gateway-send-message.dto';
+import { ResGetChats } from './dto/res-get-chats.dto';
+import { ResGetRooms } from './dto/res-get-rooms.dto';
 
 describe('WsService', () => {
   let service: WsService;
@@ -22,21 +24,43 @@ describe('WsService', () => {
     profileService = module.get<ProfileService>(ProfileService);
   });
 
-  // GRTEST: - use
+  // GRTEST: - use, return
   describe('Get Rooms', () => {
+    const resGetRooms: ResGetRooms = { rooms: [MockRoomModel.room] };
+    let result = {};
+
     it('Use | getUserByID', async () => {
       profileService.getUserByID = jest.fn().mockReturnValue({ user });
-      await service.getRooms(user.id);
+      result = await service.getRooms(user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
+    });
+
+    it('Return | ResGetRooms', async () => {
+      const keys = Object.keys(result);
+      const required = Object.keys(resGetRooms);
+      expect(keys).toEqual(expect.arrayContaining(required));
     });
   });
 
-  // GRTEST: - use, error
+  // GRTEST: - use, return, error
   describe('Get Chats', () => {
+    const resGetChats: ResGetChats = {
+      chats: [],
+      chatsCount: 0,
+      nextPage: false,
+    };
+    let result = {};
+
     it('Use | getUserByID', async () => {
       profileService.getUserByID = jest.fn().mockReturnValue({ user });
-      await service.getChats(room.id, 1, user.id);
+      result = await service.getChats(room.id, 1, user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
+    });
+
+    it('Return | ResGetChats', async () => {
+      const keys = Object.keys(result);
+      const required = Object.keys(resGetChats);
+      expect(keys).toEqual(expect.arrayContaining(required));
     });
 
     it('Error | Cannot access not included room', async () => {
@@ -72,10 +96,14 @@ describe('WsService', () => {
     const roomGatewaySendMessage: RoomGatewaySendMessage = {
       content: 'content',
     };
+    const roomGatewaySendMessage2: RoomGatewaySendMessage = {
+      content: 'contentContentContent',
+    };
 
     it('Use | getUserByID', async () => {
       profileService.getUserByID = jest.fn().mockReturnValue({ user });
       await service.sendMessage(roomGatewaySendMessage, room.id, user.id);
+      await service.sendMessage(roomGatewaySendMessage2, room.id, user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
     });
 

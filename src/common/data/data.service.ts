@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import { v4 as UUID } from 'uuid';
-import { ReqPagination } from './dto/req-pagination.dto';
 import { ResPagination } from './dto/res-pagination.dto';
 import { ResUploadImageToS3 } from './dto/res-upload-image-to-s3.dto';
 
@@ -42,8 +41,12 @@ export class DataService {
     return bucket.putObject(params).promise().then(callback);
   }
 
-  pagination<T>(reqPagination: ReqPagination<T>): ResPagination<T> {
-    const { findAndCount, take, skip, page } = reqPagination;
+  pagination<T>(
+    findAndCount: [T[], number],
+    take: number,
+    skip: number,
+    page: number,
+  ): ResPagination<T> {
     const array = findAndCount[0];
     const arrayCount = findAndCount[1];
     const nextPage = skip + take < arrayCount && page + 1;

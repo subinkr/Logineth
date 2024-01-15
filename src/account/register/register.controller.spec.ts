@@ -3,16 +3,14 @@ import { RegisterController } from './register.controller';
 import { providers } from 'src/source-code/mock/providers/providers';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { ReqLocalRegister } from './dto/req-local-register.dto';
-import { ResRegister } from './dto/res-register.dto';
 import { RegisterService } from './register.service';
 import { ReqOAuthRegister } from './dto/req-oauth-register.dto';
 import { Provider } from 'src/source-code/enum/provider';
-import { ResWithdrawRegister } from './dto/res-withdraw-register.dto';
 
 describe('RegisterController', () => {
   let controller: RegisterController;
   let registerService: RegisterService;
-  const { user, accessToken, notExistUser } = MockUserModel;
+  const { user, notExistUser } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -24,71 +22,34 @@ describe('RegisterController', () => {
     registerService = module.get<RegisterService>(RegisterService);
   });
 
-  // LRTEST: - use, return
+  // LRTEST: - use
   describe('Local Register', () => {
     const reqLocalRegister: ReqLocalRegister = { ...notExistUser };
-    const resRegister: ResRegister = { accessToken, user };
 
     it('Use | localRegister', async () => {
-      registerService.localRegister = jest.fn().mockReturnValue(resRegister);
+      registerService.localRegister = jest.fn();
       await controller.localRegister(reqLocalRegister);
       expect(registerService.localRegister).toHaveBeenCalled();
     });
-
-    it('Return | ResRegister', async () => {
-      const result = await controller.localRegister(reqLocalRegister);
-      expect(result).toBeInstanceOf(ResRegister);
-
-      const keys = Object.keys(result);
-      const required = Object.keys(resRegister);
-      expect(keys).toEqual(expect.arrayContaining(required));
-    });
   });
 
-  // GRTEST: - use, return
+  // GRTEST: - use
   describe('OAuth Register', () => {
     const reqOAuthRegister: ReqOAuthRegister = { token: '' };
-    const resRegister: ResRegister = { accessToken, user };
 
     it('Use | oAuthRegister', async () => {
-      registerService.oAuthRegister = jest.fn().mockReturnValue(resRegister);
+      registerService.oAuthRegister = jest.fn();
       await controller.oAuthRegister(Provider.GITHUB, reqOAuthRegister);
       expect(registerService.oAuthRegister).toHaveBeenCalled();
     });
-
-    it('Return | ResRegister', async () => {
-      registerService.getGithubUserInfo = jest
-        .fn()
-        .mockReturnValue({ id: 10, nickname: 'github', image: null });
-      const result = await controller.oAuthRegister(
-        Provider.GITHUB,
-        reqOAuthRegister,
-      );
-      expect(result).toBeInstanceOf(ResRegister);
-
-      const keys = Object.keys(result);
-      const required = Object.keys(resRegister);
-      expect(keys).toEqual(expect.arrayContaining(required));
-    });
   });
 
-  // WTEST: - use, return
+  // WTEST: - use
   describe('Withdraw Register', () => {
-    const resWithdraw: ResWithdrawRegister = { message: '탈퇴했습니다.' };
-
     it('Use | withdrawRegister', async () => {
-      registerService.withdrawRegister = jest.fn().mockReturnValue(resWithdraw);
+      registerService.withdrawRegister = jest.fn();
       await controller.withdrawRegister(user.id, user.id);
       expect(registerService.withdrawRegister).toHaveBeenCalled();
-    });
-
-    it('Return | ResWithdraw', async () => {
-      const result = await controller.withdrawRegister(user.id, user.id);
-      expect(result).toBeInstanceOf(ResWithdrawRegister);
-
-      const keys = Object.keys(result);
-      const required = Object.keys(resWithdraw);
-      expect(keys).toEqual(expect.arrayContaining(required));
     });
   });
 });

@@ -9,7 +9,6 @@ import { Repository } from 'typeorm';
 import { RoomGatewaySendMessage } from './dto/room-gateway-send-message.dto';
 import { ProfileService } from 'src/account/profile/profile.service';
 import { DataService } from '../data/data.service';
-import { ReqPagination } from '../data/dto/req-pagination.dto';
 import { UserModel } from 'src/source-code/entities/user.entity';
 import { RoomModel } from 'src/source-code/entities/room.entity';
 
@@ -56,18 +55,11 @@ export class WsService {
       take,
     });
 
-    const reqPagination: ReqPagination<ChatModel> = {
-      findAndCount,
-      skip,
-      take,
-      page,
-    };
-
     const {
       array: chats,
       arrayCount: chatsCount,
       nextPage,
-    } = this.dataService.pagination(reqPagination);
+    } = this.dataService.pagination(findAndCount, take, skip, page);
     await this.roomRepo.save(room);
 
     return { chats: chats.reverse(), chatsCount, nextPage };
@@ -115,10 +107,12 @@ export class WsService {
       throw new ForbiddenException('해당 방에 접근할 수 없습니다.');
     }
 
-    rooms[roomIdx].viewUsers = [user];
-    const room = rooms[roomIdx];
-
+    const room = { ...rooms[roomIdx] };
     const chat = await this.chatRepo.save({ room, user, content });
+
+    room.viewUsers = [user];
+    room.lastChat =
+      content.length > 20 ? `${content.slice(0, 20)}...` : content;
     await this.roomRepo.save(room);
 
     return { chat };
@@ -139,8 +133,8 @@ export class WsService {
     if (viewUsersIdx !== -1) {
       room.viewUsers.splice(viewUsersIdx, 1);
     }
-    room.viewUsers.push(user);
 
+    room.viewUsers.push(user);
     await this.roomRepo.save(room);
 
     return { message: '방을 나갔습니다.' };

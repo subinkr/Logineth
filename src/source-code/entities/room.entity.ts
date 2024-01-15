@@ -10,6 +10,10 @@ export class RoomModel extends BaseModel {
   @Column()
   name: string;
 
+  @ApiProperty({ example: 'content', required: false })
+  @Column({ default: '' })
+  lastChat: string;
+
   @ApiProperty({ example: [], required: false })
   @OneToMany(() => ChatModel, (chat) => chat.room)
   chats: Promise<ChatModel[]>;

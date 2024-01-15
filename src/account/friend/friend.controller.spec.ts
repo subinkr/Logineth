@@ -7,6 +7,7 @@ import { ResFollowing } from './dto/res-following.dto';
 import { ResUnFollowing } from './dto/res-un-following.dto';
 import { ResGetFollowingUsers } from './dto/res-get-following-users.dto';
 import { ResGetFollowerUsers } from './dto/res-get-follower-users.dto';
+import { ResFindUsers } from './dto/res-find-users.dto';
 
 describe('FriendController', () => {
   let controller: FriendController;
@@ -102,6 +103,31 @@ describe('FriendController', () => {
 
       const keys = Object.keys(result);
       const required = Object.keys(resUnFollowing);
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
+  });
+
+  // FUTEST: - use, return
+  describe('Find Users', () => {
+    const reqFindUsers = `${user.nickname}#${user.id}`;
+    const resFindUsers: ResFindUsers = {
+      findUsers: MockUserModel.users,
+      findUsersLength: 3,
+      nextPage: false,
+    };
+
+    it('Use | findUsers', async () => {
+      friendService.findUsers = jest.fn();
+      await controller.findUsers(reqFindUsers, 1);
+      expect(friendService.findUsers).toHaveBeenCalled();
+    });
+
+    it('Return | ResFindUser', async () => {
+      const result = await controller.findUsers(reqFindUsers, 1);
+      expect(result).toBeInstanceOf(ResFindUsers);
+
+      const keys = Object.keys(result);
+      const required = Object.keys(resFindUsers);
       expect(keys).toEqual(expect.arrayContaining(required));
     });
   });

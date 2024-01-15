@@ -75,11 +75,13 @@ describe('FriendService', () => {
     });
   });
 
-  describe('Find Friend', () => {
-    it.todo('');
-  });
+  // FUTEST: - return
+  describe('Find Users', () => {
+    const reqFindUsers = `${user.nickname}#${user.id}`;
 
-  describe('Invite Friend', () => {
-    it.todo('');
+    it('Return | {findUsers: [user: UserModel]}', async () => {
+      const result = await service.findUsers(reqFindUsers, 1);
+      expect(result.findUsers[0]).toStrictEqual(user);
+    });
   });
 });

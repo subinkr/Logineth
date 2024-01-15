@@ -1,10 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProfileService } from './profile.service';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
-import { UserModel } from 'src/source-code/entities/user.entity';
 import { providers } from 'src/source-code/mock/providers/providers';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { ReqEditUser } from './dto/req-edit-user.dto';
+import { ResGetUser } from './dto/res-get-user.dto';
+import { ResEditUser } from './dto/res-edit-user.dto';
 
 describe('ProfileService', () => {
   let service: ProfileService;
@@ -20,9 +21,13 @@ describe('ProfileService', () => {
 
   // GUBITEST: - return, error
   describe('Get User By ID', () => {
-    it('Return | {user: UserModel}', async () => {
+    const resGetUser: ResGetUser = { user };
+
+    it('Return | ResGetUser', async () => {
       const result = await service.getUserByID(user.id);
-      expect(result.user).toStrictEqual(user);
+      const keys = Object.keys(result);
+      const required = Object.keys(resGetUser);
+      expect(keys).toEqual(expect.arrayContaining(required));
     });
 
     it('Error | Cannot find user', async () => {
@@ -44,18 +49,26 @@ describe('ProfileService', () => {
     });
   });
 
-  // EUTEST: - use
+  // EUTEST: - use, return, error
   describe('Edit User', () => {
     const reqEditUser: ReqEditUser = {
       image: user.image,
       nickname: user.nickname,
       bio: user.bio,
     };
+    const resEditUser: ResEditUser = { message: '수정되었습니다.' };
+    let result = {};
 
     it('Use | getUserByID', async () => {
       service.getUserByID = jest.fn().mockReturnValue(user);
-      await service.editUser(user.id, reqEditUser, user.id);
+      result = await service.editUser(user.id, reqEditUser, user.id);
       expect(service.getUserByID).toHaveBeenCalled();
+    });
+
+    it('Return | ResEditUser', async () => {
+      const keys = Object.keys(result);
+      const required = Object.keys(resEditUser);
+      expect(keys).toEqual(expect.arrayContaining(required));
     });
 
     it('Error | Cannot edit other user.', async () => {

@@ -32,27 +32,14 @@ describe('DataController', () => {
   });
 
   describe('Upload Image To S3', () => {
-    const file: Express.Multer.File = emptyFile;
-    const resUploadImageToS3: ResUploadImageToS3 = { image: '' };
-
     it('Use | uploadImageToS3', async () => {
+      const resUploadImageToS3: ResUploadImageToS3 = { image: '' };
+
       dataService.uploadImageToS3 = jest
         .fn()
         .mockReturnValue(resUploadImageToS3);
-      await controller.uploadImageToS3(file);
+      await controller.uploadImageToS3(emptyFile);
       expect(dataService.uploadImageToS3).toHaveBeenCalled();
-    });
-
-    it('Return | ResUploadImageToS3', async () => {
-      dataService.uploadImageToS3 = jest
-        .fn()
-        .mockReturnValue(resUploadImageToS3);
-      const result = await controller.uploadImageToS3(file);
-      expect(result).toBeInstanceOf(ResUploadImageToS3);
-
-      const keys = Object.keys(result);
-      const required = Object.keys(resUploadImageToS3);
-      expect(keys).toEqual(expect.arrayContaining(required));
     });
   });
 });

@@ -52,11 +52,20 @@ describe('DataService', () => {
     });
   });
 
-  // UITSTEST: - use
+  // UITSTEST: - use, return
   describe('Upload Image To S3', () => {
+    const resUploadImageToS3: ResUploadImageToS3 = { image: '' };
+    let result = {};
+
     it('Use | runBucket', async () => {
       service.runBucket = jest.fn().mockReturnValue(resUploadImageToS3);
-      await service.uploadImageToS3(emptyFile);
+      result = await service.uploadImageToS3(emptyFile);
+    });
+
+    it('Return | ResUploadImageToS3', async () => {
+      const keys = Object.keys(result);
+      const required = Object.keys(resUploadImageToS3);
+      expect(keys).toEqual(expect.arrayContaining(required));
     });
   });
 

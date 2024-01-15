@@ -9,12 +9,12 @@ import { ILike, Repository } from 'typeorm';
 import { ProfileService } from '../profile/profile.service';
 import { ResFollowing } from './dto/res-following.dto';
 import { ResUnFollowing } from './dto/res-un-following.dto';
-import { ResGetFollowingUsers } from './dto/res-get-following-users.dto';
-import { ResGetFollowerUsers } from './dto/res-get-follower-users.dto';
 import { WsService } from 'src/common/ws/ws.service';
 import { ReqFindUsers } from './dto/req-find-users.dto';
 import { ResFindUsers } from './dto/res-find-users.dto';
 import { DataService } from 'src/common/data/data.service';
+import { ResFollowingUsers } from './dto/res-following-users.dto';
+import { ResFollowerUsers } from './dto/res-follower-users.dto';
 
 @Injectable()
 export class FriendService {
@@ -25,6 +25,24 @@ export class FriendService {
     private readonly wsService: WsService,
     private readonly dataService: DataService,
   ) {}
+
+  // FUSERVICE: - {followingUsers: UserModel[]}
+  async followingUsers(loginUserID: number): Promise<ResFollowingUsers> {
+    const { user: loginUser } =
+      await this.profileService.getUserByID(loginUserID);
+    const followingUsers = await loginUser.followingUsers;
+
+    return { followingUsers };
+  }
+
+  // FUSERVICE: - {followerUsers: UserModel[]}
+  async followerUsers(loginUserID: number): Promise<ResFollowerUsers> {
+    const { user: loginUser } =
+      await this.profileService.getUserByID(loginUserID);
+    const followerUsers = await loginUser.followerUsers;
+
+    return { followerUsers };
+  }
 
   // FSERVICE: - {message: string}
   async following(
@@ -99,24 +117,6 @@ export class FriendService {
     }
 
     return { message: '언팔로우 성공' };
-  }
-
-  // FUSERVICE: - {followingUsers: UserModel[]}
-  async getFollowingUsers(loginUserID: number): Promise<ResGetFollowingUsers> {
-    const { user: loginUser } =
-      await this.profileService.getUserByID(loginUserID);
-    const followingUsers = await loginUser.followingUsers;
-
-    return { followingUsers };
-  }
-
-  // FUSERVICE: - {followerUsers: UserModel[]}
-  async getFollowerUsers(loginUserID: number): Promise<ResGetFollowerUsers> {
-    const { user: loginUser } =
-      await this.profileService.getUserByID(loginUserID);
-    const followerUsers = await loginUser.followerUsers;
-
-    return { followerUsers };
   }
 
   // FUSERVICE: - {findUsers: UserModel[]}

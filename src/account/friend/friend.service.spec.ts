@@ -6,10 +6,10 @@ import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { providers } from 'src/source-code/mock/providers/providers';
 import { ReqFindUsers } from './dto/req-find-users.dto';
 import { ResFindUsers } from './dto/res-find-users.dto';
-import { ResGetFollowerUsers } from './dto/res-get-follower-users.dto';
-import { ResGetFollowingUsers } from './dto/res-get-following-users.dto';
 import { ResFollowing } from './dto/res-following.dto';
 import { ResUnFollowing } from './dto/res-un-following.dto';
+import { ResFollowingUsers } from './dto/res-following-users.dto';
+import { ResFollowerUsers } from './dto/res-follower-users.dto';
 
 describe('FriendService', () => {
   let service: FriendService;
@@ -83,18 +83,18 @@ describe('FriendService', () => {
 
   // FUTEST: - use, return
   describe('Following Users', () => {
-    const resGetFollowingUsers: ResGetFollowingUsers = {
+    const resGetFollowingUsers: ResFollowingUsers = {
       followingUsers: MockUserModel.users,
     };
     let result = {};
 
     it('Use | getUserByID', async () => {
       profileService.getUserByID = jest.fn().mockReturnValue({ user });
-      result = await service.getFollowingUsers(user.id);
+      result = await service.followingUsers(user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
     });
 
-    it('Return | ResGetFollowingUsers', async () => {
+    it('Return | ResFollowingUsers', async () => {
       const keys = Object.keys(result);
       const required = Object.keys(resGetFollowingUsers);
       expect(keys).toEqual(expect.arrayContaining(required));
@@ -103,18 +103,18 @@ describe('FriendService', () => {
 
   // FUTEST: - use
   describe('Follower Users', () => {
-    const resGetFollowerUsers: ResGetFollowerUsers = {
+    const resGetFollowerUsers: ResFollowerUsers = {
       followerUsers: MockUserModel.users,
     };
     let result = {};
 
     it('Use | getUserByID', async () => {
       profileService.getUserByID = jest.fn().mockReturnValue({ user });
-      result = await service.getFollowerUsers(user.id);
+      result = await service.followerUsers(user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
     });
 
-    it('Return | ResGetFollowerUsers', async () => {
+    it('Return | ResFollowerUsers', async () => {
       const keys = Object.keys(result);
       const required = Object.keys(resGetFollowerUsers);
       expect(keys).toEqual(expect.arrayContaining(required));

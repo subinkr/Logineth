@@ -3,7 +3,6 @@ import { DataService } from './data.service';
 import { providers } from 'src/source-code/mock/providers/providers';
 import { Readable } from 'typeorm/platform/PlatformTools';
 import { ResUploadImageToS3 } from './dto/res-upload-image-to-s3.dto';
-import { ReqPagination } from './dto/req-pagination.dto';
 import { UserModel } from 'src/source-code/entities/user.entity';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 
@@ -65,15 +64,9 @@ describe('DataService', () => {
   describe('Pagination', () => {
     const findAndCount: [UserModel[], number] = [[user, otherUser], 2];
     const [take, skip, page] = [1, 0, 1];
-    const reqPagination: ReqPagination<UserModel> = {
-      findAndCount,
-      skip,
-      take,
-      page,
-    };
 
     it('Return | {array: [], arrayCount: number, nextPage: number | boolean}', () => {
-      const result = service.pagination(reqPagination);
+      const result = service.pagination(findAndCount, skip, take, page);
       const { array, arrayCount, nextPage } = result;
 
       expect(array).toStrictEqual(findAndCount[0]);

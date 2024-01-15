@@ -5,13 +5,16 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserModel } from 'src/source-code/entities/user.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { ProfileService } from '../profile/profile.service';
 import { ResFollowing } from './dto/res-following.dto';
 import { ResUnFollowing } from './dto/res-un-following.dto';
 import { ResGetFollowingUsers } from './dto/res-get-following-users.dto';
 import { ResGetFollowerUsers } from './dto/res-get-follower-users.dto';
 import { WsService } from 'src/common/ws/ws.service';
+import { ReqFindUsers } from './dto/req-find-users.dto';
+import { ResFindUsers } from './dto/res-find-users.dto';
+import { DataService } from 'src/common/data/data.service';
 
 @Injectable()
 export class FriendService {
@@ -20,6 +23,7 @@ export class FriendService {
     private readonly userRepo: Repository<UserModel>,
     private readonly profileService: ProfileService,
     private readonly wsService: WsService,
+    private readonly dataService: DataService,
   ) {}
 
   // FSERVICE: - {message: string}
@@ -113,5 +117,40 @@ export class FriendService {
     const followerUsers = await loginUser.followerUsers;
 
     return { followerUsers };
+  }
+
+  // FUSERVICE: - {findUsers: UserModel[]}
+  async findUsers(
+    reqFindUsers: ReqFindUsers,
+    page: number,
+  ): Promise<ResFindUsers> {
+    const { keyword } = reqFindUsers;
+    const [nickname, id] = keyword.split('#');
+    let findUser = await this.userRepo.findOne({
+      where: { id: parseInt(id), nickname },
+    });
+    if (findUser) {
+      return {
+        findUsers: [findUser],
+        findUsersCount: 1,
+        nextPage: false,
+      };
+    }
+
+    const take = 10;
+    const skip = (page - 1) * take;
+    const findAndCount = await this.userRepo.findAndCount({
+      where: [{ id: ILike(parseInt(id)) }, { nickname: ILike(nickname) }],
+      take,
+      skip,
+    });
+
+    const {
+      array: findUsers,
+      arrayCount: findUsersCount,
+      nextPage,
+    } = this.dataService.pagination(findAndCount, take, skip, page);
+
+    return { findUsers, findUsersCount, nextPage };
   }
 }

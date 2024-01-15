@@ -4,11 +4,13 @@ import { ProfileService } from '../profile/profile.service';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { providers } from 'src/source-code/mock/providers/providers';
+import { ReqFindUsers } from './dto/req-find-users.dto';
+import { ResFindUsers } from './dto/res-find-users.dto';
 
 describe('FriendService', () => {
   let service: FriendService;
   let profileService: ProfileService;
-  const { user, otherUser, influencer } = MockUserModel;
+  const { user, otherUser, influencer, notExistUser } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -75,11 +77,33 @@ describe('FriendService', () => {
     });
   });
 
-  describe('Find Friend', () => {
-    it.todo('');
-  });
+  // FUTEST: - return
+  describe('Find Users', () => {
+    const reqFindUsers: ReqFindUsers = {
+      keyword: `${user.nickname}#${user.id}`,
+    };
+    const reqFindUsers2: ReqFindUsers = {
+      keyword: `${notExistUser.nickname}`,
+    };
 
-  describe('Invite Friend', () => {
-    it.todo('');
+    const resFindUsers: ResFindUsers = {
+      findUsers: MockUserModel.users,
+      findUsersCount: 3,
+      nextPage: false,
+    };
+
+    it('Return | ResFindUser', async () => {
+      const result = await service.findUsers(reqFindUsers, 1);
+      const keys = Object.keys(result);
+      const required = Object.keys(resFindUsers);
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
+
+    it('Return | ResFindUser', async () => {
+      const result = await service.findUsers(reqFindUsers2, 1);
+      const keys = Object.keys(result);
+      const required = Object.keys(resFindUsers);
+      expect(keys).toEqual(expect.arrayContaining(required));
+    });
   });
 });

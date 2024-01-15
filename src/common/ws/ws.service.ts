@@ -9,7 +9,6 @@ import { Repository } from 'typeorm';
 import { RoomGatewaySendMessage } from './dto/room-gateway-send-message.dto';
 import { ProfileService } from 'src/account/profile/profile.service';
 import { DataService } from '../data/data.service';
-import { ReqPagination } from '../data/dto/req-pagination.dto';
 import { UserModel } from 'src/source-code/entities/user.entity';
 import { RoomModel } from 'src/source-code/entities/room.entity';
 
@@ -56,18 +55,11 @@ export class WsService {
       take,
     });
 
-    const reqPagination: ReqPagination<ChatModel> = {
-      findAndCount,
-      skip,
-      take,
-      page,
-    };
-
     const {
       array: chats,
       arrayCount: chatsCount,
       nextPage,
-    } = this.dataService.pagination(reqPagination);
+    } = this.dataService.pagination(findAndCount, take, skip, page);
     await this.roomRepo.save(room);
 
     return { chats: chats.reverse(), chatsCount, nextPage };

@@ -7,6 +7,8 @@ import { ResFollowing } from './dto/res-following.dto';
 import { ResUnFollowing } from './dto/res-un-following.dto';
 import { ResGetFollowingUsers } from './dto/res-get-following-users.dto';
 import { ResGetFollowerUsers } from './dto/res-get-follower-users.dto';
+import { ResFindUsers } from './dto/res-find-users.dto';
+import { ReqFindUsers } from './dto/req-find-users.dto';
 
 describe('FriendController', () => {
   let controller: FriendController;
@@ -103,6 +105,19 @@ describe('FriendController', () => {
       const keys = Object.keys(result);
       const required = Object.keys(resUnFollowing);
       expect(keys).toEqual(expect.arrayContaining(required));
+    });
+  });
+
+  // FUTEST: - use
+  describe('Find Users', () => {
+    const reqFindUsers: ReqFindUsers = {
+      keyword: `${user.nickname}#${user.id}`,
+    };
+
+    it('Use | findUsers', async () => {
+      friendService.findUsers = jest.fn();
+      await controller.findUsers(reqFindUsers, 1);
+      expect(friendService.findUsers).toHaveBeenCalled();
     });
   });
 });

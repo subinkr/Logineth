@@ -7,7 +7,7 @@ export class ResFindUsers {
   findUsers: UserModel[];
 
   @ApiProperty({ example: 3 })
-  findUsersLength: number;
+  findUsersCount: number;
 
   @ApiProperty({ example: false })
   nextPage: number | boolean;

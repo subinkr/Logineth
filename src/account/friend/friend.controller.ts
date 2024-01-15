@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -28,6 +29,8 @@ import { forbidden } from 'src/source-code/error/swagger/forbidden';
 import { notFound } from 'src/source-code/error/swagger/not-found';
 import { ResGetFollowingUsers } from './dto/res-get-following-users.dto';
 import { ResGetFollowerUsers } from './dto/res-get-follower-users.dto';
+import { ResFindUsers } from './dto/res-find-users.dto';
+import { ReqFindUsers } from './dto/req-find-users.dto';
 
 @Controller('')
 @ApiTags('account | friend')
@@ -96,5 +99,16 @@ export class FriendController {
       loginUserID,
     );
     return plainToInstance(ResUnFollowing, result);
+  }
+
+  @Get('friend/find/:page')
+  @ApiOperation({ summary: 'Find Users' })
+  @ApiOkResponse({ type: ResFindUsers })
+  async findUsers(
+    @Body() reqFindUsers: ReqFindUsers,
+    @Param('page', ParseIntPipe) page: number,
+  ): Promise<ResFindUsers> {
+    const result = await this.friendService.findUsers(reqFindUsers, page);
+    return plainToInstance(ResFindUsers, result);
   }
 }

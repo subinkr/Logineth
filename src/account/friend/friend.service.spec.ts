@@ -4,6 +4,7 @@ import { ProfileService } from '../profile/profile.service';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { providers } from 'src/source-code/mock/providers/providers';
+import { ReqFindUsers } from './dto/req-find-users.dto';
 
 describe('FriendService', () => {
   let service: FriendService;
@@ -77,9 +78,11 @@ describe('FriendService', () => {
 
   // FUTEST: - return
   describe('Find Users', () => {
-    const reqFindUsers = `${user.nickname}#${user.id}`;
+    const reqFindUsers: ReqFindUsers = {
+      keyword: `${user.nickname}#${user.id}`,
+    };
 
-    it('Return | {findUsers: [user: UserModel]}', async () => {
+    it('Return | {findUsers: UserModel[]}', async () => {
       const result = await service.findUsers(reqFindUsers, 1);
       expect(result.findUsers[0]).toStrictEqual(user);
     });

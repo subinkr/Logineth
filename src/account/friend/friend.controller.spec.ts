@@ -8,6 +8,7 @@ import { ResUnFollowing } from './dto/res-un-following.dto';
 import { ResGetFollowingUsers } from './dto/res-get-following-users.dto';
 import { ResGetFollowerUsers } from './dto/res-get-follower-users.dto';
 import { ResFindUsers } from './dto/res-find-users.dto';
+import { ReqFindUsers } from './dto/req-find-users.dto';
 
 describe('FriendController', () => {
   let controller: FriendController;
@@ -109,10 +110,12 @@ describe('FriendController', () => {
 
   // FUTEST: - use, return
   describe('Find Users', () => {
-    const reqFindUsers = `${user.nickname}#${user.id}`;
+    const reqFindUsers: ReqFindUsers = {
+      keyword: `${user.nickname}#${user.id}`,
+    };
     const resFindUsers: ResFindUsers = {
       findUsers: MockUserModel.users,
-      findUsersLength: 3,
+      findUsersCount: 3,
       nextPage: false,
     };
 

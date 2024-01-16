@@ -81,7 +81,11 @@ export class WsService {
 
     const roomIdx = rooms.findIndex((room) => room.name === roomName);
     if (roomIdx !== -1) {
-      await this.roomRepo.save({ id: rooms[roomIdx].id, users: [] });
+      await this.roomRepo.save({
+        id: rooms[roomIdx].id,
+        users: [],
+        viewUsers: [],
+      });
       await this.roomRepo.delete(rooms[roomIdx].id);
     }
 
@@ -115,7 +119,7 @@ export class WsService {
       content.length > 20 ? `${content.slice(0, 20)}...` : content;
     await this.roomRepo.save(room);
 
-    return { chat };
+    return { room, chat };
   }
 
   // CRSERVICE: - {message: '방을 나갔습니다.'}

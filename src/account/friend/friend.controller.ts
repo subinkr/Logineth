@@ -27,10 +27,10 @@ import {
 import { badRequest } from 'src/source-code/error/swagger/bad-request';
 import { forbidden } from 'src/source-code/error/swagger/forbidden';
 import { notFound } from 'src/source-code/error/swagger/not-found';
-import { ResGetFollowingUsers } from './dto/res-get-following-users.dto';
-import { ResGetFollowerUsers } from './dto/res-get-follower-users.dto';
 import { ResFindUsers } from './dto/res-find-users.dto';
 import { ReqFindUsers } from './dto/req-find-users.dto';
+import { ResFollowerUsers } from './dto/res-follower-users.dto';
+import { ResFollowingUsers } from './dto/res-following-users.dto';
 
 @Controller('')
 @ApiTags('account | friend')
@@ -39,28 +39,28 @@ export class FriendController {
 
   @Get('follower')
   @UseGuards(AuthGuard)
-  @ApiOperation({ summary: 'Get Follower Users' })
-  @ApiOkResponse({ type: ResGetFollowerUsers })
+  @ApiOperation({ summary: 'Follower Users' })
+  @ApiOkResponse({ type: ResFollowerUsers })
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
   @ApiBearerAuth()
-  async getFollowerUsers(
+  async followerUsers(
     @AuthID() loginUserID: number,
-  ): Promise<ResGetFollowerUsers> {
-    const result = await this.friendService.getFollowerUsers(loginUserID);
-    return plainToInstance(ResGetFollowerUsers, result);
+  ): Promise<ResFollowerUsers> {
+    const result = await this.friendService.followerUsers(loginUserID);
+    return plainToInstance(ResFollowerUsers, result);
   }
 
   @Get('following')
   @UseGuards(AuthGuard)
-  @ApiOperation({ summary: 'Get Following Users' })
-  @ApiOkResponse({ type: ResGetFollowingUsers })
+  @ApiOperation({ summary: 'Following Users' })
+  @ApiOkResponse({ type: ResFollowingUsers })
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
   @ApiBearerAuth()
-  async getFollowingUsers(
+  async followingUsers(
     @AuthID() loginUserID: number,
-  ): Promise<ResGetFollowingUsers> {
-    const result = await this.friendService.getFollowingUsers(loginUserID);
-    return plainToInstance(ResGetFollowingUsers, result);
+  ): Promise<ResFollowingUsers> {
+    const result = await this.friendService.followingUsers(loginUserID);
+    return plainToInstance(ResFollowingUsers, result);
   }
 
   @Post('following/:targetUserID')

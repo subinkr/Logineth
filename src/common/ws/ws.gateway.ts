@@ -1,7 +1,6 @@
 import {
   ConnectedSocket,
   MessageBody,
-  OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
@@ -30,12 +29,17 @@ export class RoomGateway {
   ) {
     try {
       const roomID: number = parseInt(socket.nsp.name.split('/').slice(-1)[0]);
-      const { chat } = await this.wsService.sendMessage(
+      const { room, chat } = await this.wsService.sendMessage(
         data,
         roomID,
         loginUserID,
       );
       socket.broadcast.emit(`${roomID}`, chat);
+
+      const users = room.users;
+      for (let i = 0; i < users.length; i++) {
+        socket.broadcast.emit(`profile/${users[i].id}`);
+      }
     } catch (e) {}
   }
 

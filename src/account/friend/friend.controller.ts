@@ -1,11 +1,11 @@
 import {
-  Body,
   Controller,
   Delete,
   Get,
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { FriendService } from './friend.service';
@@ -28,7 +28,6 @@ import { badRequest } from 'src/source-code/error/swagger/bad-request';
 import { forbidden } from 'src/source-code/error/swagger/forbidden';
 import { notFound } from 'src/source-code/error/swagger/not-found';
 import { ResFindUsers } from './dto/res-find-users.dto';
-import { ReqFindUsers } from './dto/req-find-users.dto';
 import { ResFollowerUsers } from './dto/res-follower-users.dto';
 import { ResFollowingUsers } from './dto/res-following-users.dto';
 
@@ -105,10 +104,10 @@ export class FriendController {
   @ApiOperation({ summary: 'Find Users' })
   @ApiOkResponse({ type: ResFindUsers })
   async findUsers(
-    @Body() reqFindUsers: ReqFindUsers,
+    @Query('keyword') keyword: string,
     @Param('page', ParseIntPipe) page: number,
   ): Promise<ResFindUsers> {
-    const result = await this.friendService.findUsers(reqFindUsers, page);
+    const result = await this.friendService.findUsers(keyword, page);
     return plainToInstance(ResFindUsers, result);
   }
 }

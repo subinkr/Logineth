@@ -60,12 +60,14 @@ export class UserModel extends BaseModel {
   chats: Promise<ChatModel[]>;
 
   @ApiProperty({ example: [], required: false })
-  @ManyToMany(() => RoomModel, (room) => room.users, { cascade: true })
+  @ManyToMany(() => RoomModel, (room) => room.users, { onDelete: 'CASCADE' })
   @JoinTable({ name: 'user_room_model' })
   rooms: Promise<RoomModel[]>;
 
   @ApiProperty({ example: [], required: false })
-  @ManyToMany(() => RoomModel, (room) => room.viewUsers, { cascade: true })
+  @ManyToMany(() => RoomModel, (room) => room.viewUsers, {
+    onDelete: 'CASCADE',
+  })
   @JoinTable({ name: 'user_view_room_model' })
   viewRooms: Promise<RoomModel[]>;
 }

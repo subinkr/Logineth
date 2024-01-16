@@ -121,7 +121,7 @@ export class FriendService {
   // FUSERVICE: - {findUsers: UserModel[]}
   async findUsers(keyword: string, page: number): Promise<ResFindUsers> {
     const [nickname, idStr] = keyword.split('#');
-    const id = idStr ? parseInt(idStr) : 0;
+    const id = parseInt(idStr) || 0;
     let findUser = await this.userRepo.findOne({
       where: { id, nickname },
     });

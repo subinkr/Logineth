@@ -3,7 +3,6 @@ import { FriendController } from './friend.controller';
 import { FriendService } from './friend.service';
 import { providers } from 'src/source-code/mock/providers/providers';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
-import { ReqFindUsers } from './dto/req-find-users.dto';
 
 describe('FriendController', () => {
   let controller: FriendController;
@@ -58,13 +57,11 @@ describe('FriendController', () => {
 
   // FUTEST: - use
   describe('Find Users', () => {
-    const reqFindUsers: ReqFindUsers = {
-      keyword: `${user.nickname}#${user.id}`,
-    };
+    const keyword = `${user.nickname}#${user.id}`;
 
     it('Use | findUsers', async () => {
       friendService.findUsers = jest.fn();
-      await controller.findUsers(reqFindUsers, 1);
+      await controller.findUsers(keyword, 1);
       expect(friendService.findUsers).toHaveBeenCalled();
     });
   });

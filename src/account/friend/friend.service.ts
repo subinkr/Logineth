@@ -10,7 +10,6 @@ import { ProfileService } from '../profile/profile.service';
 import { ResFollowing } from './dto/res-following.dto';
 import { ResUnFollowing } from './dto/res-un-following.dto';
 import { WsService } from 'src/common/ws/ws.service';
-import { ReqFindUsers } from './dto/req-find-users.dto';
 import { ResFindUsers } from './dto/res-find-users.dto';
 import { DataService } from 'src/common/data/data.service';
 import { ResFollowingUsers } from './dto/res-following-users.dto';
@@ -120,14 +119,11 @@ export class FriendService {
   }
 
   // FUSERVICE: - {findUsers: UserModel[]}
-  async findUsers(
-    reqFindUsers: ReqFindUsers,
-    page: number,
-  ): Promise<ResFindUsers> {
-    const { keyword } = reqFindUsers;
-    const [nickname, id] = keyword.split('#');
+  async findUsers(keyword: string, page: number): Promise<ResFindUsers> {
+    const [nickname, idStr] = keyword.split('#');
+    const id = idStr ? parseInt(idStr) : 0;
     let findUser = await this.userRepo.findOne({
-      where: { id: parseInt(id), nickname },
+      where: { id, nickname },
     });
     if (findUser) {
       return {
@@ -140,7 +136,7 @@ export class FriendService {
     const take = 10;
     const skip = (page - 1) * take;
     const findAndCount = await this.userRepo.findAndCount({
-      where: [{ id: ILike(parseInt(id)) }, { nickname: ILike(nickname) }],
+      where: [{ id }, { nickname: ILike(nickname) }],
       take,
       skip,
     });

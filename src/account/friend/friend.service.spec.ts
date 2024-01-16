@@ -4,7 +4,6 @@ import { ProfileService } from '../profile/profile.service';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { providers } from 'src/source-code/mock/providers/providers';
-import { ReqFindUsers } from './dto/req-find-users.dto';
 import { ResFindUsers } from './dto/res-find-users.dto';
 import { ResFollowing } from './dto/res-following.dto';
 import { ResUnFollowing } from './dto/res-un-following.dto';
@@ -123,12 +122,8 @@ describe('FriendService', () => {
 
   // FUTEST: - return
   describe('Find Users', () => {
-    const reqFindUsers: ReqFindUsers = {
-      keyword: `${user.nickname}#${user.id}`,
-    };
-    const reqFindUsers2: ReqFindUsers = {
-      keyword: `${notExistUser.nickname}`,
-    };
+    const keyword = `${user.nickname}#${user.id}`;
+    const keyword2 = `${notExistUser.nickname}#${notExistUser.id}`;
 
     const resFindUsers: ResFindUsers = {
       findUsers: MockUserModel.users,
@@ -138,14 +133,14 @@ describe('FriendService', () => {
     let result = {};
 
     it('Return | ResFindUser', async () => {
-      result = await service.findUsers(reqFindUsers, 1);
+      result = await service.findUsers(keyword, 1);
       const keys = Object.keys(result);
       const required = Object.keys(resFindUsers);
       expect(keys).toEqual(expect.arrayContaining(required));
     });
 
     it('Return | ResFindUser', async () => {
-      result = await service.findUsers(reqFindUsers2, 1);
+      result = await service.findUsers(keyword2, 1);
       const keys = Object.keys(result);
       const required = Object.keys(resFindUsers);
       expect(keys).toEqual(expect.arrayContaining(required));

@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModel } from 'src/source-code/entities/user.entity';
 import { AuthModule } from 'src/common/auth/auth.module';
 import { WsModule } from 'src/common/ws/ws.module';
+import { DataModule } from 'src/common/data/data.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { WsModule } from 'src/common/ws/ws.module';
     ProfileModule,
     AuthModule,
     WsModule,
+    DataModule,
   ],
   controllers: [FriendController],
   providers: [FriendService],

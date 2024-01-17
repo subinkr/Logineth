@@ -46,6 +46,10 @@ export class UserModel extends BaseModel {
   @Column({ type: 'enum', enum: Provider, default: Provider.LOCAL })
   provider: string;
 
+  @ApiProperty({ example: MockUserModel.user.language, required: false })
+  @Column({ default: 0 })
+  language: number;
+
   @ApiProperty({ example: [], required: false })
   @ManyToMany(() => UserModel, (user) => user.followingUsers)
   followerUsers: Promise<UserModel[]>;

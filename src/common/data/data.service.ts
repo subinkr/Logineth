@@ -3,9 +3,21 @@ import * as AWS from 'aws-sdk';
 import { v4 as UUID } from 'uuid';
 import { ResPagination } from './dto/res-pagination.dto';
 import { ResUploadImageToS3 } from './dto/res-upload-image-to-s3.dto';
+import { ProfileService } from 'src/account/profile/profile.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserModel } from 'src/source-code/entities/user.entity';
+import { Repository } from 'typeorm';
+import { ReqLanguage } from './dto/req-language.dto';
+import { ResLanguage } from './dto/res-language.dto';
 
 @Injectable()
 export class DataService {
+  constructor(
+    @InjectRepository(UserModel)
+    private readonly userRepo: Repository<UserModel>,
+    private readonly profileService: ProfileService,
+  ) {}
+
   async uploadImageToS3(
     file: Express.Multer.File,
   ): Promise<ResUploadImageToS3> {
@@ -39,6 +51,15 @@ export class DataService {
     });
 
     return bucket.putObject(params).promise().then(callback);
+  }
+
+  async language(loginUserID: number, data: ReqLanguage): Promise<ResLanguage> {
+    const { user: loginUser } =
+      await this.profileService.getUserByID(loginUserID);
+    const { language } = data;
+    const user = await this.userRepo.save({ ...loginUser, language });
+
+    return { user };
   }
 
   pagination<T>(

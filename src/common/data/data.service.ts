@@ -53,10 +53,13 @@ export class DataService {
     return bucket.putObject(params).promise().then(callback);
   }
 
-  async language(loginUserID: number, data: ReqLanguage): Promise<ResLanguage> {
+  async language(
+    loginUserID: number,
+    reqLanguage: ReqLanguage,
+  ): Promise<ResLanguage> {
+    const { language } = reqLanguage;
     const { user: loginUser } =
       await this.profileService.getUserByID(loginUserID);
-    const { language } = data;
     const user = await this.userRepo.save({ ...loginUser, language });
 
     return { user };

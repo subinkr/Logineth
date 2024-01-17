@@ -38,7 +38,7 @@ export class RoomGateway {
 
       const users = room.users;
       for (let i = 0; i < users.length; i++) {
-        socket.broadcast.emit(`profile/${users[i].id}`);
+        socket.broadcast.emit(`profile/${users[i].id}`, room);
       }
     } catch (e) {}
   }

@@ -42,8 +42,4 @@ describe('DataController', () => {
       expect(dataService.uploadImageToS3).toHaveBeenCalled();
     });
   });
-
-  describe('Language', () => {
-    it.todo('Use | language');
-  });
 });

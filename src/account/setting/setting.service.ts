@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { ReqLanguage } from './dto/req-language.dto';
-import { ResLanguage } from './dto/res-language.dto';
+import { ReqSetting } from './dto/req-setting.dto';
+import { ResSetting } from './dto/res-setting.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserModel } from 'src/source-code/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -14,14 +14,22 @@ export class SettingService {
     private readonly profileService: ProfileService,
   ) {}
 
-  async language(
+  async setting(
     loginUserID: number,
-    reqLanguage: ReqLanguage,
-  ): Promise<ResLanguage> {
-    const { language } = reqLanguage;
+    reqSetting: ReqSetting,
+    option: string,
+  ): Promise<ResSetting> {
+    const { setting } = reqSetting;
     const { user: loginUser } =
       await this.profileService.getUserByID(loginUserID);
-    const user = await this.userRepo.save({ ...loginUser, language });
+
+    const obj = {};
+    obj[option] = setting;
+
+    const user = await this.userRepo.save({
+      ...loginUser,
+      ...obj,
+    });
 
     return { user };
   }

@@ -16,7 +16,7 @@ describe('SettingController', () => {
   });
 
   // LTEST: - use
-  describe('Language', () => {
-    it.todo('Use | language');
+  describe('Setting', () => {
+    it.todo('Use | setting');
   });
 });

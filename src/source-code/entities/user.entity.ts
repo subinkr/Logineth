@@ -46,6 +46,10 @@ export class UserModel extends BaseModel {
   @Column({ type: 'enum', enum: Provider, default: Provider.LOCAL })
   provider: string;
 
+  @ApiProperty({ example: MockUserModel.user.screen, required: false })
+  @Column({ default: 0 })
+  screen: number;
+
   @ApiProperty({ example: MockUserModel.user.language, required: false })
   @Column({ default: 0 })
   language: number;

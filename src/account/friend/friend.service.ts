@@ -109,7 +109,7 @@ export class FriendService {
     const roomName = `${smallID}-${bigID}`;
 
     const followerIdx = followerUsers.findIndex(
-      (user) => user.id === loginUserID,
+      (user) => user.id === targetUserID,
     );
     if (followerIdx === -1) {
       await this.wsService.deleteRoom(loginUser, roomName);

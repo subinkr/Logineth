@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber } from 'class-validator';
 
-export class ReqLanguage {
+export class ReqSetting {
   @ApiProperty({ example: 0 })
   @IsNumber()
-  language: number;
+  setting: number;
 }

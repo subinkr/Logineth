@@ -15,6 +15,7 @@ export const defaultUser: UserModel = {
   bio: null,
   role: Role.USER,
   provider: Provider.LOCAL,
+  screen: 0,
   language: 0,
   createdAt: new Date(1),
   updatedAt: new Date(1),

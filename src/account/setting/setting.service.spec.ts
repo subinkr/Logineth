@@ -14,8 +14,8 @@ describe('SettingService', () => {
   });
 
   // LTEST: - use, return
-  describe('Language', () => {
+  describe('Setting', () => {
     it.todo('Use | getUserByID');
-    it.todo('return | ResLanguage');
+    it.todo('return | ResSetting');
   });
 });

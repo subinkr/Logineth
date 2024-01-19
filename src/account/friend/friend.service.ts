@@ -137,6 +137,7 @@ export class FriendService {
     const skip = (page - 1) * take;
     const findAndCount = await this.userRepo.findAndCount({
       where: [{ id }, { nickname: ILike(`%${nickname}%`) }],
+      order: { id: 'ASC' },
       take,
       skip,
     });

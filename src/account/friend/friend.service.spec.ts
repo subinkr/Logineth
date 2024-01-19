@@ -122,8 +122,8 @@ describe('FriendService', () => {
 
   // FUTEST: - return
   describe('Find Users', () => {
-    const keyword = `${user.nickname}#${user.id}`;
-    const keyword2 = `${notExistUser.nickname}#${notExistUser.id}`;
+    const keyword = `${user.nickname}@${user.id}`;
+    const keyword2 = `${notExistUser.nickname}@${notExistUser.id}`;
 
     const resFindUsers: ResFindUsers = {
       findUsers: MockUserModel.users,

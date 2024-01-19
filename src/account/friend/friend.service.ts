@@ -120,10 +120,10 @@ export class FriendService {
 
   // FUSERVICE: - {findUsers: UserModel[]}
   async findUsers(keyword: string, page: number): Promise<ResFindUsers> {
-    const [nickname, idStr] = keyword.split('#');
+    const [nickname, idStr] = keyword.split('@');
     const id = parseInt(idStr) || 0;
     let findUser = await this.userRepo.findOne({
-      where: { id, nickname },
+      where: { id },
     });
     if (findUser) {
       return {
@@ -136,7 +136,7 @@ export class FriendService {
     const take = 10;
     const skip = (page - 1) * take;
     const findAndCount = await this.userRepo.findAndCount({
-      where: [{ id }, { nickname: ILike(nickname) }],
+      where: [{ id }, { nickname: ILike(`%${nickname}%`) }],
       take,
       skip,
     });

@@ -9,11 +9,20 @@ import { ResFollowing } from './dto/res-following.dto';
 import { ResUnFollowing } from './dto/res-un-following.dto';
 import { ResFollowingUsers } from './dto/res-following-users.dto';
 import { ResFollowerUsers } from './dto/res-follower-users.dto';
+import { WsService } from 'src/common/ws/ws.service';
 
 describe('FriendService', () => {
   let service: FriendService;
   let profileService: ProfileService;
-  const { user, otherUser, influencer, notExistUser } = MockUserModel;
+  let wsService: WsService;
+  const {
+    user,
+    otherUser,
+    influencer,
+    followingUser,
+    unFollowingUser,
+    notExistUser,
+  } = MockUserModel;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -22,6 +31,7 @@ describe('FriendService', () => {
 
     service = module.get<FriendService>(FriendService);
     profileService = module.get<ProfileService>(ProfileService);
+    wsService = module.get<WsService>(WsService);
   });
 
   // FTEST: - use, error, return
@@ -33,6 +43,12 @@ describe('FriendService', () => {
       profileService.getUserByID = jest.fn().mockReturnValue({ user });
       result = await service.following(otherUser.id, user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
+    });
+
+    it('Use | createRoom', async () => {
+      wsService.createRoom = jest.fn();
+      result = await service.following(followingUser.id, user.id);
+      expect(wsService.createRoom).toHaveBeenCalled();
     });
 
     it('Error | Cannot following self account', async () => {
@@ -61,6 +77,12 @@ describe('FriendService', () => {
       profileService.getUserByID = jest.fn().mockReturnValue({ user });
       result = await service.unFollowing(influencer.id, user.id);
       expect(profileService.getUserByID).toHaveBeenCalled();
+    });
+
+    it('Use | deleteRoom', async () => {
+      wsService.deleteRoom = jest.fn();
+      result = await service.unFollowing(unFollowingUser.id, user.id);
+      expect(wsService.deleteRoom).toHaveBeenCalled();
     });
 
     it('Return | ResUnFollowing', async () => {
@@ -122,8 +144,8 @@ describe('FriendService', () => {
 
   // FUTEST: - return
   describe('Find Users', () => {
-    const keyword = `${user.nickname}#${user.id}`;
-    const keyword2 = `${notExistUser.nickname}#${notExistUser.id}`;
+    const keyword = `${user.nickname}@${user.id}`;
+    const keyword2 = `${notExistUser.nickname}@${notExistUser.id}`;
 
     const resFindUsers: ResFindUsers = {
       findUsers: MockUserModel.users,

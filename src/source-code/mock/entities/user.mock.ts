@@ -34,11 +34,24 @@ export class MockUserModel {
     nickname: 'influencer',
   };
 
+  static followingUser: UserModel = {
+    ...defaultUser,
+    id: 100,
+  };
+
+  static unFollowingUser: UserModel = {
+    ...defaultUser,
+    id: 101,
+  };
+
   static user: UserModel = {
     ...defaultUser,
     role: Role.ADMIN,
     rooms: lazyArray<RoomModel>([defaultRoom, defaultRoom]),
-    followingUsers: lazyArray<UserModel>([MockUserModel.influencer]),
+    followingUsers: lazyArray<UserModel>([
+      MockUserModel.influencer,
+      MockUserModel.unFollowingUser,
+    ]),
     followerUsers: lazyArray<UserModel>([MockUserModel.influencer]),
   };
 
@@ -88,6 +101,7 @@ export class MockUserModel {
     MockUserModel.user,
     MockUserModel.otherUser,
     MockUserModel.influencer,
+    MockUserModel.followingUser,
   ];
 
   static accessToken: string =

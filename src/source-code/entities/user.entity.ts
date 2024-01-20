@@ -55,7 +55,9 @@ export class UserModel extends BaseModel {
   language: number;
 
   @ApiProperty({ example: [], required: false })
-  @ManyToMany(() => UserModel, (user) => user.followingUsers)
+  @ManyToMany(() => UserModel, (user) => user.followingUsers, {
+    onDelete: 'CASCADE',
+  })
   followerUsers: Promise<UserModel[]>;
 
   @ApiProperty({ example: [], required: false })

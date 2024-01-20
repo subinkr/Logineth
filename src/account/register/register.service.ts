@@ -15,12 +15,16 @@ import { ProfileService } from '../profile/profile.service';
 import { Role } from 'src/source-code/enum/role';
 import { ResRegister } from './dto/res-register.dto';
 import { ResWithdrawRegister } from './dto/res-withdraw-register.dto';
+import { WsService } from 'src/common/ws/ws.service';
+import { RoomModel } from 'src/source-code/entities/room.entity';
 
 @Injectable()
 export class RegisterService {
   constructor(
     @InjectRepository(UserModel)
     private readonly userRepo: Repository<UserModel>,
+    @InjectRepository(RoomModel)
+    private readonly roomRepo: Repository<RoomModel>,
     private readonly authService: AuthService,
     private readonly profileService: ProfileService,
   ) {}
@@ -94,7 +98,13 @@ export class RegisterService {
     if (withdrawID !== loginUserID && user.role !== Role.ADMIN) {
       throw new ForbiddenException('다른 유저를 탈퇴할 수 없습니다.');
     }
+    const rooms = await user.rooms;
+    for (let i = 0; i < rooms.length; i++) {
+      await this.roomRepo.save({ id: rooms[i].id, users: [], viewUsers: [] });
+      await this.roomRepo.delete(rooms[i].id);
+    }
 
+    await this.userRepo.save({ ...user, followingUsers: Promise.resolve([]) });
     await this.userRepo.delete(user.id);
     return { message: '탈퇴했습니다.' };
   }

@@ -6,6 +6,7 @@ import { RoomModel } from 'src/source-code/entities/room.entity';
 import { ChatModel } from 'src/source-code/entities/chat.entity';
 import { defaultRoom } from './room.mock';
 import { RankModel } from 'src/source-code/entities/rank.entity';
+import { MockRankModel } from './rank.mock';
 
 export const defaultUser: UserModel = {
   id: 1,
@@ -55,6 +56,7 @@ export class MockUserModel {
       MockUserModel.unFollowingUser,
     ]),
     followerUsers: lazyArray<UserModel>([MockUserModel.influencer]),
+    ranks: lazyArray<RankModel>([MockRankModel.rank]),
   };
 
   static otherUser: UserModel = {

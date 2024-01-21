@@ -12,14 +12,14 @@ export class RankModel extends BaseModel {
   title: string;
 
   @ApiProperty({ example: '10/7/3/8/67/52', required: false })
-  @Column()
+  @Column({ default: '' })
   ranking: string;
 
   @ApiProperty({ example: [], required: false })
   @OneToMany(() => RankRowModel, (row) => row.rank, { eager: true })
-  rows: RankRowModel[];
+  rows?: RankRowModel[];
 
   @ApiProperty({ example: MockUserModel.user, required: false })
-  @ManyToOne(() => UserModel, (user) => user.ranks, { onDelete: 'CASCADE' })
+  @ManyToOne(() => UserModel, (user) => user.ranks, { eager: true })
   user: UserModel;
 }

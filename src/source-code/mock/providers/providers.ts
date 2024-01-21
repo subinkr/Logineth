@@ -15,6 +15,10 @@ import { DataService } from 'src/common/data/data.service';
 import { FriendService } from 'src/account/friend/friend.service';
 import { SettingService } from 'src/account/setting/setting.service';
 import { RankService } from 'src/account/rank/rank.service';
+import { RankModel } from 'src/source-code/entities/rank.entity';
+import { RankRowModel } from 'src/source-code/entities/rank-row.entity';
+import { MockRankModel } from '../entities/rank.mock';
+import { MockRankRowModel } from '../entities/rank-row.mock';
 
 export const providers = [
   AuthService,
@@ -38,5 +42,13 @@ export const providers = [
   {
     provide: getRepositoryToken(ChatModel),
     useClass: MockChatModel,
+  },
+  {
+    provide: getRepositoryToken(RankModel),
+    useClass: MockRankModel,
+  },
+  {
+    provide: getRepositoryToken(RankRowModel),
+    useClass: MockRankRowModel,
   },
 ];

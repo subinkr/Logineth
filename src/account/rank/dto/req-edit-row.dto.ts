@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, MinLength } from 'class-validator';
 
-export class ReqCreateRank {
-  @ApiProperty({ example: 'title' })
+export class ReqEditRow {
+  @ApiProperty({ example: 'Edit content' })
   @MinLength(1)
   @IsString()
-  title: string;
+  content: string;
 }

@@ -5,9 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RankModel } from 'src/source-code/entities/rank.entity';
 import { RankRowModel } from 'src/source-code/entities/rank-row.entity';
 import { ProfileModule } from '../profile/profile.module';
+import { AuthModule } from 'src/common/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([RankModel, RankRowModel]), ProfileModule],
+  imports: [
+    TypeOrmModule.forFeature([RankModel, RankRowModel]),
+    AuthModule,
+    ProfileModule,
+  ],
   controllers: [RankController],
   providers: [RankService],
   exports: [RankService],

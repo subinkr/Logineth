@@ -83,6 +83,6 @@ export class UserModel extends BaseModel {
   viewRooms: Promise<RoomModel[]>;
 
   @ApiProperty({ example: [], required: false })
-  @OneToMany(() => RankModel, (rank) => rank.user)
+  @OneToMany(() => RankModel, (rank) => rank.user, { onDelete: 'CASCADE' })
   ranks: Promise<RankModel[]>;
 }

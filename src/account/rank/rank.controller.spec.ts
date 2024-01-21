@@ -19,31 +19,55 @@ describe('RankController', () => {
 
   // GRTEST: - use
   describe('Get Rank', () => {
-    it.todo('Use | getRank');
+    it('Use | getRank', async () => {
+      rankService.getRank = jest.fn();
+      await controller.getRank();
+      expect(rankService.getRank).toHaveBeenCalled();
+    });
   });
 
   // CRTEST: - use
   describe('Create Rank', () => {
-    it.todo('Use | createRank');
+    it('Use | createRank', async () => {
+      rankService.createRank = jest.fn();
+      await controller.createRank();
+      expect(rankService.createRank).toHaveBeenCalled();
+    });
   });
 
   // ERTEST: - use
   describe('Edit Rank', () => {
-    it.todo('Use | editRank');
+    it('Use | editRank', async () => {
+      rankService.editRank = jest.fn();
+      await controller.editRank();
+      expect(rankService.editRank).toHaveBeenCalled();
+    });
   });
 
   // DRTEST: - use
   describe('Delete Rank', () => {
-    it.todo('Use | deleteRank');
+    it('Use | deleteRank', async () => {
+      rankService.deleteRank = jest.fn();
+      await controller.deleteRank();
+      expect(rankService.deleteRank).toHaveBeenCalled();
+    });
   });
 
   // ARTEST: - use
   describe('Add Row', () => {
-    it.todo('Use | addRow');
+    it('Use | addRow', async () => {
+      rankService.addRow = jest.fn();
+      await controller.addRow();
+      expect(rankService.addRow).toHaveBeenCalled();
+    });
   });
 
   // SRTEST: - use
   describe('Subtract Row', () => {
-    it.todo('Use | subtractRow');
+    it('Use | subtractRow', async () => {
+      rankService.subtractRow = jest.fn();
+      await controller.subtractRow();
+      expect(rankService.subtractRow).toHaveBeenCalled();
+    });
   });
 });

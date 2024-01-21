@@ -8,6 +8,8 @@
 
 - Register: 회원가입을 담당합니다.
 
+- Rank: 랭킹을 담당합니다.
+
 # Common
 
 - Auth: 인증을 담당합니다.

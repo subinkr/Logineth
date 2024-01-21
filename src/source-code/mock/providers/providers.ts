@@ -14,6 +14,7 @@ import { MockChatModel } from '../entities/chat.mock';
 import { DataService } from 'src/common/data/data.service';
 import { FriendService } from 'src/account/friend/friend.service';
 import { SettingService } from 'src/account/setting/setting.service';
+import { RankService } from 'src/account/rank/rank.service';
 
 export const providers = [
   AuthService,
@@ -25,6 +26,7 @@ export const providers = [
   DataService,
   FriendService,
   SettingService,
+  RankService,
   {
     provide: getRepositoryToken(UserModel),
     useClass: MockUserModel,

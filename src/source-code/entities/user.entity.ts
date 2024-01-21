@@ -7,6 +7,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { MockUserModel } from '../mock/entities/user.mock';
 import { ChatModel } from './chat.entity';
 import { RoomModel } from './room.entity';
+import { RankModel } from './rank.entity';
 
 @Entity()
 export class UserModel extends BaseModel {
@@ -80,4 +81,8 @@ export class UserModel extends BaseModel {
   })
   @JoinTable({ name: 'user_view_room_model' })
   viewRooms: Promise<RoomModel[]>;
+
+  @ApiProperty({ example: [], required: false })
+  @OneToMany(() => RankModel, (rank) => rank.user)
+  ranks: Promise<RankModel[]>;
 }

@@ -14,6 +14,7 @@ async function bootstrap() {
     .addTag('account | friend')
     .addTag('account | login')
     .addTag('account | profile')
+    .addTag('account | rank')
     .addTag('account | register')
     .addTag('common | data')
     .addTag('common | ws')

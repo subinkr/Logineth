@@ -12,8 +12,8 @@ import { ResUnFollowing } from './dto/res-un-following.dto';
 import { WsService } from 'src/common/ws/ws.service';
 import { ResFindUsers } from './dto/res-find-users.dto';
 import { DataService } from 'src/common/data/data.service';
-import { ResFollowingUsers } from './dto/res-following-users.dto';
-import { ResFollowerUsers } from './dto/res-follower-users.dto';
+import { ResGetFollowingUsers } from './dto/res-get-following-users.dto';
+import { ResGetFollowerUsers } from './dto/res-get-follower-users.dto';
 
 @Injectable()
 export class FriendService {
@@ -26,7 +26,7 @@ export class FriendService {
   ) {}
 
   // FUSERVICE: - {followingUsers: UserModel[]}
-  async followingUsers(loginUserID: number): Promise<ResFollowingUsers> {
+  async getFollowingUsers(loginUserID: number): Promise<ResGetFollowingUsers> {
     const { user: loginUser } =
       await this.profileService.getUserByID(loginUserID);
     const followingUsers = await loginUser.followingUsers;
@@ -35,7 +35,7 @@ export class FriendService {
   }
 
   // FUSERVICE: - {followerUsers: UserModel[]}
-  async followerUsers(loginUserID: number): Promise<ResFollowerUsers> {
+  async getFollowerUsers(loginUserID: number): Promise<ResGetFollowerUsers> {
     const { user: loginUser } =
       await this.profileService.getUserByID(loginUserID);
     const followerUsers = await loginUser.followerUsers;

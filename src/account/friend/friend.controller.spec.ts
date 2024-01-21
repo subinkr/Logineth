@@ -19,21 +19,21 @@ describe('FriendController', () => {
     friendService = module.get<FriendService>(FriendService);
   });
 
-  // FUTEST: - use
-  describe('Follower Users', () => {
-    it('Use | followerUsers', async () => {
-      friendService.followerUsers = jest.fn();
-      await controller.followerUsers(user.id);
-      expect(friendService.followerUsers).toHaveBeenCalled();
+  // GFUTEST: - use
+  describe('Get Follower Users', () => {
+    it('Use | getFollowerUsers', async () => {
+      friendService.getFollowerUsers = jest.fn();
+      await controller.getFollowerUsers(user.id);
+      expect(friendService.getFollowerUsers).toHaveBeenCalled();
     });
   });
 
-  // FUTEST: - use
-  describe('Following Users', () => {
-    it('Use | followingUsers', async () => {
-      friendService.followingUsers = jest.fn();
-      await controller.followingUsers(user.id);
-      expect(friendService.followingUsers).toHaveBeenCalled();
+  // GFUTEST: - use
+  describe('Get Following Users', () => {
+    it('Use | getFollowingUsers', async () => {
+      friendService.getFollowingUsers = jest.fn();
+      await controller.getFollowingUsers(user.id);
+      expect(friendService.getFollowingUsers).toHaveBeenCalled();
     });
   });
 

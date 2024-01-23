@@ -16,6 +16,7 @@ async function bootstrap() {
     .addTag('account | profile')
     .addTag('account | rank')
     .addTag('account | register')
+    .addTag('account | setting')
     .addTag('common | data')
     .addTag('common | ws')
     .addBearerAuth()

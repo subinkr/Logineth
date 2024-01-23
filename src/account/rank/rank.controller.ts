@@ -24,7 +24,9 @@ import { ReqEditRank } from './dto/req-edit-rank.dto';
 import { ReqAddRow } from './dto/req-add-row.dto';
 import { ResEditRow } from './dto/res-edit-row.dto';
 import { ReqEditRow } from './dto/req-edit-row.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('account | rank')
 @Controller('rank')
 export class RankController {
   constructor(private readonly rankService: RankService) {}

@@ -10,9 +10,11 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger';
 import { notFound } from 'src/source-code/error/swagger/not-found';
 
+@ApiTags('account | setting')
 @Controller('setting')
 export class SettingController {
   constructor(private readonly settingService: SettingService) {}

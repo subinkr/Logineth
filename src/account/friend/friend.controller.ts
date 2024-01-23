@@ -28,8 +28,8 @@ import { badRequest } from 'src/source-code/error/swagger/bad-request';
 import { forbidden } from 'src/source-code/error/swagger/forbidden';
 import { notFound } from 'src/source-code/error/swagger/not-found';
 import { ResFindUsers } from './dto/res-find-users.dto';
-import { ResFollowerUsers } from './dto/res-follower-users.dto';
-import { ResFollowingUsers } from './dto/res-following-users.dto';
+import { ResGetFollowerUsers } from './dto/res-get-follower-users.dto';
+import { ResGetFollowingUsers } from './dto/res-get-following-users.dto';
 
 @Controller('')
 @ApiTags('account | friend')
@@ -39,27 +39,27 @@ export class FriendController {
   @Get('follower')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Follower Users' })
-  @ApiOkResponse({ type: ResFollowerUsers })
+  @ApiOkResponse({ type: ResGetFollowerUsers })
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
   @ApiBearerAuth()
-  async followerUsers(
+  async getFollowerUsers(
     @AuthID() loginUserID: number,
-  ): Promise<ResFollowerUsers> {
-    const result = await this.friendService.followerUsers(loginUserID);
-    return plainToInstance(ResFollowerUsers, result);
+  ): Promise<ResGetFollowerUsers> {
+    const result = await this.friendService.getFollowerUsers(loginUserID);
+    return plainToInstance(ResGetFollowerUsers, result);
   }
 
   @Get('following')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Following Users' })
-  @ApiOkResponse({ type: ResFollowingUsers })
+  @ApiOkResponse({ type: ResGetFollowingUsers })
   @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
   @ApiBearerAuth()
-  async followingUsers(
+  async getFollowingUsers(
     @AuthID() loginUserID: number,
-  ): Promise<ResFollowingUsers> {
-    const result = await this.friendService.followingUsers(loginUserID);
-    return plainToInstance(ResFollowingUsers, result);
+  ): Promise<ResGetFollowingUsers> {
+    const result = await this.friendService.getFollowingUsers(loginUserID);
+    return plainToInstance(ResGetFollowingUsers, result);
   }
 
   @Post('following/:targetUserID')

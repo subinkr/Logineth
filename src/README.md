@@ -6,9 +6,11 @@
 
 - Profile: 프로필을 담당합니다.
 
+- Rank: 랭킹을 담당합니다.
+
 - Register: 회원가입을 담당합니다.
 
-- Rank: 랭킹을 담당합니다.
+- Setting: 설정을 담당합니다.
 
 # Common
 

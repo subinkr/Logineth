@@ -24,7 +24,18 @@ import { ReqEditRank } from './dto/req-edit-rank.dto';
 import { ReqAddRow } from './dto/req-add-row.dto';
 import { ResEditRow } from './dto/res-edit-row.dto';
 import { ReqEditRow } from './dto/req-edit-row.dto';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiNoContentResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { badRequest } from 'src/source-code/error/swagger/bad-request';
+import { forbidden } from 'src/source-code/error/swagger/forbidden';
 
 @ApiTags('account | rank')
 @Controller('rank')
@@ -32,6 +43,8 @@ export class RankController {
   constructor(private readonly rankService: RankService) {}
 
   @Get(':targetUserID')
+  @ApiOperation({ summary: 'Get Ranks' })
+  @ApiOkResponse({ type: ResGetRanks })
   async getRanks(
     @Param('targetUserID', ParseIntPipe) targetUserID: number,
   ): Promise<ResGetRanks> {
@@ -41,6 +54,11 @@ export class RankController {
 
   @Post()
   @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Create Rank' })
+  @ApiCreatedResponse({ type: ResCreateRank })
+  @ApiBadRequestResponse(badRequest('유저를 찾을 수 없습니다.'))
+  @ApiForbiddenResponse(forbidden('같은 이름의 랭킹이 있습니다.'))
+  @ApiBearerAuth()
   async createRank(
     @Body() reqCreateRank: ReqCreateRank,
     @AuthID() loginUserID: number,
@@ -54,6 +72,11 @@ export class RankController {
 
   @Put(':rankID')
   @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Edit Rank' })
+  @ApiOkResponse({ type: ResEditRank })
+  @ApiBadRequestResponse(badRequest('존재하지 않는 랭킹입니다.'))
+  @ApiForbiddenResponse(forbidden('다른 유저의 랭킹은 수정할 수 없습니다.'))
+  @ApiBearerAuth()
   async editRank(
     @Param('rankID', ParseIntPipe) rankID: number,
     @Body() reqEditRank: ReqEditRank,
@@ -69,6 +92,11 @@ export class RankController {
 
   @Delete(':rankID')
   @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Delete Rank' })
+  @ApiNoContentResponse({ type: ResDeleteRank })
+  @ApiBadRequestResponse(badRequest('존재하지 않는 랭킹입니다.'))
+  @ApiForbiddenResponse(forbidden('다른 유저의 랭킹은 삭제할 수 없습니다.'))
+  @ApiBearerAuth()
   async deleteRank(
     @Param('rankID', ParseIntPipe) rankID: number,
     @AuthID() loginUserID: number,
@@ -79,6 +107,13 @@ export class RankController {
 
   @Post(':rankID')
   @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Add Row' })
+  @ApiCreatedResponse({ type: ResAddRow })
+  @ApiBadRequestResponse(badRequest('존재하지 않는 랭킹입니다.'))
+  @ApiForbiddenResponse(
+    forbidden('다른 유저의 랭킹에 행을 추가할 수 없습니다.'),
+  )
+  @ApiBearerAuth()
   async addRow(
     @Param('rankID', ParseIntPipe) rankID: number,
     @Body() reqAddRow: ReqAddRow,
@@ -94,6 +129,11 @@ export class RankController {
 
   @Put(':rowID')
   @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Edit Row' })
+  @ApiOkResponse({ type: ResEditRow })
+  @ApiBadRequestResponse(badRequest('존재하지 않는 랭킹입니다.'))
+  @ApiForbiddenResponse(forbidden('다른 유저의 랭킹은 수정할 수 없습니다.'))
+  @ApiBearerAuth()
   async editRow(
     @Param('rowID', ParseIntPipe) rowID: number,
     @Body() reqEditRow: ReqEditRow,
@@ -109,6 +149,11 @@ export class RankController {
 
   @Delete(':rowID')
   @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Subtract Row' })
+  @ApiNoContentResponse({ type: ResSubtractRow })
+  @ApiBadRequestResponse(badRequest('존재하지 않는 랭킹입니다.'))
+  @ApiForbiddenResponse(forbidden('다른 유저의 랭킹은 삭제할 수 없습니다.'))
+  @ApiBearerAuth()
   async subtractRow(
     @Param('rowID', ParseIntPipe) rowID: number,
     @AuthID() loginUserID: number,

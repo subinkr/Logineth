@@ -8,7 +8,7 @@ import { MockRankRowModel } from 'src/source-code/mock/entities/rank-row.mock';
 import { ResGetRanks } from './dto/res-get-ranks.dto';
 import { ResCreateRank } from './dto/res-create-rank.dto';
 import { ReqCreateRank } from './dto/req-create-rank.dto';
-import { BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { ReqEditRank } from './dto/req-edit-rank.dto';
 import { ResEditRank } from './dto/res-edit-rank.dto';
 import { ResDeleteRank } from './dto/res-delete-rank.dto';
@@ -107,7 +107,7 @@ describe('RankService', () => {
 
     it('Error | Cannot create same title rank', async () => {
       result = service.createRank(reqCreateRank2, user.id);
-      expect(result).rejects.toThrow(BadRequestException);
+      expect(result).rejects.toThrow(ForbiddenException);
     });
   });
 
@@ -131,7 +131,7 @@ describe('RankService', () => {
 
     it('Error | Cannot edit other user rank', async () => {
       result = service.editRank(rank.id, reqEditRank, otherUser.id);
-      expect(result).rejects.toThrow(UnauthorizedException);
+      expect(result).rejects.toThrow(ForbiddenException);
     });
   });
 
@@ -154,7 +154,7 @@ describe('RankService', () => {
 
     it('Error | Cannot delete other user rank', async () => {
       result = service.deleteRank(rank.id, otherUser.id);
-      expect(result).rejects.toThrow(UnauthorizedException);
+      expect(result).rejects.toThrow(ForbiddenException);
     });
   });
 
@@ -178,7 +178,7 @@ describe('RankService', () => {
 
     it('Error | Cannot add row in other user', async () => {
       result = service.addRow(rank.id, reqAddRow, otherUser.id);
-      expect(result).rejects.toThrow(UnauthorizedException);
+      expect(result).rejects.toThrow(ForbiddenException);
     });
   });
 
@@ -208,7 +208,7 @@ describe('RankService', () => {
 
     it('Error | Cannot edit row in other user', async () => {
       result = service.editRow(otherRankRow.id, reqEditRow, user.id);
-      expect(result).rejects.toThrow(UnauthorizedException);
+      expect(result).rejects.toThrow(ForbiddenException);
     });
   });
 
@@ -237,7 +237,7 @@ describe('RankService', () => {
 
     it('Error | Cannot subtract row in other user', async () => {
       result = service.subtractRow(rankRow.id, otherUser.id);
-      expect(result).rejects.toThrow(UnauthorizedException);
+      expect(result).rejects.toThrow(ForbiddenException);
     });
   });
 });

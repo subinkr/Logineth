@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -72,7 +73,7 @@ export class RankService {
 
     const rankIdx = ranks.findIndex((rank) => rank.title === title);
     if (rankIdx !== -1) {
-      throw new BadRequestException('같은 이름의 랭킹이 있습니다.');
+      throw new ForbiddenException('같은 이름의 랭킹이 있습니다.');
     }
 
     await this.rankRepo.save({ title, user });
@@ -89,7 +90,7 @@ export class RankService {
     const { title, ranking } = reqEditRank;
     const { rank } = await this.getRankByID(rankID);
     if (rank.user.id !== loginUserID) {
-      throw new UnauthorizedException('다른 유저의 랭킹은 수정할 수 없습니다.');
+      throw new ForbiddenException('다른 유저의 랭킹은 수정할 수 없습니다.');
     }
 
     await this.rankRepo.save({ id: rank.id, title, ranking });
@@ -104,7 +105,7 @@ export class RankService {
   ): Promise<ResDeleteRank> {
     const { rank } = await this.getRankByID(rankID);
     if (rank.user.id !== loginUserID) {
-      throw new UnauthorizedException('다른 유저의 랭킹은 삭제할 수 없습니다.');
+      throw new ForbiddenException('다른 유저의 랭킹은 삭제할 수 없습니다.');
     }
 
     await this.rankRepo.delete(rank.id);
@@ -120,7 +121,7 @@ export class RankService {
   ): Promise<ResAddRow> {
     const { rank } = await this.getRankByID(rankID);
     if (rank.user.id !== loginUserID) {
-      throw new UnauthorizedException(
+      throw new ForbiddenException(
         '다른 유저의 랭킹에 행을 추가할 수 없습니다.',
       );
     }
@@ -142,7 +143,7 @@ export class RankService {
     const ranks = await user.ranks;
     const ranksIdx = ranks.findIndex((rank) => rank.id === rankRow.rank.id);
     if (ranksIdx === -1) {
-      throw new UnauthorizedException('다른 유저의 랭킹을 수정할 수 없습니다.');
+      throw new ForbiddenException('다른 유저의 랭킹은 수정할 수 없습니다.');
     }
 
     const { content } = reqEditRow;
@@ -161,7 +162,7 @@ export class RankService {
     const ranks = await user.ranks;
     const ranksIdx = ranks.findIndex((rank) => rank.id === rankRow.rank.id);
     if (ranksIdx === -1) {
-      throw new UnauthorizedException('다른 유저의 랭킹을 삭제할 수 없습니다.');
+      throw new ForbiddenException('다른 유저의 랭킹은 삭제할 수 없습니다.');
     }
 
     await this.rankRowRepo.delete(rankRow.id);

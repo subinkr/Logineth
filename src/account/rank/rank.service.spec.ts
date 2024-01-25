@@ -90,7 +90,7 @@ describe('RankService', () => {
   describe('Create Rank', () => {
     const reqCreateRank1: ReqCreateRank = { title: 'New title' };
     const reqCreateRank2: ReqCreateRank = { title: 'title' };
-    const resCreateRank: ResCreateRank = { message: '생성했습니다.' };
+    const resCreateRank: ResCreateRank = { rank };
     let result = {};
 
     it('Use | getUserByID', async () => {

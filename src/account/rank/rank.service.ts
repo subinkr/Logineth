@@ -76,9 +76,10 @@ export class RankService {
       throw new ForbiddenException('같은 이름의 랭킹이 있습니다.');
     }
 
-    await this.rankRepo.save({ title, user });
+    const result = await this.rankRepo.save({ title, user });
+    const rank = { ...result, user: null };
 
-    return { message: '생성했습니다.' };
+    return { rank };
   }
 
   // ERSERVICE: - {message: string}

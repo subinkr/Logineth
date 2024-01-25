@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsInstance } from 'class-validator';
+import { RankModel } from 'src/source-code/entities/rank.entity';
+import { MockRankModel } from 'src/source-code/mock/entities/rank.mock';
 
 export class ResCreateRank {
-  @ApiProperty({ example: '생성했습니다.' })
-  @IsString()
-  message: string;
+  @ApiProperty({ example: MockRankModel.rank })
+  @IsInstance(RankModel)
+  rank: RankModel;
 }

@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { BaseModel } from './base.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { MockUserModel } from '../mock/entities/user.mock';
 import { UserModel } from './user.entity';
 import { RankRowModel } from './rank-row.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class RankModel extends BaseModel {
@@ -19,7 +19,7 @@ export class RankModel extends BaseModel {
   @OneToMany(() => RankRowModel, (row) => row.rank, { eager: true })
   rows?: RankRowModel[];
 
-  @ApiProperty({ example: MockUserModel.user, required: false })
   @ManyToOne(() => UserModel, (user) => user.ranks, { eager: true })
+  @Exclude({ toPlainOnly: true })
   user: UserModel;
 }

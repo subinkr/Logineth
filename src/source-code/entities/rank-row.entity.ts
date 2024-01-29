@@ -12,5 +12,5 @@ export class RankRowModel extends BaseModel {
 
   @ApiProperty({ example: MockRankModel.rank, required: false })
   @ManyToOne(() => RankModel, (rank) => rank.rows, { onDelete: 'CASCADE' })
-  rank: RankModel;
+  rank: Promise<RankModel>;
 }

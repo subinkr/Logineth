@@ -161,7 +161,7 @@ describe('RankService', () => {
   // ARTEST: - use, return, error
   describe('Add Row', () => {
     const reqAddRow: ReqAddRow = { content: 'content' };
-    const resAddRow: ResAddRow = { message: '추가했습니다.' };
+    const resAddRow: ResAddRow = { row: rankRow };
     let result = {};
 
     it('Use | getRankByID', async () => {

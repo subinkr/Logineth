@@ -57,6 +57,7 @@ export class RankService {
   async getRanks(targetUserID: number): Promise<ResGetRanks> {
     const ranks = await this.rankRepo.find({
       where: { user: { id: targetUserID } },
+      order: { updatedAt: 'DESC' },
     });
 
     return { ranks };
@@ -128,9 +129,12 @@ export class RankService {
     }
     const { content } = reqAddRow;
 
-    await this.rankRowRepo.save({ rank, content });
+    const row = this.rankRowRepo.create();
+    row.rank = Promise.resolve(rank);
+    row.content = content;
+    await this.rankRowRepo.save(row);
 
-    return { message: '추가했습니다.' };
+    return { row };
   }
 
   // ERSERVICE: - {message: string}
@@ -142,7 +146,8 @@ export class RankService {
     const { rankRow } = await this.getRankRowByID(rowID);
     const { user } = await this.profileService.getUserByID(loginUserID);
     const ranks = await user.ranks;
-    const ranksIdx = ranks.findIndex((rank) => rank.id === rankRow.rank.id);
+    const rank = await rankRow.rank;
+    const ranksIdx = ranks.findIndex((item) => item.id === rank.id);
     if (ranksIdx === -1) {
       throw new ForbiddenException('다른 유저의 랭킹은 수정할 수 없습니다.');
     }
@@ -161,7 +166,8 @@ export class RankService {
     const { rankRow } = await this.getRankRowByID(rowID);
     const { user } = await this.profileService.getUserByID(loginUserID);
     const ranks = await user.ranks;
-    const ranksIdx = ranks.findIndex((rank) => rank.id === rankRow.rank.id);
+    const rank = await rankRow.rank;
+    const ranksIdx = ranks.findIndex((item) => item.id === rank.id);
     if (ranksIdx === -1) {
       throw new ForbiddenException('다른 유저의 랭킹은 삭제할 수 없습니다.');
     }

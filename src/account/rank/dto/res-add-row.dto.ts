@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsInstance } from 'class-validator';
+import { RankRowModel } from 'src/source-code/entities/rank-row.entity';
+import { MockRankRowModel } from 'src/source-code/mock/entities/rank-row.mock';
 
 export class ResAddRow {
-  @ApiProperty({ example: '추가했습니다.' })
-  @IsString()
-  message: string;
+  @ApiProperty({ example: MockRankRowModel.rankRow })
+  @IsInstance(RankRowModel)
+  row: RankRowModel;
 }

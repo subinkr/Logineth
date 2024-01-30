@@ -127,7 +127,7 @@ export class RankController {
     return plainToInstance(ResAddRow, result);
   }
 
-  @Put(':rowID')
+  @Put(':rankID/:rowID')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Edit Row' })
   @ApiOkResponse({ type: ResEditRow })
@@ -147,7 +147,7 @@ export class RankController {
     return plainToInstance(ResSubtractRow, result);
   }
 
-  @Delete(':rowID')
+  @Delete(':rankID/:rowID')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Subtract Row' })
   @ApiNoContentResponse({ type: ResSubtractRow })

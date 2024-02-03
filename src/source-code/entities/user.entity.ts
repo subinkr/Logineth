@@ -23,6 +23,10 @@ export class UserModel extends BaseModel {
   @Column()
   nickname: string;
 
+  @ApiProperty({ example: MockUserModel.user.wallet, required: false })
+  @Column({ default: '' })
+  wallet: string;
+
   @ApiProperty({ example: MockUserModel.user.image, required: false })
   @Column({ nullable: true })
   image?: string;

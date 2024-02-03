@@ -4,6 +4,7 @@ import { providers } from 'src/source-code/mock/providers/providers';
 import { MockUserModel } from 'src/source-code/mock/entities/user.mock';
 import { ProfileService } from './profile.service';
 import { ReqEditUser } from './dto/req-edit-user.dto';
+import { ReqConnectWallet } from './dto/req-connect-wallet.dto';
 
 describe('ProfileController', () => {
   let controller: ProfileController;
@@ -41,6 +42,18 @@ describe('ProfileController', () => {
       profileService.editUser = jest.fn();
       await controller.editUser(user.id, reqEditUser, user.id);
       expect(profileService.editUser).toHaveBeenCalled();
+    });
+  });
+
+  // CWTEST: - use
+  describe('Connect Wallet', () => {
+    const reqConnectWallet: ReqConnectWallet = {
+      wallet: user.wallet,
+    };
+    it('Use | connectWallet', async () => {
+      profileService.connectWallet = jest.fn();
+      await controller.connectWallet(user.id, reqConnectWallet, user.id);
+      expect(profileService.connectWallet).toHaveBeenCalled();
     });
   });
 });

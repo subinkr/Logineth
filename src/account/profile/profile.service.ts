@@ -10,6 +10,8 @@ import { ReqEditUser } from './dto/req-edit-user.dto';
 import { Role } from 'src/source-code/enum/role';
 import { ResGetUser } from './dto/res-get-user.dto';
 import { ResEditUser } from './dto/res-edit-user.dto';
+import { ReqConnectWallet } from './dto/req-connect-wallet.dto';
+import { ResConnectWallet } from './dto/res-connect-wallet.dto';
 
 @Injectable()
 export class ProfileService {
@@ -54,5 +56,20 @@ export class ProfileService {
     await this.userRepo.update(targetUserID, { ...reqEditUser });
 
     return { message: '수정되었습니다.' };
+  }
+
+  async connectWallet(
+    targetUserID: number,
+    reqConnectWallet: ReqConnectWallet,
+    loginUserID: number,
+  ): Promise<ResConnectWallet> {
+    const { user } = await this.getUserByID(loginUserID);
+    if (targetUserID !== loginUserID && user.role !== Role.ADMIN) {
+      throw new ForbiddenException('다른 유저를 수정할 수 없습니다.');
+    }
+
+    await this.userRepo.update(loginUserID, { ...reqConnectWallet });
+
+    return { message: '연결되었습니다.' };
   }
 }

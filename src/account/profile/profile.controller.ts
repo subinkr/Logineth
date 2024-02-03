@@ -24,6 +24,8 @@ import { ResEditUser } from './dto/res-edit-user.dto';
 import { AuthID } from 'src/common/auth/decorator/id.decorator';
 import { forbidden } from 'src/source-code/error/swagger/forbidden';
 import { AuthGuard } from 'src/common/auth/auth.guard';
+import { ReqConnectWallet } from './dto/req-connect-wallet.dto';
+import { ResConnectWallet } from './dto/res-connect-wallet.dto';
 
 @Controller('profile')
 @ApiTags('account | profile')
@@ -59,5 +61,25 @@ export class ProfileController {
       loginUserID,
     );
     return plainToInstance(ResEditUser, result);
+  }
+
+  @Put(':id/wallet')
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Connect Wallet' })
+  @ApiOkResponse({ type: ResConnectWallet })
+  @ApiNotFoundResponse(notFound('유저를 찾을 수 없습니다.'))
+  @ApiForbiddenResponse(forbidden('다른 유저를 수정할 수 없습니다.'))
+  @ApiBearerAuth()
+  async connectWallet(
+    @Param('id', ParseIntPipe) targetUserID: number,
+    @Body() reqConnectWallet: ReqConnectWallet,
+    @AuthID() loginUserID: number,
+  ): Promise<ResConnectWallet> {
+    const result = await this.profileService.connectWallet(
+      targetUserID,
+      reqConnectWallet,
+      loginUserID,
+    );
+    return plainToInstance(ResConnectWallet, result);
   }
 }

@@ -19,6 +19,9 @@ import { RankModel } from 'src/source-code/entities/rank.entity';
 import { RankRowModel } from 'src/source-code/entities/rank-row.entity';
 import { MockRankModel } from '../entities/rank.mock';
 import { MockRankRowModel } from '../entities/rank-row.mock';
+import { BoardService } from 'src/account/board/board.service';
+import { BoardModel } from 'src/source-code/entities/board.entity';
+import { MockBoardModel } from '../entities/board.mock';
 
 export const providers = [
   AuthService,
@@ -31,6 +34,7 @@ export const providers = [
   FriendService,
   SettingService,
   RankService,
+  BoardService,
   {
     provide: getRepositoryToken(UserModel),
     useClass: MockUserModel,
@@ -50,5 +54,9 @@ export const providers = [
   {
     provide: getRepositoryToken(RankRowModel),
     useClass: MockRankRowModel,
+  },
+  {
+    provide: getRepositoryToken(BoardModel),
+    useClass: MockBoardModel,
   },
 ];

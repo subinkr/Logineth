@@ -11,6 +11,7 @@ async function bootstrap() {
     .setTitle('Logineth')
     .setDescription('Logineth')
     .setVersion('1.0.0')
+    .addTag('account | board')
     .addTag('account | friend')
     .addTag('account | login')
     .addTag('account | profile')

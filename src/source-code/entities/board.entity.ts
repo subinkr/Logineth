@@ -20,12 +20,12 @@ export class BoardModel extends BaseModel {
   image: string;
 
   @ApiProperty({ example: MockBoardModel.board.tokenID, required: false })
-  @Column()
-  tokenID: number;
+  @Column({ default: null })
+  tokenID: number | null;
 
   @ApiProperty({ example: MockBoardModel.board.ad, required: false })
-  @Column()
-  ad: string;
+  @Column({ default: null })
+  ad: string | null;
 
   @ApiProperty({ example: false, required: false })
   @Column({ default: false })
@@ -33,9 +33,9 @@ export class BoardModel extends BaseModel {
 
   @ApiProperty({ example: MockUserModel.user, required: false })
   @ManyToOne(() => UserModel, (user) => user.postBoards, { eager: true })
-  originalAuthor: UserModel;
+  originalAuthor: Promise<UserModel>;
 
   @ApiProperty({ example: MockUserModel.user, required: false })
   @ManyToOne(() => UserModel, (user) => user.ownBoards, { eager: true })
-  owner: UserModel;
+  owner: Promise<UserModel>;
 }

@@ -9,6 +9,7 @@ import { ChatModel } from './source-code/entities/chat.entity';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { RankModel } from './source-code/entities/rank.entity';
 import { RankRowModel } from './source-code/entities/rank-row.entity';
+import { BoardModel } from './source-code/entities/board.entity';
 
 @Module({
   imports: [
@@ -25,7 +26,14 @@ import { RankRowModel } from './source-code/entities/rank-row.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [UserModel, RoomModel, ChatModel, RankModel, RankRowModel],
+      entities: [
+        UserModel,
+        RoomModel,
+        ChatModel,
+        RankModel,
+        RankRowModel,
+        BoardModel,
+      ],
       synchronize: true,
       ssl: process.env.DB_AWS_HOSTNAME && {
         rejectUnauthorized: false,

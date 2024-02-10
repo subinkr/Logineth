@@ -92,20 +92,6 @@ export class UserModel extends BaseModel {
   ranks: Promise<RankModel[]>;
 
   @ApiProperty({ example: [], required: false })
-  @ManyToMany(() => BoardModel, (board) => board.reportBoardUsers, {
-    onDelete: 'CASCADE',
-  })
-  @JoinTable({ name: 'user_report_board_model' })
-  reportBoards: Promise<BoardModel[]>;
-
-  @ApiProperty({ example: [], required: false })
-  @ManyToMany(() => BoardModel, (board) => board.reportAdUsers, {
-    onDelete: 'CASCADE',
-  })
-  @JoinTable({ name: 'user_report_ad_model' })
-  reportAds: Promise<BoardModel[]>;
-
-  @ApiProperty({ example: [], required: false })
   @OneToMany(() => BoardModel, (board) => board.originalAuthor, {
     onDelete: 'CASCADE',
   })

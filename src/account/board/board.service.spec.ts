@@ -24,6 +24,13 @@ describe('BoardService', () => {
     it.todo('Return | ResGetBoard');
   });
 
+  // MBNTEST: - use, return, error
+  describe('Make Board NFT', () => {
+    it.todo('Use | getUserByID');
+    it.todo('Return | ResMakeBoardNFT');
+    it.todo('Error | Cannot make board NFT already exist board NFT.');
+  });
+
   // DBTEST: - use, return, error
   describe('Delete Board', () => {
     it.todo('Use | getUserByID');

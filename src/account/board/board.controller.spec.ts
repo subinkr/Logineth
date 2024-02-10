@@ -27,12 +27,17 @@ describe('BoardController', () => {
     it.todo('Use | getBoard');
   });
 
+  // MBNTEST: - use
+  describe('Make Board NFT', () => {
+    it.todo('Use | makeBoardNFT');
+  });
+
   // DBTEST: - use
   describe('Delete Board', () => {
     it.todo('Use | deleteBoard');
   });
 
-  // RBTEST: -use
+  // RBTEST: - use
   describe('Report Board', () => {
     it.todo('Use | reportBoard');
   });

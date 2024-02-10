@@ -31,14 +31,6 @@ export class BoardModel extends BaseModel {
   @Column({ default: false })
   banAd: boolean;
 
-  @ApiProperty({ example: [], required: false })
-  @ManyToMany(() => UserModel, (user) => user.reportBoards)
-  reportBoardUsers: Promise<UserModel[]>;
-
-  @ApiProperty({ example: [], required: false })
-  @ManyToMany(() => UserModel, (user) => user.reportAds)
-  reportAdUsers: Promise<UserModel[]>;
-
   @ApiProperty({ example: MockUserModel.user, required: false })
   @ManyToOne(() => UserModel, (user) => user.postBoards, { eager: true })
   originalAuthor: UserModel;

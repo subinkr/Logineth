@@ -29,8 +29,6 @@ export const defaultUser: UserModel = {
   chats: lazyArray<ChatModel>(),
   viewRooms: lazyArray<RoomModel>(),
   ranks: lazyArray<RankModel>(),
-  reportBoards: lazyArray<BoardModel>(),
-  reportAds: lazyArray<BoardModel>(),
   postBoards: lazyArray<BoardModel>(),
   ownBoards: lazyArray<BoardModel>(),
 };

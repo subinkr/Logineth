@@ -16,7 +16,7 @@ import { ResEditAd } from './dto/res-edit-ad.dto';
 import { ReqEditAd } from './dto/req-edit-ad.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BoardModel } from 'src/source-code/entities/board.entity';
-import { Not, Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { DataService } from 'src/common/data/data.service';
 import { ResCancelMakeBoardNFT } from './dto/res-cancel-make-board-nft.dto';
 import { ResCompleteMakeBoardNFT } from './dto/res-complete-make-board-nft.dto';
@@ -55,12 +55,14 @@ export class BoardService {
 
     if (isNFT) {
       findAndCount = await this.boardRepo.findAndCount({
-        where: { tokenID: Not(null) },
+        where: { tokenID: Not(IsNull()) },
+        order: { updatedAt: 'desc' },
         take,
         skip,
       });
     } else {
       findAndCount = await this.boardRepo.findAndCount({
+        order: { updatedAt: 'desc' },
         take,
         skip,
       });

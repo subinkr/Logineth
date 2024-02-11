@@ -89,7 +89,7 @@ export class BoardController {
   @ApiOperation({ summary: 'Make Board NFT' })
   @ApiNoContentResponse({ type: ResMakeBoardNFT })
   @ApiNotFoundResponse(notFound('유저 / 글을 찾을 수 없습니다'))
-  @ApiNotAcceptableResponse(notAcceptable('이미 NFT가 생성중인 글입니다.'))
+  @ApiNotAcceptableResponse(notAcceptable('이미 NFT를 생성중인 글입니다.'))
   @ApiBadRequestResponse(badRequest('이미 NFT가 생성된 글입니다.'))
   @ApiBearerAuth()
   async makeBoardNFT(

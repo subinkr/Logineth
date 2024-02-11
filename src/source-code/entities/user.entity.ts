@@ -8,6 +8,7 @@ import { MockUserModel } from '../mock/entities/user.mock';
 import { ChatModel } from './chat.entity';
 import { RoomModel } from './room.entity';
 import { RankModel } from './rank.entity';
+import { BoardModel } from './board.entity';
 
 @Entity()
 export class UserModel extends BaseModel {
@@ -89,4 +90,14 @@ export class UserModel extends BaseModel {
   @ApiProperty({ example: [], required: false })
   @OneToMany(() => RankModel, (rank) => rank.user, { onDelete: 'CASCADE' })
   ranks: Promise<RankModel[]>;
+
+  @ApiProperty({ example: [], required: false })
+  @OneToMany(() => BoardModel, (board) => board.originalAuthor, {
+    onDelete: 'CASCADE',
+  })
+  postBoards: Promise<BoardModel[]>;
+
+  @ApiProperty({ example: [], required: false })
+  @OneToMany(() => BoardModel, (board) => board.owner, { onDelete: 'CASCADE' })
+  ownBoards: Promise<BoardModel[]>;
 }

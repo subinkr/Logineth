@@ -73,7 +73,7 @@ describe('BoardService', () => {
     let result = {};
 
     it('Return | ResGetBoards', async () => {
-      result = await service.getBoards(isNFT, page);
+      result = await service.getBoards(user.id.toString(), isNFT, page);
       const keys = Object.keys(result);
       const required = Object.keys(resGetBoards);
       expect(keys).toEqual(expect.arrayContaining(required));
@@ -81,7 +81,7 @@ describe('BoardService', () => {
 
     it('Return | ResGetBoards', async () => {
       isNFT = false;
-      result = await service.getBoards(isNFT, page);
+      result = await service.getBoards(user.id.toString(), isNFT, page);
       const keys = Object.keys(result);
       const required = Object.keys(resGetBoards);
       expect(keys).toEqual(expect.arrayContaining(required));

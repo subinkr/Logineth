@@ -66,10 +66,11 @@ export class BoardController {
   @ApiOperation({ summary: 'Get Boards' })
   @ApiOkResponse({ type: ResGetBoards })
   async getBoards(
+    @Query('user') targetUserID: string,
     @Query('nft', ParseBoolPipe) isNFT: boolean,
     @Query('page', ParseIntPipe) page: number,
   ): Promise<ResGetBoards> {
-    const result = await this.boardService.getBoards(isNFT, page);
+    const result = await this.boardService.getBoards(targetUserID, isNFT, page);
     return plainToInstance(ResGetBoards, result);
   }
 

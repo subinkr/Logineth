@@ -48,23 +48,39 @@ export class BoardService {
     return { board: newBoard };
   }
 
-  async getBoards(isNFT: boolean, page: number): Promise<ResGetBoards> {
-    const take = 9;
+  async getBoards(
+    targetUserID: string,
+    isNFT: boolean,
+    page: number,
+  ): Promise<ResGetBoards> {
+    const take = 5;
     const skip = (page - 1) * take;
     let findAndCount: [BoardModel[], number] = [[], 0];
 
     if (isNFT) {
       findAndCount = await this.boardRepo.findAndCount({
-        where: { tokenID: Not(IsNull()) },
+        where: {
+          tokenID: Not(IsNull()),
+          originalAuthor: {
+            id: parseInt(targetUserID) || Not(IsNull()),
+          },
+        },
         order: { updatedAt: 'desc' },
         take,
         skip,
+        relations: { originalAuthor: true },
       });
     } else {
       findAndCount = await this.boardRepo.findAndCount({
+        where: {
+          originalAuthor: {
+            id: parseInt(targetUserID) || Not(IsNull()),
+          },
+        },
         order: { updatedAt: 'desc' },
         take,
         skip,
+        relations: { originalAuthor: true },
       });
     }
 

@@ -42,7 +42,7 @@ describe('BoardController', () => {
 
     it('Use | getBoards', async () => {
       boardService.getBoards = jest.fn();
-      await controller.getBoards(isNFT, page);
+      await controller.getBoards(user.id.toString(), isNFT, page);
       expect(boardService.getBoards).toHaveBeenCalled();
     });
   });
